@@ -120,7 +120,7 @@ export default function Header({ isLogin, coinNum, profileName }) {
                     <Search css={searchLogo} />
                 </div>
                 <div css={login}>로그인</div>
-                <div css={coin}>{coinNum} 코인</div>
+                <div css={coin}>{coinNum} 톡스</div>
                 <Coin css={coinLogo}/>
                 <div css={nickname}>{profileName}</div>
                 <Profile css={profile} />
