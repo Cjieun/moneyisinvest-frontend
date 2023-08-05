@@ -14,6 +14,7 @@ export default function Header({ isLogin, coinNum, profileName }) {
     fill: rgba(255, 255, 255, 0.19);
     background-blend-mode: overlay;
     backdrop-filter: blur(20px); 
+    z-index: 999;
     `;
     const header = css`
     flex-shrink: 0;
@@ -112,7 +113,7 @@ export default function Header({ isLogin, coinNum, profileName }) {
                 <div css={nav}>
                     <div css={item}>회사</div>
                     <div css={item}>뉴스</div>
-                    <div css={item}>교육</div>
+                    <div css={item}>교과서</div>
                     <div css={item}>상점</div>
                 </div>
                 <div css={searchBox}>

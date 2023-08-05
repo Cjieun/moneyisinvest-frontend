@@ -2,11 +2,39 @@ import React from "react";
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 
-const card = css`
+/* isVisible={true} && rank={1} #3EB7AF */
+
+export default function Card({isVisible, rank, imageUrl , company, code, rate, price, stock}) {
+    const cardContainer = css`
+    width: ${isVisible ? '20.125rem' : '19.5rem'};
+    height: ${isVisible ? '12.6875rem' : '12.1875rem'};
+    position: relative;
+    `;
+    const top = css`
+    display: ${isVisible ? 'block' : 'none'};
+    width: 1.875rem;
+    height: 1.875rem;
+    background-color: #3EB7AF;
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.875rem;
+    position: ${isVisible ? 'absolute' : 'static'};
+    z-index: 2;
+`;
+    const card = css`
+    box-sizing: border-box;
     width: 19.5rem;
+    height: 12.1875rem;
     border-radius: 1.25rem;
-    background: #D1EFEE;
+    background: ${rank == 1 ? "#D1EFEE" : "#F0F9F8"};
     padding-bottom: 1.81rem;
+    position: ${isVisible ? 'absolute' : 'static'};
+    top: 0.5rem;
+    left: 0.625rem;
     .title {
         padding: 1.38rem 0 1.5rem 1.25rem;
         display: flex;
@@ -70,26 +98,29 @@ const card = css`
         }
     }
 `;
-
-export default function Card({imageUrl , company, code, rate, price, stock}) {
     return (
-        <div css={card}>
-            <div className="title">
-                <img src={imageUrl} alt={company} />
-                <div><span className="name">{company}</span><span className="code">{code}</span></div>
+        <div css={cardContainer}>
+            <div css={top}>
+                {rank}
             </div>
-            <div className="info">
-                <div>
-                    <div className="type">수익률</div>
-                    <div className="percent">{rate}%</div>
+            <div css={card}>
+                <div className="title">
+                    <img src={imageUrl} alt={company} />
+                    <div><span className="name">{company}</span><span className="code">{code}</span></div>
                 </div>
-                <div>
-                    <div className="type">주가</div>
-                    <div className="data">{price}원</div>
-                </div>
-                <div>
-                    <div className="type">스톡가</div>
-                    <div className="data">{stock}스톡</div>
+                <div className="info">
+                    <div>
+                        <div className="type">수익률</div>
+                        <div className="percent">{rate}%</div>
+                    </div>
+                    <div>
+                        <div className="type">주가</div>
+                        <div className="data">{price}원</div>
+                    </div>
+                    <div>
+                        <div className="type">스톡가</div>
+                        <div className="data">{stock}스톡</div>
+                    </div>
                 </div>
             </div>
         </div>
