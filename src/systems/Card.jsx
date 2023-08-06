@@ -30,7 +30,7 @@ export default function Card({isVisible, rank, imageUrl , company, code, rate, p
     width: 19.5rem;
     height: 12.1875rem;
     border-radius: 1.25rem;
-    background: ${rank == 1 ? "#D1EFEE" : "#F0F9F8"};
+    background: ${rank === 1 ? "#D1EFEE" : "#F0F9F8"};
     padding-bottom: 1.81rem;
     position: ${isVisible ? 'absolute' : 'static'};
     top: 0.5rem;

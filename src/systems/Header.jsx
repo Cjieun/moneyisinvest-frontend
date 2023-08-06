@@ -5,6 +5,7 @@ import {ReactComponent as Logo} from '../assets/images/logo.svg';
 import {ReactComponent as Search} from "../assets/images/search.svg";
 import {ReactComponent as Coin} from "../assets/images/coin.svg";
 import {ReactComponent as Profile} from "../assets/images/profile1.svg";
+import {Link} from "react-router-dom";
 
 export default function Header({ isLogin, coinNum, profileName }) {
     const headerContainer = css`
@@ -36,8 +37,8 @@ export default function Header({ isLogin, coinNum, profileName }) {
     align-items: flex-start;
     margin-top: auto;
     margin-bottom: auto;
-    margin-left: ${isLogin ? '4.25rem' : '4.87rem' };
-    margin-right: ${isLogin ? '1.88rem' : '2.56rem' };
+    margin-left: ${isLogin ? '2.63rem' : '3.25rem' };
+    margin-right: ${isLogin ? '2.62rem' : '3.31rem' };
     gap: ${isLogin ? '3.25rem' : '5rem' };
     `;
     const item = css`
@@ -53,7 +54,7 @@ export default function Header({ isLogin, coinNum, profileName }) {
     background: #F1F1F1;
     margin-top: auto;
     margin-bottom: auto;
-    margin-right: ${isLogin ? '1.38rem' : '2rem'};
+    margin-right: ${isLogin ? '1.25rem' : '2rem'};
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -84,7 +85,7 @@ export default function Header({ isLogin, coinNum, profileName }) {
     color: #3eb7af;
     font-size: 0.8125rem;
     font-weight: 600;
-    margin: auto 0.21rem auto 0;
+    margin: auto 0.33rem auto 0;
     `;
     const coinLogo = css`
     display: ${isLogin ? 'block' : 'none'};
@@ -98,7 +99,7 @@ export default function Header({ isLogin, coinNum, profileName }) {
     color: #000;
     font-size: 1rem;
     font-weight: 600;
-    margin: auto 0.38rem auto 0;
+    margin: auto 0.37rem auto 0;
     `;
     const profile = css`
     display: ${isLogin ? 'block' : 'none'};
@@ -120,7 +121,9 @@ export default function Header({ isLogin, coinNum, profileName }) {
                     <div css={search}>Search...</div>
                     <Search css={searchLogo} />
                 </div>
-                <div css={login}>로그인</div>
+                <Link to = "/signIn" style={{ textDecoration: "none" }} css={login}>
+                <div>로그인</div>
+                </Link>
                 <div css={coin}>{coinNum} 톡스</div>
                 <Coin css={coinLogo}/>
                 <div css={nickname}>{profileName}</div>
