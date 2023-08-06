@@ -82,23 +82,26 @@ const buttontext = {
 export default function Button(props) {
     const button = css`
     display: flex;
-    width: ${buttonwidth[props.type] || buttonwidth.default};
-    height: ${buttonheight[props.type] || buttonheight.default};
+    width: ${buttonwidth[props.state] || buttonwidth.default};
+    height: ${buttonheight[props.state] || buttonheight.default};
     justify-content: center;
     align-items: center;
     gap: 0.625rem;
-    border: ${buttonborder[props.type] || buttonborder.default};
-    border-radius: ${buttonradius[props.type] || buttonradius.default};
-    background: ${buttonbackground[props.type] || buttonbackground.default};
-    color: ${buttoncolor[props.type] || buttoncolor.default};
-    font-size: ${buttonsize[props.type] || buttonsize.default};
-    font-weight: ${buttonweight[props.type] || buttonweight.default};
+    border: ${buttonborder[props.state] || buttonborder.default};
+    border-radius: ${buttonradius[props.state] || buttonradius.default};
+    background: ${buttonbackground[props.state] || buttonbackground.default};
+    color: ${buttoncolor[props.state] || buttoncolor.default};
+    font-size: ${buttonsize[props.state] || buttonsize.default};
+    font-weight: ${buttonweight[props.state] || buttonweight.default};
     line-height: 0.79588rem;
+    &:hover {
+        cursor: pointer;
+    }
     `
 
     return (
         <div>
-            <button css={button}>{buttontext[props.type] || buttontext.default}</button>
+            <button css={button}>{buttontext[props.state] || buttontext.default}</button>
         </div>
     )
 }

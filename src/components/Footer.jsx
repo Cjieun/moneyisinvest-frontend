@@ -3,8 +3,9 @@ import React from "react";
 import { css } from "@emotion/react";
 
 const footer = css`
-    margin-bottom: 4rem;
-    margin-top: 8.5rem;
+    bottom: 4rem;
+    margin-top: 8.75rem;
+    position: relative;
     display: flex;
     height: 1rem;
     justify-content: center;
