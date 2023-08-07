@@ -1,21 +1,21 @@
-.loginContainer {
+.signupContainer {
     margin: 0;
-    .loginBox {
+    .signupBox {
         display: flex;
         flex-direction: column;
         align-items: center;
-        .loginContent {
+        .signupContent {
             flex-grow: 1;
             padding: auto;
             margin: auto;
-            .loginTitle {
+            .signupTitle {
                 color: #000;
                 font-size: 1.5rem;
                 font-weight: 700;
                 letter-spacing: -0.0225rem;
-                margin: 12.25rem 0 3rem 0;
+                margin: 10.19rem 0 3rem 0;
             }
-            .idInput {
+            .signupInput {
                 color: #000;
                 font-size: 0.875rem;
                 font-weight: 500;
@@ -31,7 +31,14 @@
                     letter-spacing: -0.01313rem;
                     padding-left: 1rem;
                     outline-color: #85D6D1;
+                    width: 23.625rem;
                 }
+            }
+            .signConfirm {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 0.81rem;
             }
             .pwInput {
                 color: #000;
@@ -41,7 +48,7 @@
                 display: flex;
                 flex-direction: column;
                 gap: 0.25rem;  
-                margin-bottom: 1.25rem;
+                margin-bottom: 0.5rem;
                 input {
                     height: 3.4375rem;
                     border-radius: 0.625rem;
@@ -90,6 +97,9 @@
                 letter-spacing: -0.01125rem;
                 margin-bottom: 10.06rem;
                 cursor: pointer;
+            }
+            .signButton {
+                margin-top: 2.5rem;
             }
         }
     }

@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from "react";
 import axios from "axios";
+import {Link} from "react-router-dom";
 import "./SignIn.scss";
 import Header from "../../systems/Header";
 import Button from "components/Button";
@@ -59,6 +60,10 @@ export default function SignIn() {
                     setMessage("");
                     setIsId(false);
                     setIdMessage("");
+                    if(!rememberId) {
+                        setInputId("");
+                    }
+                    setInputPw("");
                     if (rememberId) {
                         localStorage.setItem('rememberedUserId', inputId);
                     } else {
@@ -66,7 +71,7 @@ export default function SignIn() {
                     }
                 }
             }).catch((res) => {
-                console.log("!!", res.data);
+                console.log(res.data);
                 setIsMessage(true);
                 setMessage("아이디 혹은 비밀번호를 확인해주세요.");
                 setIsId(false);
@@ -105,9 +110,13 @@ export default function SignIn() {
                     <div>
                         <label className="idRemember"><input type="checkbox" checked={rememberId} onChange={() => setRememberId(!rememberId)} />아이디 기억하기</label>
                     </div>
-                    <div onClick={onClickLogin}>
-                        <Button type="submit" state="login" onClick={onClickLogin}/>
+                    <div>
+                        <div onClick={onClickLogin} >
+                        <Button type="submit" state="login"/>
+                        </div>
+                        <Link to = "/signUp" style={{ textDecoration: "none" }}>
                         <div className="loginEmail">이메일로 회원가입</div>
+                        </Link>
                     </div>
                 </div>
                 <Footer />
