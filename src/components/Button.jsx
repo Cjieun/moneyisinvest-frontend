@@ -11,24 +11,30 @@ const buttonwidth = {
     stockbuy: "6.25rem",
     shopping: "8.875rem",
     login: "23.625rem",
+    signup: "23.625rem",
     write: "2rem",
     comment: "2.9375rem",
     mine: "2.9375rem",
+    signConfirm: "2.9375rem"
 };
 const buttonheight = {
     default: "2.125rem",
     stockbuy: "2.25rem",
     stocksell: "2.25rem",
     login: "3.25rem",
+    signup: "3.25rem",
     write: "5.75rem",
     comment: "1.1875rem",
     mine: "1.1875rem",
+    signConfirm: "1.1875rem"
 }
 const buttonradius = {
     default: "0.4375rem",
     comment: "0.1875rem",
     login: "0.625rem",
+    signup: "0.625rem",
     mine: "0.1875rem",
+    signConfirm: "0.1875rem"
 }
 const buttonborder = {
     default: "none",
@@ -37,6 +43,7 @@ const buttonborder = {
     mine: "0.0625rem solid #3EB7AF",
     interest: "0.0625rem solid #3EB7AF",
     ask: "0.0625rem solid #3EB7AF",
+    signConfirm: "0.0625rem solid #3EB7AF"
 }
 const buttonbackground = {
     default: "#85D6D1",
@@ -47,12 +54,14 @@ const buttonbackground = {
     mine: "none",
     interest: "none",
     ask: "none",
+    signConfirm: "none"
 }
 const buttoncolor = {
     default: "#000",
     stockbuy: "#fff",
     stocksell: "#fff",
-    mine: "#797979"
+    mine: "#797979",
+    signConfirm: "#797979"
 }
 const buttonsize = {
     default: "0.75rem",
@@ -61,10 +70,13 @@ const buttonsize = {
     comment: "0.625rem",
     mine: "0.625rem",
     login: "0.875rem",
+    signup: "0.875rem",
+    signConfirm: "0.625rem"
 };
 const buttonweight = {
     default: "500",
     login: "600",
+    signup: "600",
 }
 const buttontext = {
     default: "버튼",
@@ -77,7 +89,9 @@ const buttontext = {
     comment: "완료",
     mine: "변경",
     interest: "취소하기",
-    ask: "삭제하기"
+    ask: "삭제하기",
+    signup: "회원가입",
+    signConfirm: "인증하기"
 }
 export default function Button(props) {
     const button = css`

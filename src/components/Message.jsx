@@ -11,7 +11,7 @@ export default function Message(props) {
     font-weight: 500;
     display: flex;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.25rem;
     gap: 0.25rem;
 `
     return (

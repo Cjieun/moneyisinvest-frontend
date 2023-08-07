@@ -3,12 +3,12 @@ import React from "react";
 import { css } from "@emotion/react";
 
 const footer = css`
-    bottom: 4rem;
+    margin-bottom: 4rem;
     margin-top: 8.75rem;
-    position: relative;
     display: flex;
     height: 1rem;
     justify-content: center;
+    width: 100%;
     tr {
         display: flex;
         margin: auto;
