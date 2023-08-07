@@ -143,7 +143,7 @@ export default function SignIn() {
                     }
                 }
                 else {
-                    navigate("/signIn", {replace: true})
+                    navigate("/signIn", {replace: true});
                 }
               }).catch((error) => {
                 alert("에러가 발생했어요! 관리자에게 문의해주세요.");
@@ -204,7 +204,7 @@ export default function SignIn() {
 
     return (
         <div className="signupContainer">
-            <Header isLogin={false}/>
+            <Header/>
             <div className="signupBox">
                 <div className="signupContent">
                     <div className="signupTitle">회원가입</div>
