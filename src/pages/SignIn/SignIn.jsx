@@ -27,10 +27,23 @@ export default function SignIn() {
     const pwRef = useRef("");
 
     const onClickLogin = () => {
-        if (idRef.current.value === '' && !(pwRef.current.value === '')) {
+        const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (idRef.current.value === '' && pwRef.current.value === '') {
+            setIsMessage(true);
+            setMessage("아이디와 비밀번호를 입력해주세요.");
+            setIsId(false);
+            setIdMessage("");
+        } 
+        else if (idRef.current.value === '' && !(pwRef.current.value === '')) {
             idRef.current.focus();
             setIsId(true);
             setIdMessage("아이디가 입력되지 않았습니다.");
+            setIsMessage(false);
+            setMessage("");
+        }
+        else if (!inputId.match(EMAIL_REGEX)) {
+            setIsId(true);
+            setIdMessage("정확한 이메일을 입력해주세요!");
             setIsMessage(false);
             setMessage("");
         }
@@ -38,12 +51,6 @@ export default function SignIn() {
             pwRef.current.focus();
             setIsMessage(true);
             setMessage("비밀번호가 입력되지 않았습니다.");
-            setIsId(false);
-            setIdMessage("");
-        }
-        else if (idRef.current.value === '' && pwRef.current.value === '') {
-            setIsMessage(true);
-            setMessage("아이디와 비밀번호를 입력해주세요.");
             setIsId(false);
             setIdMessage("");
         } else {
@@ -71,12 +78,24 @@ export default function SignIn() {
                     }
                 }
             }).catch((res) => {
-                console.log(res.data);
+                console.log(res);
+                if(res.code === "ERR_BAD_RESPONSE")
+                {
+                    alert("에러가 발생했습니다! 관리자에게 문의해주세요.");
+                    setInputId("");
+                    setInputPw("");
+                    setIsMessage(false);
+                    setMessage("");
+                    setIsId(false);
+                    setIdMessage("");    
+                }
+                else {
                 setIsMessage(true);
                 setMessage("아이디 혹은 비밀번호를 확인해주세요.");
                 setIsId(false);
                 setIdMessage("");
                 }
+            }
             )}
     };
     const onClickEnter = (e) => {
@@ -95,7 +114,7 @@ export default function SignIn() {
 
     return (
         <div className="loginContainer">
-            <Header isLogin={false}/>
+            <Header/>
             <div className="loginBox">
                 <div className="loginContent">
                     <div className="loginTitle">사용자 로그인</div>

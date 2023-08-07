@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import {ReactComponent as Logo} from '../assets/images/logo.svg';
@@ -7,7 +7,20 @@ import {ReactComponent as Coin} from "../assets/images/coin.svg";
 import {ReactComponent as Profile} from "../assets/images/profile1.svg";
 import {Link} from "react-router-dom";
 
-export default function Header({ isLogin, coinNum, profileName }) {
+export default function Header({coinNum}) {
+    const [isLogin, setIsLogin] = useState(false);
+    const [profileName, setProfileName] = useState("");
+    useEffect(() => {
+		if (sessionStorage.getItem("token") !== null) {
+            // sessionStorage 에 token 라는 key 값으로 저장된 값이 있다면
+			// 로그인 상태 변경
+			setIsLogin(true);
+            setProfileName(sessionStorage.getItem("id"));
+		} else {
+			// sessionStorage 에 token 라는 key 값으로 저장된 값이 없다면
+            setIsLogin(false);
+		}
+	}, []);
     const headerContainer = css`
     position: sticky;
     top: 0;
