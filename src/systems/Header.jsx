@@ -4,11 +4,11 @@ import { css } from "@emotion/react";
 import {ReactComponent as Logo} from '../assets/images/logo.svg';
 import {ReactComponent as Search} from "../assets/images/search.svg";
 import {ReactComponent as Coin} from "../assets/images/coin.svg";
-import {ReactComponent as Profile} from "../assets/images/profile1.svg";
+import {ReactComponent as HeaderProfile} from "../assets/images/profile.svg";
 import {Link} from "react-router-dom";
 
 export default function Header({coinNum}) {
-    const [isLogin, setIsLogin] = useState(false);
+    const [isLogin, setIsLogin] = useState(true);
     const [profileName, setProfileName] = useState("");
     useEffect(() => {
 		if (sessionStorage.getItem("token") !== null) {
@@ -18,7 +18,6 @@ export default function Header({coinNum}) {
             setProfileName(sessionStorage.getItem("id"));
 		} else {
 			// sessionStorage 에 token 라는 key 값으로 저장된 값이 없다면
-            setIsLogin(false);
 		}
 	}, []);
     const headerContainer = css`
@@ -107,6 +106,10 @@ export default function Header({coinNum}) {
     flex-shrink: 0s;
     margin: auto 0.95rem auto 0;
     `;
+    const profile = css`
+    display: flex;
+    flex-direction: row;
+    `;
     const nickname = css`
     display: ${isLogin ? 'block' : 'none'};
     color: #000;
@@ -114,7 +117,7 @@ export default function Header({coinNum}) {
     font-weight: 600;
     margin: auto 0.37rem auto 0;
     `;
-    const profile = css`
+    const headerprofile = css`
     display: ${isLogin ? 'block' : 'none'};
     width: 2.25rem;
     height: 2.25rem;
@@ -123,7 +126,7 @@ export default function Header({coinNum}) {
     return (
         <div css={headerContainer}>
             <div css={header}>
-                <Logo css={logo} />
+                <Logo css={logo}/>
                 <div css={nav}>
                     <div css={item}>회사</div>
                     <div css={item}>뉴스</div>
@@ -137,10 +140,12 @@ export default function Header({coinNum}) {
                 <Link to = "/signIn" style={{ textDecoration: "none" }} css={login}>
                 <div>로그인</div>
                 </Link>
-                <div css={coin}>{coinNum} 톡스</div>
+                <div css={coin}>{coinNum} 스톡</div>
                 <Coin css={coinLogo}/>
-                <div css={nickname}>{profileName}</div>
-                <Profile css={profile} />
+                <Link to = "/mypage" style={{ textDecoration: "none" }} css={profile}>
+                    <div css={nickname}>{profileName}</div>
+                    <HeaderProfile css={headerprofile} />
+                </Link>
             </div>
         </div>
     )
