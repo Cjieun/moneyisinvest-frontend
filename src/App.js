@@ -6,6 +6,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import MyPage from "pages/MyPage/MyPage";
 import AskPage from "pages/MyPage/AskPage";
 import AskWrite from "pages/MyPage/AskWrite";
+import News from "pages/News/News";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/askpage" element={<AskPage />} />
         <Route path="/askwrite" element={<AskWrite />} />
+        <Route path="/news" element={<News />} />
       </Routes>
     </BrowserRouter>
   );
