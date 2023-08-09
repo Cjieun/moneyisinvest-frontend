@@ -1,0 +1,58 @@
+.storeContainer 
+{justify-content: center;
+align-items: center;
+vertical-align: middle; /* 수직 가운데 정렬 */}
+
+.products-table
+{width: 70%;
+border-collapse: collapse;
+align-items: center;
+justify-content: center;
+text-align: center; /* 가운데 정렬 */
+vertical-align: middle; /* 수직 가운데 정렬 */
+
+    thead{
+        width:783px;
+        height:57px;
+        background: #F0F9F8;
+        color: #3EB7AF;
+        font-size: 16pt;
+
+    }
+    tbody, td{
+        font-size: 14pt;
+        align-items: center;
+        justify-content: center;
+
+    }}
+
+.userCart
+ { display: inline-block;
+  border: 1px solid #85D6D1;
+  border-radius: 10px;
+  padding:10px;
+  text-align: left; 
+  align-items: center;
+
+
+  li{
+    list-style-type:none;
+    font-size: 10pt;
+  }}
+
+.nickname
+{color: #000;
+font-size: 1rem;
+font-weight: 600;
+margin: auto 0.37rem auto 0;}
+
+
+.shopping-cart
+{display: flex;
+gap: 20px;
+align-items: flex-start; /* 세로방향으로 맞춤 조정 */
+}
+
+.storeTitle
+{font-size: 24pt;
+font-weight: 700;}
