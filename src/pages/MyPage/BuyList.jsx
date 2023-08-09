@@ -13,51 +13,53 @@ export default function BuyList() {
             product: "감자커피",
             price: "1",
             date: "2023.12.12.금",
+            used: false,
         },
         {
             image: "",
             product: "커피",
             price: "10",
             date: "2023.8.4.금",
+            used: true,
         },
         {
             image: "",
             product: "쌀",
             price: "100",
             date: "2023.8.4.금",
+            used: false,
         },
         {
             image: "",
             product: "스타벅스 아메리카노 (Tall)",
             price: "2250",
             date: "2023.8.4.금",
+            used: true,
         },
         {
             image: "",
             product: "스타벅스 아메리카노 (Tall)",
             price: "22500",
             date: "2023.8.4.금",
+            used: true,
         },
         {
             image: "",
             product: "스타벅스 아메리카노 (Tall)",
             price: "2250",
             date: "2023.8.4.금",
+            used: false,
         },
         {
             image: "",
             product: "스타벅스 아메리카노 (Tall)",
             price: "2250",
             date: "2023.8.4.금",
+            used: true,
         },
 
     ]);
 
-    const handleDeleteItem = (index) => {
-        const updatedBuy = [...buy];
-        updatedBuy.splice(index, 1);
-        setBuy(updatedBuy);
-    };
 
     const buyItem = buy.map((item, index) => (
         <div className="buyItems" keys={index}>
@@ -68,7 +70,7 @@ export default function BuyList() {
             <div className="buyItem-content">
                 <div className="buyItem-price">{item.price}스톡</div>
                 <div className="buyItem-date">{item.date}</div>
-                <div className="buyItem-button" onClick={() => handleDeleteItem(index)}><Button state="interest"/></div>
+                <div className="buyItem-used">{item.used ? "사용완료" : "사용전"}</div>
             </div>
         </div>
     ))
@@ -93,7 +95,7 @@ export default function BuyList() {
                                 <div className="buyInfo-content">
                                     <div className="buyInfo-price">교환가</div>
                                     <div className="buyInfo-date">구매일자</div>
-                                    <div className="buyInfo-delete">구매취소</div>
+                                    <div className="buyInfo-delete">사용 여부</div>
                                 </div>
                             </div>
                             <div className="buyInfo-scrollable">
