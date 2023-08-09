@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import "./Store.scss";
 /** @jsxImportSource @emotion/react */
 import Header from 'systems/Header';
-/**import Button from "components/Button"; */
+import Button from "components/Button";
 import Footer from "components/Footer";
 import {ReactComponent as Search} from "../../assets/images/search.svg";
 
@@ -75,8 +75,9 @@ const Store = () => {
     : productsList;
 
   return (
-    <div className='storeContainer'>
+    <div>
     <Header/>
+    <div className='storeContainer'>
     <div className='storeTitle'>상점</div>
     <div className='store-top'>
       <div className="category">
@@ -157,9 +158,9 @@ const Store = () => {
                 </td>
                 <td>{product.name}</td>
                 <td>{product.price.toLocaleString()}스톡</td>
-                <td>
-                <button onClick={() => addToCart(product)}>장바구니</button>
-                <button onClick={onBuy}>구매하기</button>
+                <td className='td-btn'>
+                <div onClick={() => addToCart(product)}><Button state="basket" >장바구니</Button></div>
+                <div onClick={onBuy}><Button state="buy" >구매하기</Button></div>
                 </td>
             </tr>
             ))}
@@ -169,6 +170,7 @@ const Store = () => {
     <Footer/>
 
     </div>
+  </div>
   );
 };
 
