@@ -72,11 +72,18 @@ export default function Header({coinNum}) {
     justify-content: space-between;
     `;
     const search = css`
-    color: #B0B0B0;
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-align: center;
-    margin: auto 0 auto 1.25rem;
+    color: #000;
+    margin: auto 1.25rem;
+    background-color: #F1F1F1;
+    border: none;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    &::placeholder {
+        color: #B0B0B0;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
     `;
     const searchLogo = css`
     width: 1.5rem;
@@ -129,12 +136,14 @@ export default function Header({coinNum}) {
                 <Logo css={logo}/>
                 <div css={nav}>
                     <div css={item}>회사</div>
+                    <Link to = "/allNews" style={{ textDecoration: "none" }}>
                     <div css={item}>뉴스</div>
+                    </Link>
                     <div css={item}>교과서</div>
                     <div css={item}>상점</div>
                 </div>
                 <div css={searchBox}>
-                    <div css={search}>Search...</div>
+                    <input css={search} placeholder="Search..."></input>
                     <Search css={searchLogo} />
                 </div>
                 <Link to = "/signIn" style={{ textDecoration: "none" }} css={login}>
