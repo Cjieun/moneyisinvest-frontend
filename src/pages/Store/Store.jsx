@@ -9,19 +9,36 @@ import {ReactComponent as Search} from "../../assets/images/search.svg";
 const productsList = [
   {
     id: 1,
+    category: '카페',
     name: 'Product 1',
     price: 10000,
     image: 'https://via.placeholder.com/68x68'
   },
   {
     id: 2,
+    category: '카페',
     name: 'Product 2',
     price: 15000,
     image: 'https://via.placeholder.com/68x68'
   },
   {
     id: 3,
+    category: '식당',
     name: 'Product 3',
+    price: 13000,
+    image: 'https://via.placeholder.com/68x68'
+  },
+  {
+    id: 4,
+    category: '패스트푸드',
+    name: 'Product 4',
+    price: 13000,
+    image: 'https://via.placeholder.com/68x68'
+  },
+  {
+    id: 5,
+    category: '전자기기',
+    name: 'Product 5',
     price: 13000,
     image: 'https://via.placeholder.com/68x68'
   }
@@ -30,6 +47,7 @@ const productsList = [
 
 const Store = () => {
     const [cart, setCart] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
   const addToCart = (item) => {
     setCart([...cart, item]);
@@ -40,15 +58,66 @@ const Store = () => {
     setCart([]);
   };
 
+    // 버튼을 클릭하면 선택된 카테고리를 설정하는 함수
+    const selectCategory = (category) => {
+      setSelectedCategory(category);
+    };
+
+    // 스토어의 모든 상품을 보여주는 함수
+    const showAllProducts = () => {
+      setSelectedCategory(null);
+    };
+
+
+    // productsList에 선택된 카테고리에 따라 필터 적용
+    const filteredProducts = selectedCategory
+    ? productsList.filter((product) => product.category === selectedCategory)
+    : productsList;
+
   return (
     <div className='storeContainer'>
     <Header/>
-    <div className='storeTitle'>상점
+    <div className='storeTitle'>상점</div>
+    <div className='store-top'>
+      <div className="category">
+      <button
+          onClick={showAllProducts}
+          className={`category-btn ${selectedCategory === null ? 'active' : ''}`}
+        >
+          전체보기
+        </button>
+        <button
+          onClick={() => selectCategory('식당')}
+          className={`category-btn ${selectedCategory === '식당' ? 'active' : ''}`}
+        >
+          식당
+        </button>
+        <button
+          onClick={() => selectCategory('카페')}
+          className={`category-btn ${selectedCategory === '카페' ? 'active' : ''}`}
+        >
+          카페
+        </button>
+        <button
+          onClick={() => selectCategory('패스트푸드')}
+          className={`category-btn ${selectedCategory === '패스트푸드' ? 'active' : ''}`}
+        >
+          패스트푸드
+        </button>
+        <button
+          onClick={() => selectCategory('전자기기')}
+          className={`category-btn ${selectedCategory === '전자기기' ? 'active' : ''}`}
+        >
+          전자기기
+        </button>
+      </div>
       <div className="StoreSearch">
-        <input type="text"/>
-        <div><Search/></div>
+          <input type="text"/>
+          <div><Search/></div>
       </div>
     </div>
+
+
     <div className="row-container">
       <div className="userCart">
         <div className="usercart-text">님이 담은 상품이에요 ({cart.length})</div>
@@ -81,7 +150,7 @@ const Store = () => {
             </tr>
         </thead>
         <tbody>
-            {productsList.map((product) => (
+            {filteredProducts.map((product) => (
             <tr key={product.id} className="product-item">
                 <td>
                 <img className='product-img' src={product.image} alt={product.name} />
