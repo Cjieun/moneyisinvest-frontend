@@ -23,7 +23,7 @@ export default function MyPage() {
 
     const handleNameSave = () => {
         setNameEditing(false);
-        // 여기서 서버로 이름 업데이트 요청을 보낼 수도 있습니다.
+        // 여기서 서버로 이름 업데이트 요청
     };
 
     const handleNameChange = (event) => {
@@ -65,39 +65,39 @@ export default function MyPage() {
         } else {
             console.log("Token is null. Unable to send request.");
         }
-        },[]);
+    },[]);
 
-        const onClickFileUpload = () => {
-            const token = sessionStorage.getItem("token");
-            const fileInput = document.getElementById("imgUpload");
-            if(fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                console.log(file);
-                const formData = new FormData();
-                formData.append("file", file);
+    const onClickFileUpload = () => {
+        const token = sessionStorage.getItem("token");
+        const fileInput = document.getElementById("imgUpload");
+        if(fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            console.log(file);
+            const formData = new FormData();
+            formData.append("file", file);
 
-                axios.post("/api/v1/profile/upload", formData, {
+            axios.post("/api/v1/profile/upload", formData, {
+                headers: {
+                    'X-AUTH-TOKEN' : token,
+                }
+            }).then(res => {
+                console.log("업로드 성공!!", res.data);
+                axios.get("/api/v1/profile/get", {
                     headers: {
-                        'X-AUTH-TOKEN' : token,
+                        'X-Auth-Token': token,
                     }
-                }).then(res => {
-                    console.log("업로드 성공!!", res.data);
-                    axios.get("/api/v1/profile/get", {
-                        headers: {
-                            'X-Auth-Token': token,
-                        }
-                    })
-                    .then((res) => {
-                        console.log("프로필 불러오기 성공", res.data);
-                        setProfile(res.data.url);
-                    }).catch((res) => {
-                        console.log("이미지 불러오지 못함", res);
-                    })                    
-                }).catch((err) => {
-                    console.log("업로드 오류", err);
-                });
-            }  
-        };
+                })
+                .then((res) => {
+                    console.log("프로필 불러오기 성공", res.data);
+                    setProfile(res.data.url);
+                }).catch((res) => {
+                    console.log("이미지 불러오지 못함", res);
+                })                    
+            }).catch((err) => {
+                console.log("업로드 오류", err);
+            });
+        }  
+    };
 
     return (
         <div className="myPageContainer">

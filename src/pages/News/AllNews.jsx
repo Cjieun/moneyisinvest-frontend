@@ -55,7 +55,7 @@ export default function AllNews() {
     useEffect (() => {
 
         // GET 요청을 보낼 URL 설정 (query parameter 포함)
-        const apiUrl = `/api/v1/stock/get/news?stockId`;
+        const apiUrl = `/api/v1/stock/get/news`;
         
         axios.get(apiUrl)
           .then(response => {

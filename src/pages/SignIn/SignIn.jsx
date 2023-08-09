@@ -63,10 +63,22 @@ export default function SignIn() {
                 if (res.data != null) {
                     sessionStorage.setItem("token", res.data.token);
                     sessionStorage.setItem("id", res.data.uid);
+                    sessionStorage.setItem("name", res.data.name);
                     setIsMessage(false);
                     setMessage("");
                     setIsId(false);
                     setIdMessage("");
+                    axios.get("/api/v1/profile/get", {
+                        headers: {
+                            'X-Auth-Token': res.data.token,
+                        }
+                    })
+                    .then((res) => {
+                        console.log("프로필 불러오기 성공", res.data);
+                        sessionStorage.setItem("profileImage", res.data.url);
+                    }).catch((res) => {
+                        console.log("프로필 불러오기 실패", res);
+                    })
                     if(!rememberId) {
                         setInputId("");
                     }
@@ -96,7 +108,7 @@ export default function SignIn() {
                 setIdMessage("");
                 }
             }
-            )}
+        )}
     };
     const onClickEnter = (e) => {
         if (e.key === 'Enter') {

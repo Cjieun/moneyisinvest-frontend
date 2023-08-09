@@ -1,11 +1,14 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import {ReactComponent as ProfileImage} from "../assets/images/profile.svg";
+import axios from "axios";
 import {ReactComponent as Coin} from "../assets/images/coin.svg";
 import { Link, useLocation } from "react-router-dom";
 
 export default function Profile(props) {
+    const [profileImage, setProfileImage] = useState("");
+    const profileName = sessionStorage.getItem('name');
+    
     const profileContainer = css`
     width: 10.875rem;
     height: 29.5rem;
@@ -67,10 +70,25 @@ export default function Profile(props) {
 
     const location = useLocation();
 
+    useEffect (() => {
+        const token = sessionStorage.getItem('token');
+        axios.get("/api/v1/profile/get", {
+            headers: {
+                'X-Auth-Token': token,
+            }
+        })
+        .then((res) => {
+            console.log("프로필 불러오기 성공", res.data);
+            setProfileImage(res.data.url)
+        }).catch((res) => {
+            console.log("프로필 불러오기 실패", res);
+        })
+    },[profileImage])
+
     return(
         <div css={profileContainer}>
-            <ProfileImage css={profile2}/>
-            <div css={name}>{props.name}님</div>
+            <img alt="profile" src={profileImage} css={profile2}/>
+            <div css={name}>{profileName}님</div>
             <div css={coin}>
                 <Coin css={coinImage}/>
                 <div css={coinText}><span>{props.coinNum}</span>스톡 보유중</div>

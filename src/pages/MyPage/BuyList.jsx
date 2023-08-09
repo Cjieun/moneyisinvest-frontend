@@ -4,10 +4,9 @@ import "./BuyList.scss";
 import Header from "systems/Header";
 import Profile from "systems/Profile";
 import Footer from "components/Footer";
-import Button from "components/Button";
 
 export default function BuyList() {
-    const [buy, setBuy] = useState([
+    const [buy] = useState([
         {
             image: "",
             product: "감자커피",

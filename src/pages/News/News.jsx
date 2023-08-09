@@ -31,7 +31,7 @@ export default function News() {
                 <div className="newsItemTitle">{item.newsTitle}</div>
                 <div className="newsItemContent">{item.newsContent}</div>
             </div>
-            <img alt="썸네일" className="newsImage"/>
+            <img alt="썸네일" src={item.newsThumbnail} className="newsImage"/>
         </div>
     ))
 
