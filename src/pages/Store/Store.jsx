@@ -16,7 +16,6 @@ const productsList = [
     id: 2,
     name: 'Product 2',
     price: 15000,
-    image: 'https://via.placeholder.com/100x100'
     image: 'https://via.placeholder.com/68x68'
   },
   {
