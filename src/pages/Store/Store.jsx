@@ -10,19 +10,20 @@ const productsList = [
     id: 1,
     name: 'Product 1',
     price: 10000,
-    image: 'https://via.placeholder.com/100x100'
+    image: 'https://via.placeholder.com/68x68'
   },
   {
     id: 2,
     name: 'Product 2',
     price: 15000,
     image: 'https://via.placeholder.com/100x100'
+    image: 'https://via.placeholder.com/68x68'
   },
   {
     id: 3,
     name: 'Product 3',
     price: 13000,
-    image: 'https://via.placeholder.com/100x100'
+    image: 'https://via.placeholder.com/68x68'
   }
 ];
 
@@ -51,6 +52,7 @@ const Store = () => {
           <ul className="cart-list">
             {cart.map((item, index) => (
               <li key={index}>
+                <img className='item-img' src={item.image} alt={item.name} />
                 {item.name} - {item.price.toLocaleString()} 스톡
               </li>
             ))}
@@ -59,7 +61,7 @@ const Store = () => {
             총합
             {cart.reduce((total, item) => total + item.price, 0).toLocaleString()} 스톡
             </div>
-          <button onClick={onBuy}>구매하기</button>
+          <button  className='cartBuy-btn' onClick={onBuy}>구매하기</button>
         </div>
       )}
       </div>
@@ -77,7 +79,7 @@ const Store = () => {
             {productsList.map((product) => (
             <tr key={product.id} className="product-item">
                 <td>
-                <img src={product.image} alt={product.name} />
+                <img className='product-img' src={product.image} alt={product.name} />
                 </td>
                 <td>{product.name}</td>
                 <td>{product.price.toLocaleString()}스톡</td>
