@@ -6,7 +6,7 @@ import Footer from 'components/Footer';
 import {ReactComponent as Search} from "../../assets/images/search.svg";
 
 export default function News() {
-    const [news, setNews] = useState ([]);
+    const [news, setNews] = useState([]);
 
     useEffect (() => {
         const stockId = '005930'; // 주식 종목 코드
