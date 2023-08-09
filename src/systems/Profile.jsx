@@ -80,10 +80,18 @@ export default function Profile(props) {
                 <Link to = "/mypage" style={{ textDecoration: "none" }}>
                 <li css={[css`color: #b0b0b0;`, location.pathname === "/mypage" && css`color: #3EB7AF;`,]}>마이페이지</li>
                 </Link>
-                <li css={[css`color: #b0b0b0;`, location.pathname === "/stockpage" && css`color: #3EB7AF;`,]}>보유 주식</li>
-                <li css={[css`color: #b0b0b0;`, location.pathname === "/interestpage" && css`color: #3EB7AF;`,]}>관심 주식</li>
-                <li css={[css`color: #b0b0b0;`, location.pathname === "/historypage" && css`color: #3EB7AF;`,]}>거래 내역</li>
+                <Link to = "/stockHold" style={{ textDecoration: "none" }}>
+                <li css={[css`color: #b0b0b0;`, location.pathname === "/stockHold" && css`color: #3EB7AF;`,]}>보유 주식</li>
+                </Link>
+                <Link to = "/stockInterest" style={{ textDecoration: "none" }}>
+                <li css={[css`color: #b0b0b0;`, location.pathname === "/stockInterest" && css`color: #3EB7AF;`,]}>관심 주식</li>
+                </Link>
+                <Link to = "/buyList" style={{ textDecoration: "none" }}>
+                <li css={[css`color: #b0b0b0;`, location.pathname === "/buyList" && css`color: #3EB7AF;`,]}>거래 내역</li>
+                </Link>
+                <Link to = "/askpage" style={{ textDecoration: "none" }}>
                 <li css={[css`color: #b0b0b0;`, (location.pathname === "/askpage" && css`color: #3EB7AF;`) || (location.pathname === "/askwrite" && css`color: #3EB7AF;`),]}>문의사항</li>
+                </Link>
             </ul>
         </div>
     )

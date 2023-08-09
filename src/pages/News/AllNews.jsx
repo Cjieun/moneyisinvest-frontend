@@ -5,11 +5,11 @@ import Header from 'systems/Header';
 import Footer from 'components/Footer';
 import {ReactComponent as Search} from "../../assets/images/search.svg";
 
-export default function News() {
+export default function AllNews() {
     const [news] = useState ([
         {
             newsCompany: "로보뉴스",
-            newsTitle: "[리포트 브리핑] 삼성전자, ‘기회가 왔다’",
+            newsTitle: "[리포트 브리핑] 삼성전자, ‘기회가 왔다’ 목표가 94,000원",
             newsContent: "[서울 = 뉴스핌]  로보뉴스 = 한국 투자 증권에서 03일 삼성 전자에 대해  ‘기회가 왔다’라며 투자의 ‘매수(유지)’의 신규 리포트를 발행하였고, 목표가 94,000원으로 내놓았다...",
             newsThumbnail: "",
             newsUrl: "",
@@ -17,7 +17,7 @@ export default function News() {
         {
             newsCompany: "로보뉴스",
             newsTitle: "[리포트 브리핑] 삼성전자, ‘기회가 왔다’ 목표가 94,000원",
-            newsContent: "03일 삼성 전자에 대해  ‘기회가 왔다’라며 투자의 ‘매수(유지)’의 신규 리포트를 발행하였고, 목표가 94,000원으로 내놓았다...",
+            newsContent: "[서울 = 뉴스핌]  로보뉴스 = 한국 투자 증권에서 03일 삼성 전자에 대해  ‘기회가 왔다’라며 투자의 ‘매수(유지)’의 신규 리포트를 발행하였고, 목표가 94,000원으로 내놓았다...",
             newsThumbnail: "",
         },
         {
@@ -53,10 +53,9 @@ export default function News() {
     ]);
 
     useEffect (() => {
-        const stockId = '005930'; // 주식 종목 코드
 
         // GET 요청을 보낼 URL 설정 (query parameter 포함)
-        const apiUrl = `/api/v1/stock/get/news?stockId=${stockId}`;
+        const apiUrl = `/api/v1/stock/get/news?stockId`;
         
         axios.get(apiUrl)
           .then(response => {
