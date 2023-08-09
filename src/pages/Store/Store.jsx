@@ -4,6 +4,7 @@ import "./Store.scss";
 import Header from 'systems/Header';
 /**import Button from "components/Button"; */
 import Footer from "components/Footer";
+import {ReactComponent as Search} from "../../assets/images/search.svg";
 
 const productsList = [
   {
@@ -42,27 +43,32 @@ const Store = () => {
   return (
     <div className='storeContainer'>
     <Header/>
-    <div className='storeTitle'>상점</div>
-    <div className="shopping-cart">
-    <div className="userCart" >
-      {cart.length > 0 && (
-        <div className="cart-section">
-          <h2>님이 담은 상품이에요 ({cart.length})</h2>
-          <ul className="cart-list">
-            {cart.map((item, index) => (
-              <li key={index}>
-                <img className='item-img' src={item.image} alt={item.name} />
-                {item.name} - {item.price.toLocaleString()} 스톡
-              </li>
-            ))}
-          </ul>
-          <div>
-            총합
-            {cart.reduce((total, item) => total + item.price, 0).toLocaleString()} 스톡
-            </div>
-          <button  className='cartBuy-btn' onClick={onBuy}>구매하기</button>
-        </div>
-      )}
+    <div className='storeTitle'>상점
+      <div className="StoreSearch">
+        <input type="text"/>
+        <div><Search/></div>
+      </div>
+    </div>
+    <div className="row-container">
+      <div className="userCart">
+        <div className="usercart-text">님이 담은 상품이에요 ({cart.length})</div>
+        {cart.length > 0 && (
+          <div className="cart-section">
+            <ul className="cart-list">
+              {cart.map((item, index) => (
+                <li key={index}>
+                  <img className='item-img' src={item.image} alt={item.name} />
+                  {item.name} - {item.price.toLocaleString()} 스톡
+                </li>
+              ))}
+            </ul>
+            <div>
+              총합
+              {cart.reduce((total, item) => total + item.price, 0).toLocaleString()} 스톡
+              </div>
+            <button  className='cartBuy-btn' onClick={onBuy}>구매하기</button>
+          </div>
+        )}
       </div>
 
       <table className="products-table">
@@ -92,8 +98,8 @@ const Store = () => {
     </table>
     </div>
     <Footer/>
-    </div>
 
+    </div>
   );
 };
 
