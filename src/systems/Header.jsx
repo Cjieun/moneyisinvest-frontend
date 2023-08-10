@@ -8,7 +8,7 @@ import {ReactComponent as HeaderProfile} from "../assets/images/profile.svg";
 import {Link} from "react-router-dom";
 
 export default function Header({coinNum}) {
-    const [isLogin, setIsLogin] = useState(true);
+    const [isLogin, setIsLogin] = useState(false);
     const [profileName, setProfileName] = useState("");
     useEffect(() => {
 		if (sessionStorage.getItem("token") !== null) {

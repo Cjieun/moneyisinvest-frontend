@@ -11,11 +11,13 @@ import AllNews from "pages/News/AllNews";
 import StockHold from "pages/MyPage/StockHold";
 import StockInterest from "pages/MyPage/StockInterest";
 import BuyList from "pages/MyPage/BuyList";
+import Main from "pages/Main/Main";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Main />} />
         <Route path="/signIn" element={<SignIn />} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/mypage" element={<MyPage />} />
