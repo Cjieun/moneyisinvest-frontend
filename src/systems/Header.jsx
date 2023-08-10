@@ -1,25 +1,41 @@
 import React, {useState, useEffect} from "react";
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import axios from "axios";
 import {ReactComponent as Logo} from '../assets/images/logo.svg';
 import {ReactComponent as Search} from "../assets/images/search.svg";
 import {ReactComponent as Coin} from "../assets/images/coin.svg";
-import {ReactComponent as HeaderProfile} from "../assets/images/profile.svg";
 import {Link} from "react-router-dom";
+//import profileImage from "../assets/images/angma.jpg";
 
 export default function Header({coinNum}) {
-    const [isLogin, setIsLogin] = useState(true);
+    const [isLogin, setIsLogin] = useState(false);
     const [profileName, setProfileName] = useState("");
+    const [profileImage, setProfileImage] = useState("");
+
     useEffect(() => {
 		if (sessionStorage.getItem("token") !== null) {
             // sessionStorage 에 token 라는 key 값으로 저장된 값이 있다면
 			// 로그인 상태 변경
 			setIsLogin(true);
-            setProfileName(sessionStorage.getItem("id"));
-		} else {
+            setProfileName(sessionStorage.getItem("name"));
+            const token = sessionStorage.getItem('token');
+            axios.get("/api/v1/profile/get", {
+                headers: {
+                    'X-Auth-Token': token,
+                }
+            })
+            .then((res) => {
+                console.log("헤더 프로필 불러오기 성공", res.data);
+                setProfileImage(res.data.url)
+            }).catch((res) => {
+                console.log("헤더 프로필 불러오기 실패", res);
+            })
+            } else {
 			// sessionStorage 에 token 라는 key 값으로 저장된 값이 없다면
 		}
 	}, []);
+
     const headerContainer = css`
     position: sticky;
     top: 0;
@@ -72,11 +88,18 @@ export default function Header({coinNum}) {
     justify-content: space-between;
     `;
     const search = css`
-    color: #B0B0B0;
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-align: center;
-    margin: auto 0 auto 1.25rem;
+    color: #000;
+    margin: auto 1.25rem;
+    background-color: #F1F1F1;
+    border: none;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    &::placeholder {
+        color: #B0B0B0;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
     `;
     const searchLogo = css`
     width: 1.5rem;
@@ -122,19 +145,23 @@ export default function Header({coinNum}) {
     width: 2.25rem;
     height: 2.25rem;
     margin: auto 0.75rem auto 0;
+    border-radius: 50%;
     `
+
     return (
         <div css={headerContainer}>
             <div css={header}>
                 <Logo css={logo}/>
                 <div css={nav}>
                     <div css={item}>회사</div>
+                    <Link to = "/allNews" style={{ textDecoration: "none" }}>
                     <div css={item}>뉴스</div>
+                    </Link>
                     <div css={item}>교과서</div>
                     <div css={item}>상점</div>
                 </div>
                 <div css={searchBox}>
-                    <div css={search}>Search...</div>
+                    <input css={search} placeholder="Search..."></input>
                     <Search css={searchLogo} />
                 </div>
                 <Link to = "/signIn" style={{ textDecoration: "none" }} css={login}>
@@ -144,7 +171,7 @@ export default function Header({coinNum}) {
                 <Coin css={coinLogo}/>
                 <Link to = "/mypage" style={{ textDecoration: "none" }} css={profile}>
                     <div css={nickname}>{profileName}</div>
-                    <HeaderProfile css={headerprofile} />
+                    <img alt="profile" src={profileImage} css={headerprofile} />
                 </Link>
             </div>
         </div>

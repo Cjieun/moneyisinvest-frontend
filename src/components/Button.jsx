@@ -3,7 +3,7 @@ import React from "react";
 import { css } from "@emotion/react";
 
 /* 매도: stocksell, 매수: stockbuy, 장바구니 구매하기: shopping, *담기: basket, *구매: buy,
-로그인: login, 글쓰기: write, *댓글: comment, *마이페이지: mine, *관심주식: interest, *문의사항: ask
+로그인: login, 글쓰기: write, *댓글: comment, *마이페이지: mine, *거래내역: interest, *문의사항: ask
 인증하기: signConfirm, 문의사항글쓰기: askWrite 문의사항업로드: askUpload*/
 
 const buttonwidth = {

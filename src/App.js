@@ -8,6 +8,10 @@ import AskPage from "pages/MyPage/AskPage";
 import AskWrite from "pages/MyPage/AskWrite";
 import News from "pages/News/News";
 import Store from "./pages/Store/Store";
+import AllNews from "pages/News/AllNews";
+import StockHold from "pages/MyPage/StockHold";
+import StockInterest from "pages/MyPage/StockInterest";
+import BuyList from "pages/MyPage/BuyList";
 
 function App() {
   return (
@@ -20,7 +24,10 @@ function App() {
         <Route path="/askwrite" element={<AskWrite />} />
         <Route path="/news" element={<News />} />
         <Route path="/Store" element={<Store/>} />
-
+        <Route path="/allNews" element={<AllNews />} />
+        <Route path="/stockHold" element={<StockHold />} />
+        <Route path="/stockInterest" element={<StockInterest />} />
+        <Route path="/buyList" element={<BuyList />} />
       </Routes>
     </BrowserRouter>
   );
