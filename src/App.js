@@ -12,6 +12,7 @@ import StockHold from "pages/MyPage/StockHold";
 import StockInterest from "pages/MyPage/StockInterest";
 import BuyList from "pages/MyPage/BuyList";
 import Main from "pages/Main/Main";
+import UserMain from "pages/Main/UserMain";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/stockHold" element={<StockHold />} />
         <Route path="/stockInterest" element={<StockInterest />} />
         <Route path="/buyList" element={<BuyList />} />
+        <Route path="/main" element={<UserMain />} />
       </Routes>
     </BrowserRouter>
   );
