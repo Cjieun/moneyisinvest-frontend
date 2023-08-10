@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import "./GuestMain.scss";
 import {useScrollFadeIn} from "../../hooks/useScrollFadeIn";
 import Header from "systems/Header";
@@ -6,10 +6,40 @@ import Footer from "components/Footer";
 import {ReactComponent as SmartPhone} from "../../assets/images/smartphone.svg";
 import {ReactComponent as MainCoin} from "../../assets/images/mainCoin.svg";
 import {ReactComponent as Gift} from "../../assets/images/gift.svg";
-import Card from "systems/Card";
+import TopCard from "systems/TopCard";
 
 export default function GuestMain() {
 
+    useEffect(() => {
+        // 웹소켓 연결 설정
+        const socket = new WebSocket('ws://127.0.0.1:8080/stockRank');
+    
+        // 연결이 열릴 때 처리
+        socket.onopen = () => {
+          console.log('WebSocket connection opened');
+        };
+    
+        // 데이터 수신 처리
+        socket.onmessage = event => {
+          const receivedData = JSON.parse(event.data);
+          console.log('Received data:', receivedData);
+        };
+    
+        // 연결이 닫힐 때 처리
+        socket.onclose = () => {
+          console.log('WebSocket connection closed');
+        };
+
+        socket.onerror = (err) => {
+            console.log('Websocket connection error: ', err.message);
+        }
+    
+        // 컴포넌트가 언마운트될 때 연결 해제
+        return () => {
+          socket.close();
+        };
+      }, []);
+    
     const [ranking] = useState([
         {
             company: "삼성전자",
@@ -50,28 +80,11 @@ export default function GuestMain() {
     ])
 
     const topItem = [];
-    let currentRank = 1;
     for (let i = 0; i < ranking.length; i += 3) {
-        // eslint-disable-next-line no-loop-func
-        const topCards = ranking.slice(i, i + 3).map((item, index) => (
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            <div className="animated-card" key={index} {...useScrollFadeIn('left', 1, (index + 1) * 0.2)}>
-            <Card 
-                isVisible={true}
-                company={item.company}
-                code={item.code}
-                rate={item.rate}
-                price={item.price}
-                stock={item.value}
-                rank={currentRank + index} // 현재 rank 값에 index를 더하여 할당
-            />
-        </div>
-        ));
-
         topItem.push(
             <div className="banner4-topContent" key={i}>
                 <div className="banner4-topCard" >
-                    {topCards}
+                    <TopCard ranking={ranking} startIdx={i} endIdx={i + 3} key={i} />
                     {i === 3 && (
                     // eslint-disable-next-line react-hooks/rules-of-hooks
                     <div className="banner4-topCard" {...useScrollFadeIn('left', 1, 1)}>
@@ -90,9 +103,6 @@ export default function GuestMain() {
                 </div>
             </div>
         );
-        if (i === 0) {
-            currentRank = 4; // 두 번째 줄부터 rank 값을 4로 설정
-        }
     }
     return (
         <div className="MainContainer">
