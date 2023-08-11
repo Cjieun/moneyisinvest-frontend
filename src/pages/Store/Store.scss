@@ -1,23 +1,86 @@
 .storeContainer {
+  margin: 0;
+  .storeBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .storeContent {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin-top: 3.12rem;
+      /* @@님이 담은 상품이에요 */
+      .userCart {
+        margin: 8.5225rem 1.88rem 0 0;
+        padding: 0;
+        border: 1px solid #85D6D1;
+        border-radius: 10px;
+        padding:10px;
+        .usercart-text {
+          font-size: 16px;
+          font-weight: 700;
+          margin: 5px;
+        }
+          /* @@님이 담은 상품이에요 - 담은 상품 목록 */
+          .cart-section{
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+          
+            .cart-list {
+              li{
+                list-style-type:none;
+                color:#797979;
+                font-size: 10pt;
+              }}
 
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+              .item-img{
+                width: 32px;
+                height: 32px;
+                border-radius: 10px;
+                vertical-align: middle; /* 수직 가운데 정렬 */
+                margin: 5px;
+              }
+            }
+            .cartBuy-btn {
+              width: 142px;
+              height: 34px;
+              border-radius: 7px;
+              background-color: #85D6D1;  
+              font-size: 12pt;
+              border: none;
+              align-items: center;
+              text-align: center;
+              justify-content: center;
+              margin: 10px;
+            }  
+      }
+      .row-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.81rem;
+        .storeTitle {
+          color: #000;
+          font-size: 1.5rem;
+          font-weight: 700;
+          }    
+      }
+    }
+    
+  }
+
+}
 
 /* 상점 */
-.storeTitle{
-    color: #000;
-    font-size: 1.5rem;
-    font-weight: 700;
-}
 
 .store-top {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin: 2.69rem auto 1.37rem auto;
+  margin: 0 auto 0 auto;
   gap: 50px;
 
   /* 카테고리 */
@@ -69,68 +132,18 @@ align-items: center;
 }
 
 /* 담은 상품, 상품 목록 */
-.row-container{
-display: flex;
-gap: 50px;
-justify-content: space-between;
-align-items: flex-start; /* 세로방향으로 맞춤 조정 */
-
-/* @@님이 담은 상품이에요 */
-.userCart
- { display: inline-block;
-  border: 1px solid #85D6D1;
-  border-radius: 10px;
-  padding:10px;
-  align-items: center;
-
-  .usercart-text {
-    font-size: 16px;
-    font-weight: 700;
-    margin: 5px;
-  }
-
-  .nickname
-  {color: #000;
+  .nickname  {
+  color: #000;
   font-size: 1rem;
   font-weight: 600;
   margin: auto 0.37rem auto 0;}
 
-  /* @@님이 담은 상품이에요 - 담은 상품 목록 */
-  .cart-section{
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-  
-    .cart-list {
-      li{
-        list-style-type:none;
-        color:#797979;
-        font-size: 10pt;
-      }}
-
-      .item-img{
-        width: 32px;
-        height: 32px;
-        border-radius: 10px;
-        vertical-align: middle; /* 수직 가운데 정렬 */
-        margin: 5px;
-      }
-    }
-  
-    .cartBuy-btn {
-      width: 142px;
-      height: 34px;
-      border-radius: 7px;
-      background-color: #85D6D1;  
-      font-size: 12pt;
-      border: none;
-      align-items: center;
-      text-align: center;
-      justify-content: center;
-      margin: 10px;
-    }  
+  .hr {
+    border-color: #D1EFEE;
+    margin: 10px 0 ;
   }
 
+  
   /* 상품 목록 테이블 */
   .products-table  {
   border-collapse: collapse;
@@ -165,9 +178,3 @@ align-items: flex-start; /* 세로방향으로 맞춤 조정 */
         padding-top: 5px;
     } 
   }
-
-  }
-}
-
-
-

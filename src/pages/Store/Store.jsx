@@ -75,99 +75,99 @@ const Store = () => {
     : productsList;
 
   return (
-    <div>
-    <Header/>
     <div className='storeContainer'>
-    <div className='storeTitle'>상점</div>
-    <div className='store-top'>
-      <div className="category">
-      <button
-          onClick={showAllProducts}
-          className={`category-btn ${selectedCategory === null ? 'active' : ''}`}
-        >
-          전체보기
-        </button>
-        <button
-          onClick={() => selectCategory('식당')}
-          className={`category-btn ${selectedCategory === '식당' ? 'active' : ''}`}
-        >
-          식당
-        </button>
-        <button
-          onClick={() => selectCategory('카페')}
-          className={`category-btn ${selectedCategory === '카페' ? 'active' : ''}`}
-        >
-          카페
-        </button>
-        <button
-          onClick={() => selectCategory('패스트푸드')}
-          className={`category-btn ${selectedCategory === '패스트푸드' ? 'active' : ''}`}
-        >
-          패스트푸드
-        </button>
-        <button
-          onClick={() => selectCategory('전자기기')}
-          className={`category-btn ${selectedCategory === '전자기기' ? 'active' : ''}`}
-        >
-          전자기기
-        </button>
-      </div>
-      <div className="StoreSearch">
-          <input type="text"/>
-          <div><Search/></div>
-      </div>
-    </div>
-
-
-    <div className="row-container">
-      <div className="userCart">
-        <div className="usercart-text">님이 담은 상품이에요 ({cart.length})</div>
-        {cart.length > 0 && (
-          <div className="cart-section">
-            <ul className="cart-list">
-              {cart.map((item, index) => (
-                <li key={index}>
-                  <img className='item-img' src={item.image} alt={item.name} />
-                  {item.name} - {item.price.toLocaleString()} 스톡
-                </li>
-              ))}
-            </ul>
-            <div>
-              총합
-              {cart.reduce((total, item) => total + item.price, 0).toLocaleString()} 스톡
+      <Header/>
+      <div className='storeBox'>
+        <div className='storeContent'>
+          <div className="userCart">
+            <div className="usercart-text">님이 담은 상품이에요 ({cart.length})</div>
+            {cart.length > 0 && (
+              <div className="cart-section">
+                <ul className="cart-list">
+                  {cart.map((item, index) => (
+                    <li key={index}>
+                      <img className='item-img' src={item.image} alt={item.name} />
+                      {item.name} - {item.price.toLocaleString()} 스톡
+                    </li>
+                  ))}
+                </ul>
+                <hr className='hr'/>
+                <div>
+                  총합
+                  {cart.reduce((total, item) => total + item.price, 0).toLocaleString()} 스톡
+                  </div>
+                <button  className='cartBuy-btn' onClick={onBuy}>구매하기</button>
               </div>
-            <button  className='cartBuy-btn' onClick={onBuy}>구매하기</button>
+            )}
           </div>
-        )}
+          <div className="row-container">
+            <div className='storeTitle'>상점</div>
+      <div className='store-top'>
+        <div className="category">
+        <button
+            onClick={showAllProducts}
+            className={`category-btn ${selectedCategory === null ? 'active' : ''}`}
+          >
+            전체보기
+          </button>
+          <button
+            onClick={() => selectCategory('식당')}
+            className={`category-btn ${selectedCategory === '식당' ? 'active' : ''}`}
+          >
+            식당
+          </button>
+          <button
+            onClick={() => selectCategory('카페')}
+            className={`category-btn ${selectedCategory === '카페' ? 'active' : ''}`}
+          >
+            카페
+          </button>
+          <button
+            onClick={() => selectCategory('패스트푸드')}
+            className={`category-btn ${selectedCategory === '패스트푸드' ? 'active' : ''}`}
+          >
+            패스트푸드
+          </button>
+          <button
+            onClick={() => selectCategory('전자기기')}
+            className={`category-btn ${selectedCategory === '전자기기' ? 'active' : ''}`}
+          >
+            전자기기
+          </button>
+        </div>
+        <div className="StoreSearch">
+            <input type="text"/>
+            <div><Search/></div>
+        </div>
       </div>
-
-      <table className="products-table">
-        <thead>
-            <tr>
-            <th></th>
-            <th>상품명</th>
-            <th>교환가</th>
-            <th>장바구니</th>
-            </tr>
-        </thead>
-        <tbody>
-            {filteredProducts.map((product) => (
-            <tr key={product.id} className="product-item">
-                <td>
-                <img className='product-img' src={product.image} alt={product.name} />
-                </td>
-                <td>{product.name}</td>
-                <td>{product.price.toLocaleString()}스톡</td>
-                <td className='td-btn'>
-                <div onClick={() => addToCart(product)}><Button state="basket" >장바구니</Button></div>
-                <div onClick={onBuy}><Button state="buy" >구매하기</Button></div>
-                </td>
-            </tr>
-            ))}
-        </tbody>
-    </table>
-    </div>
-    <Footer/>
+        <table className="products-table">
+          <thead>
+              <tr>
+              <th></th>
+              <th>상품명</th>
+              <th>교환가</th>
+              <th>장바구니 또는 구매하기</th>
+              </tr>
+          </thead>
+          <tbody>
+              {filteredProducts.map((product) => (
+              <tr key={product.id} className="product-item">
+                  <td>
+                  <img className='product-img' src={product.image} alt={product.name} />
+                  </td>
+                  <td>{product.name}</td>
+                  <td>{product.price.toLocaleString()}스톡</td>
+                  <td className='td-btn'>
+                  <div onClick={() => addToCart(product)}><Button state="basket" >장바구니</Button></div>
+                  <div onClick={onBuy}><Button state="buy" >구매하기</Button></div>
+                  </td>
+              </tr>
+              ))}
+          </tbody>
+      </table>
+      </div>
+      </div>
+      <Footer/>
 
     </div>
   </div>
