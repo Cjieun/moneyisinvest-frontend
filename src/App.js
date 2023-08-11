@@ -1,6 +1,6 @@
 import React from "react";
 import "./styles/global.scss";
-import { Route, Routes, useNavigate } from "react-router-dom"; // useNavigate 추가
+import { Route, Routes } from "react-router-dom";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
 import MyPage from "pages/MyPage/MyPage";
@@ -16,31 +16,27 @@ import Main from "pages/Main/Main";
 import UserMain from "pages/Main/UserMain";
 
 function App() {
-  const navigate = useNavigate(); // useNavigate 초기화
-
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            sessionStorage.getItem("token") === null ? <Main /> : <UserMain />
-          }
-        />
-        <Route path="/signIn" element={<SignIn />} />
-        <Route path="/signUp" element={<SignUp />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/askpage" element={<AskPage />} />
-        <Route path="/askwrite" element={<AskWrite />} />
-        <Route path="/news" element={<News />} />
-        <Route path="/Store" element={<Store/>} />
-        <Route path="/allNews" element={<AllNews />} />
-        <Route path="/stockHold" element={<StockHold />} />
-        <Route path="/stockInterest" element={<StockInterest />} />
-        <Route path="/buyList" element={<BuyList />} />
-        <Route path="/main" element={<UserMain />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          sessionStorage.getItem("token") === null ? <Main /> : <UserMain />
+        }
+      />
+      <Route path="/signIn" element={<SignIn />} />
+      <Route path="/signUp" element={<SignUp />} />
+      <Route path="/mypage" element={<MyPage />} />
+      <Route path="/askpage" element={<AskPage />} />
+      <Route path="/askwrite" element={<AskWrite />} />
+      <Route path="/news" element={<News />} />
+      <Route path="/Store" element={<Store />} />
+      <Route path="/allNews" element={<AllNews />} />
+      <Route path="/stockHold" element={<StockHold />} />
+      <Route path="/stockInterest" element={<StockInterest />} />
+      <Route path="/buyList" element={<BuyList />} />
+      <Route path="/main" element={<UserMain />} />
+    </Routes>
   );
 }
 
