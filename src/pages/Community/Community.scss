@@ -13,13 +13,25 @@
                 margin: auto;
                 display: flex;
                 flex-direction: row;
-                justify-content: center;
+                justify-content: space-between;
                 margin-top: 3.25rem;
+                
             }
             .communityTitle {
                 color: #000;
                 font-size: 1.5rem;
                 font-weight: 700;
+            }
+
+            .commentList {
+                .reply {
+                    margin-Left: "20px";
+                }
+
+            }
+            .newComment {
+                display: flex;
+                flex-direction: row;
             }
         }
     }
@@ -45,4 +57,27 @@
         text-align: center;
         margin: auto 0 auto 1.25rem;
     }
+    .searchLogo {
+        width: 1.5rem;
+        height: 1.5rem;
+        flex-shrink: 0;
+        margin: auto 0.94rem auto 0;
+    }
+}
+
+.writeComment {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.inputComment {
+    width: 596px;
+    height: 92px;
+    margin: 10px;
+    border-radius: 10px;
+    border: none;
+    background: #F0F9F8;
+    font-size: 14pt;
+    padding: 10px;
 }
