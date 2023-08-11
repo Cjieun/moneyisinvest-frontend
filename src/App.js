@@ -13,6 +13,7 @@ import StockInterest from "pages/MyPage/StockInterest";
 import BuyList from "pages/MyPage/BuyList";
 import Main from "pages/Main/Main";
 import UserMain from "pages/Main/UserMain";
+import Community from "pages/Community/Community";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/stockInterest" element={<StockInterest />} />
         <Route path="/buyList" element={<BuyList />} />
         <Route path="/main" element={<UserMain />} />
+        <Route path="/Community" element={<Community />} />
       </Routes>
     </BrowserRouter>
   );

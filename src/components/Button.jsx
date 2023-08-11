@@ -3,7 +3,7 @@ import React from "react";
 import { css } from "@emotion/react";
 
 /* 매도: stocksell, 매수: stockbuy, 장바구니 구매하기: shopping, *담기: basket, *구매: buy,
-로그인: login, 글쓰기: write, *댓글: comment, *마이페이지: mine, *거래내역: interest, *문의사항: ask
+로그인: login, 글쓰기: write, *댓글: comment, 댓글수정: edit, 댓글삭제: delete, *마이페이지: mine, *거래내역: interest, *문의사항: ask
 인증하기: signConfirm, 문의사항글쓰기: askWrite 문의사항업로드: askUpload*/
 
 const buttonwidth = {
@@ -87,7 +87,9 @@ const buttontext = {
     basket: "장바구니",
     buy: "구매하기",
     login: "로그인",
-    comment: "완료",
+    comment: "작성",
+    edit: "수정",
+    delete: "삭제",
     mine: "변경",
     interest: "취소하기",
     ask: "삭제하기",
