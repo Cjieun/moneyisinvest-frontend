@@ -1,12 +1,14 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import "./UserMain.scss";
 import {useScrollFadeIn} from "../../hooks/useScrollFadeIn";
 import Header from "systems/Header";
 import { LiaExclamationCircleSolid } from "react-icons/lia";
 import Footer from "components/Footer";
 import UserCard from "systems/UserCard";
-import TopCard from "systems/TopCard";
+import TopCard from "pages/Main/redux/TopCard";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { updateRanking } from './redux/action';
 
 export default function UserMain() {
     
@@ -49,6 +51,24 @@ export default function UserMain() {
 
     ])
 
+    const dispatch = useDispatch();
+    const rank = useSelector((state) => state);
+  
+    useEffect(() => {
+      const webSocketUrl = 'ws://127.0.0.1:8080/stockRank';
+      const socket = new WebSocket(webSocketUrl);
+  
+      socket.onmessage = (event) => {
+        const receivedData = JSON.parse(event.data); // 데이터가 JSON 형식이면 파싱
+        dispatch(updateRanking(receivedData));
+        console.log(event.data)
+      };
+  
+      return () => {
+        socket.close();
+      };
+    }, [dispatch]);
+
     // 받아온 값 자르기 예시
     const numberOfItemsToShow = 3;
     const filteredData = ranking.slice(0, numberOfItemsToShow);
@@ -57,9 +77,9 @@ export default function UserMain() {
     ));
 
     const topItem = [];
-    for (let i = 0; i < ranking.length; i += 3) {
+    for (let i = 0; i < rank.length; i += 3) {
         topItem.push(
-            <TopCard ranking={ranking} startIdx={i} endIdx={i + 3} key={i} />
+            <TopCard ranking={rank} startIdx={i} endIdx={i + 3} key={i} />
         );
     }
 
