@@ -24,8 +24,13 @@
             }
 
             .commentList {
+                div {
+                    margin-right: 10px;
+                }
                 .reply {
                     margin-Left: "20px";
+                    display: flex;
+                    flex-direction: row;
                 }
 
             }
@@ -80,4 +85,32 @@
     background: #F0F9F8;
     font-size: 14pt;
     padding: 10px;
+    .inputComment:focus {
+        border-color: #85D6D1;
+    }
+}
+.textarea:focus {
+    border-color: #85D6D1;
+    color: #85D6D1;
+}
+
+.pagination {
+    display: flex;
+    flex-direction: row;
+    gap: 2.38rem;
+    justify-content: center;
+    button {
+        color: #a9a9a9;
+        font-family: Noto Sans;
+        font-size: 0.875rem;
+        font-weight: 400;
+        letter-spacing: -0.0175rem;
+        border: 0;
+        background-color: transparent;
+        cursor: pointer;
+    
+        &:hover {
+          color: #333;
+        }
+    }
 }

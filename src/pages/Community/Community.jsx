@@ -15,9 +15,15 @@ const Community = ({ stockName }) => {
   const [newComment, setNewComment] = useState('');
   const [editIndex, setEditIndex] = useState(-1);
   const [replyIndex, setReplyIndex] = useState(-1); // 현재 대댓글을 작성중인 댓글 인덱스
+  const [newReply, setNewReply] = useState('');
+  const [likeStatus, setLikeStatus] = useState([]); // 각 댓글의 좋아요 상태를 저장하는 배열
 
   const handleInputChange = (event) => {
     setNewComment(event.target.value);
+  };
+
+  const handleReplyChange = (event) => {
+    setNewReply(event.target.value);
   };
 
   const handleSubmit = (event) => {
@@ -65,6 +71,46 @@ const Community = ({ stockName }) => {
     setReplyIndex(index);
   };
 
+  const handleReplySubmit = (event, index) => {
+    event.preventDefault();
+    if (newReply.trim() === '') {
+      return;
+    }
+
+    const updatedComments = [...comments];
+    updatedComments[index].replies.push(newReply);
+    setComments(updatedComments);
+    setReplyIndex(-1);
+    setNewReply('');
+  };
+
+  /*const handleEditReply = (index, replyIndex) => {
+    const updatedComments = [...comments];
+    updatedComments[index].replies[replyIndex] = newReply; // 수정한 대댓글로 변경
+    setComments(updatedComments);
+    setReplyIndex(-1);
+    setNewReply('');
+  };*/
+
+  const handleDeleteReply = (index, replyIndex) => {
+    const updatedComments = [...comments];
+    updatedComments[index].replies.splice(replyIndex, 1); // 대댓글 삭제
+    setComments(updatedComments);
+  };
+
+  const commentsPerPage = 7; // 한 페이지에 보여줄 댓글 수
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
+
+  const indexOfLastComment = currentPage * commentsPerPage;
+  const indexOfFirstComment = indexOfLastComment - commentsPerPage;
+  const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  
+
 
   return (
     <div className="communityContainer">
@@ -82,10 +128,11 @@ const Community = ({ stockName }) => {
             </div>
 
             <div className="commentList">
+                
                 {/* 댓글 목록 */}
-                {comments.map((comment, index) => (
+                {currentComments.map((comment, index) => (
                     <div key={index} className="writeComment">
-                        <ProfileImage />
+                        <div><ProfileImage /></div>
                         {editIndex === index ? (
                         <form onSubmit={handleSubmit}>
                             <textarea
@@ -98,42 +145,56 @@ const Community = ({ stockName }) => {
                         ) : (
                         <>
                             <div>{comment.text}</div>
+                            <div onClick={() => handleEdit(index)}>
+                            <button state="edit">수정</button>
+                            </div>
+                            <div onClick={() => handleDelete(index)}>
+                            <button state="delete">삭제</button>
+                            </div>
+                            <div onClick={() => handleReply(index)}>
+                            <Button state="comment">대댓글 작성</Button>
+                            </div>
+                            
                             <div className="repliesContainer">
-                            {/* 대댓글 목록 */}
-                            {comment.replies.map((reply, replyIndex) => (
+                           {/* 대댓글 목록 */}
+                           {comment.replies.map((reply, replyIndex) => (
                                 <div className="reply" key={replyIndex}>
                                 {reply}
+                                <div onClick={() => handleDeleteReply(index, replyIndex)}>
+                                    <button state="delete">삭제</button>
+                                </div>
                                 </div>
                             ))}
 
                             {/* 대댓글 작성창 */}
                             {replyIndex === index && (
-                                <form onSubmit={handleSubmit} className="inputReplyForm">
+                                <form onSubmit={(event) => handleReplySubmit(event, index)} className="inputReplyForm">
                                 <textarea
                                     className="inputReply"
-                                    value={newComment}
-                                    onChange={handleInputChange}
+                                    value={newReply}
+                                    onChange={handleReplyChange}
                                     placeholder="대댓글을 입력하세요"
                                 />
                                 <button type="submit">대댓글 작성</button>
                                 </form>
                             )}
+                            
                             </div>
-                            <div onClick={() => handleEdit(index)}>
-                            <Button state="edit">수정</Button>
-                            </div>
-                            <div onClick={() => handleDelete(index)}>
-                            <Button state="delete">삭제</Button>
-                            </div>
-                            <div onClick={() => handleReply(index)}>
-                            <Button state="comment">대댓글 작성</Button>
-                            </div>
+
                         </>
                         )}
                     </div>
                     ))}
 
             </div>
+                  {/* 페이지네이션 */}
+                <div className="pagination">
+                    {Array.from({ length: Math.ceil(comments.length / commentsPerPage) }).map((_, index) => (
+                    <button key={index} onClick={() => handlePageChange(index + 1)}>
+                        {index + 1}
+                    </button>
+                    ))}
+                </div>
 
             <div className="newComment">
                 {/* 새로 작성하는 댓글 입력창 */}
@@ -147,7 +208,7 @@ const Community = ({ stockName }) => {
                     onChange={handleInputChange}
                     placeholder="댓글을 입력하세요"
                     />
-                    <div type="submit"><Button state="comment">작성</Button></div>
+                    <button type="submit">작성</button>
                 </form>
             </div>
         </div>
