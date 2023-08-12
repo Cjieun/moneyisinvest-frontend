@@ -14,6 +14,10 @@ import StockInterest from "pages/MyPage/StockInterest";
 import BuyList from "pages/MyPage/BuyList";
 import Main from "pages/Main/Main";
 import UserMain from "pages/Main/UserMain";
+import Textbook from "pages/Education/Textbook";
+import TbDetail1 from "pages/Education/TbDetail1";
+import TbDetail2 from "pages/Education/tbDetail2";
+import TbDetail3 from "pages/Education/TbDetail3";
 
 function App() {
   return (
@@ -36,6 +40,10 @@ function App() {
       <Route path="/stockInterest" element={<StockInterest />} />
       <Route path="/buyList" element={<BuyList />} />
       <Route path="/main" element={<UserMain />} />
+      <Route path="/textbook" element={<Textbook />} />
+      <Route path="/TbDetail1" element={<TbDetail1 />} />
+      <Route path="/TbDetail2" element={<TbDetail2 />} />
+      <Route path="/TbDetail3" element={<TbDetail3 />} />
     </Routes>
   );
 }
