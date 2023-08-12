@@ -1,12 +1,19 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
-import { useSelector } from 'react-redux';
 import Card from 'systems/Card';
 import { useScrollFadeIn } from "../../../hooks/useScrollFadeIn";
 
 const TopCard = ({ ranking, startIdx, endIdx }) => {
+  if (!ranking) {
+    return (
+      <div>
+        <div {...useScrollFadeIn('left', 1, 0.5)}>Loading...</div>
+      </div>
+    );
+  }
+
   const topCards = ranking.slice(startIdx, endIdx).map((item, index) => (
-    <div className="animated-card" key={index} {...useScrollFadeIn('left', 1, 1)}>
+    <div className="animated-card" key={index} {...useScrollFadeIn('left', 1, 0.5)}>
       <Card
         isVisible={true}
         company={item.stockName}

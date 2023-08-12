@@ -1,6 +1,6 @@
 const initialState = [];
 
-const reducer = (state = initialState, action) => {
+const rankingReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_RANKING':
       return action.payload;
@@ -9,4 +9,4 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-export default reducer;
+export default rankingReducer;

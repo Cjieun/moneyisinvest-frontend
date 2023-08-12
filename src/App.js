@@ -12,8 +12,8 @@ import AllNews from "pages/News/AllNews";
 import StockHold from "pages/MyPage/StockHold";
 import StockInterest from "pages/MyPage/StockInterest";
 import BuyList from "pages/MyPage/BuyList";
-import Main from "pages/Main/Main";
 import UserMain from "pages/Main/UserMain";
+import GuestMain from "pages/Main/GuestMain";
 
 function App() {
   return (
@@ -21,7 +21,11 @@ function App() {
       <Route
         path="/"
         element={
-          sessionStorage.getItem("token") === null ? <Main /> : <UserMain />
+          sessionStorage.getItem("token") === null ? (
+            <GuestMain />
+          ) : (
+            <UserMain />
+          )
         }
       />
       <Route path="/signIn" element={<SignIn />} />
