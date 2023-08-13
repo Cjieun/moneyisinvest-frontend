@@ -105,7 +105,7 @@ export default function UserMain() {
         stockRankSocket.onmessage = (event) => {
             const receivedData = JSON.parse(event.data);
             dispatch(updateRanking(receivedData));
-            //console.log(receivedData);
+            console.log(receivedData);
         };
         stockRankSocket.onclose = () => {
             //console.log("Top5 DisConnnected");
@@ -146,10 +146,12 @@ export default function UserMain() {
                                 {kospiData.length > 0 && <StockChartCard data={kospiData[kospiData.length-1]} name="코스피"/>}
                                 {kosdaqData.length > 0 && <StockChartCard data={kosdaqData[kosdaqData.length-1]} name="코스닥"/>}
                             </div>
+                            <Link to= {`/tbDetail2`} style={{ textDecoration: "none" }}>
                             <div className="mainStockHelp" {...useScrollFadeIn('up', 1, 0.5)}>
                                 <LiaExclamationCircleSolid className="mainStockIcon"/>
                                 <div>코스피, 코스닥이 정확히 무엇인가요?</div>
                             </div>
+                            </Link>
                         </div>
                     </div>
                     <div className="userStock">

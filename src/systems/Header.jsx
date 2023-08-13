@@ -151,7 +151,9 @@ export default function Header({coinNum}) {
     return (
         <div css={headerContainer}>
             <div css={header}>
+                <Link to = "/" style={{ textDecoration: "none" }}>
                 <Logo css={logo}/>
+                </Link>
                 <div css={nav}>
                     <div css={item}>회사</div>
                     <Link to = "/allNews" style={{ textDecoration: "none" }}>

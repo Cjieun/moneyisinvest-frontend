@@ -38,7 +38,6 @@ export default function MyPage() {
 
     useEffect (() => {
         const token = sessionStorage.getItem("token");
-        console.log(token);
         if (token !== null) {
             axios.get("/api/v1/user/detail", {
                 headers: {

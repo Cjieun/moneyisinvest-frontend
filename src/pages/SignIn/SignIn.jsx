@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from "react";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "./SignIn.scss";
 import Header from "../../systems/Header";
 import Button from "components/Button";
@@ -15,6 +15,8 @@ export default function SignIn() {
     const [isMessage, setIsMessage] = useState(false);
     const [message, setMessage] = useState("");
     const [rememberId, setRememberId] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleInputId = (e) => {
         setInputId(e.target.value);
@@ -68,17 +70,6 @@ export default function SignIn() {
                     setMessage("");
                     setIsId(false);
                     setIdMessage("");
-                    axios.get("/api/v1/profile/get", {
-                        headers: {
-                            'X-Auth-Token': res.data.token,
-                        }
-                    })
-                    .then((res) => {
-                        console.log("프로필 불러오기 성공", res.data);
-                        sessionStorage.setItem("profileImage", res.data.url);
-                    }).catch((res) => {
-                        console.log("프로필 불러오기 실패", res);
-                    })
                     if(!rememberId) {
                         setInputId("");
                     }
@@ -88,6 +79,7 @@ export default function SignIn() {
                     } else {
                         localStorage.removeItem('rememberedUserId');
                     }
+                    navigate("/", {replace: true});
                 }
             }).catch((res) => {
                 console.log(res);
