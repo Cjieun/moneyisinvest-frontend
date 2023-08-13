@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ApexCharts from 'react-apexcharts';
 
-const RealTimeLineChart = ({ data }) => {
+const RealTimeLineChart = ({ data, strokeColor, name }) => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
@@ -13,13 +13,21 @@ const RealTimeLineChart = ({ data }) => {
   if (!chartData || chartData.length === 0) {
     return <div>Loading...</div>;
   }
-    const series = [
-      {
-        name: '코스피 코스닥 데이터',
-        data: chartData.map(item => item.price),
-      },
-    ];
+  const series = [
+    {
+      name: `${name} 데이터`,
+      data: chartData.map((item) => {
+        const price = typeof item.price === 'string' ? parseFloat(item.price.replace(/,/g, '')) : item.price;
+        const date = item.date.replace(/(\d{4})\.(\d{2})\.(\d{2})/, '$1-$2-$3');
   
+        return {
+          x: date,
+          y: price,
+        };
+      }),
+    },
+  ];
+        
   const options = {
     chart: {
         id: 'realtime-line',
@@ -41,7 +49,7 @@ const RealTimeLineChart = ({ data }) => {
         show: false, // grid 전체를 숨김니다.
     },
     xaxis: {
-        type: 'numeric',
+        type: 'datetime',
         labels: {
           show: false, // x축 레이블 숨기기
         },
@@ -74,8 +82,9 @@ const RealTimeLineChart = ({ data }) => {
       },
     },
     stroke: {
-      colors: ['#1C77FF'],
+      colors: [strokeColor],
       curve: 'smooth', // 곡선으로 선 표시
+      width: 3, // 선 굵기 설정
     },
   };
 

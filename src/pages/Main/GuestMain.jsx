@@ -13,7 +13,7 @@ import { updateRanking } from './redux/action';
 export default function GuestMain() {
 
     const dispatch = useDispatch();
-    const ranking = useSelector((state) => state);
+    const ranking = useSelector((state) => state.rank);
   
     useEffect(() => {
       const webSocketUrl = 'ws://127.0.0.1:8080/stockRank';

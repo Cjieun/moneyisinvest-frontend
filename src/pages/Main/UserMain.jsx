@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { updateRanking, updateKOSPIData, updateKOSDAQData } from './redux/action';
 import StockChartCard from "./redux/StockChartCard";
+import axios from "axios";
 
 export default function UserMain() {
     
@@ -54,55 +55,52 @@ export default function UserMain() {
     
     const dispatch = useDispatch();
     const rank = useSelector(state => state.rank);
-    const kospiData = useSelector(state => state.kospiData.slice(-5)); // 최근 5개 데이터 추출
-    const kosdaqData = useSelector(state => state.kosdaqData.slice(-5)); // 최근 5개 데이터 추출
-
+    const kospiData = useSelector(state => state.kospiData);
+    const kosdaqData = useSelector(state => state.kosdaqData);
 
     useEffect(() => {
-        const kospiWebSocketUrl = 'ws://127.0.0.1:8080/kospi';
-        const kosdaqWebSocketUrl = 'ws://127.0.0.1:8080/kosdaq';
         const stockRankWebSocketUrl = 'ws://127.0.0.1:8080/stockRank';
         
-        // 코스피 웹소켓 열기
-        const kospiSocket = new WebSocket(kospiWebSocketUrl);
-        kospiSocket.onopen = () => {
-            console.log("KOSPI Connected");
-        };
-        kospiSocket.onmessage = (event) => {
-          // 코스피 데이터 처리
-            const receivedData = JSON.parse(event.data);
-            dispatch(updateKOSPIData(receivedData));
-            console.log('KOSPI data:', receivedData);
-        };
-        kospiSocket.onclose = () => {
-            console.log("KOSPI DisConnnected");
-        };
-        kospiSocket.onerror = (event) => {
-            console.log(event);
-        };
+        axios.get("/api/v1/stock/get/kospi")
+        .then((res) => {
+            console.log(res.data);
+            dispatch(updateKOSPIData(res.data));
+        })
+        .catch((err) => {
+            if (err.response) {
+                // 서버 응답이 온 경우 (에러 응답)
+                console.log("Error response:", err.response);
+            } else if (err.request) {
+                // 요청은 보내졌지만 응답이 없는 경우 (네트워크 오류)
+                console.log("Request error:", err.request);
+            } else {
+                // 오류가 발생한 경우 (일반 오류)
+                console.log("General error:", err);
+            }
+        });
 
-        // 코스닥 웹소켓 열기
-        const kosdaqSocket = new WebSocket(kosdaqWebSocketUrl);
-        kosdaqSocket.onopen = () => {
-            console.log("KOSDAQ Connected");
-        };
-        kosdaqSocket.onmessage = (event) => {
-          // 코스피 데이터 처리
-            const receivedData = JSON.parse(event.data);
-            dispatch(updateKOSDAQData(receivedData));
-            console.log('KOSDAQ data:', receivedData);
-        };
-        kosdaqSocket.onclose = () => {
-            console.log("KOSDAQ DisConnnected");
-        };
-        kosdaqSocket.onerror = (event) => {
-            console.log(event);
-        };
+        axios.get("/api/v1/stock/get/kosdaq")
+        .then((res) => {
+            console.log(res.data);
+            dispatch(updateKOSDAQData(res.data));
+        })
+        .catch((err) => {
+            if (err.response) {
+                // 서버 응답이 온 경우 (에러 응답)
+                console.log("Error response:", err.response);
+            } else if (err.request) {
+                // 요청은 보내졌지만 응답이 없는 경우 (네트워크 오류)
+                console.log("Request error:", err.request);
+            } else {
+                // 오류가 발생한 경우 (일반 오류)
+                console.log("General error:", err.message);
+            }
+        });
         
         // 주식 랭킹 웹소켓 열기
         const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
         stockRankSocket.onopen = () => {
-            console.log("Top 5 Connected");
+            //console.log("Top 5 Connected");
         };
         stockRankSocket.onmessage = (event) => {
             const receivedData = JSON.parse(event.data);
@@ -110,14 +108,13 @@ export default function UserMain() {
             //console.log(receivedData);
         };
         stockRankSocket.onclose = () => {
-            console.log("Top5 DisConnnected");
+            //console.log("Top5 DisConnnected");
         };
         stockRankSocket.onerror = (event) => {
-            console.log(event);
+            //console.log(event);
         };
         
         return () => {
-        kospiSocket.close();
         stockRankSocket.close();
       };
     }, [dispatch]);      
@@ -146,8 +143,8 @@ export default function UserMain() {
                         <div className="mainStockContent">
                             <div className="mainStockTitle" {...useScrollFadeIn('up', 1, 0)}>주요 지수</div>
                             <div className="mainStockChart">
-                                <StockChartCard data={kospiData} />
-                                <StockChartCard data={kosdaqData} />
+                                {kospiData.length > 0 && <StockChartCard data={kospiData[kospiData.length-1]} name="코스피"/>}
+                                {kosdaqData.length > 0 && <StockChartCard data={kosdaqData[kosdaqData.length-1]} name="코스닥"/>}
                             </div>
                             <div className="mainStockHelp" {...useScrollFadeIn('up', 1, 0.5)}>
                                 <LiaExclamationCircleSolid className="mainStockIcon"/>

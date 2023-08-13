@@ -163,7 +163,7 @@ export default function MyPage() {
                                         <td></td>
                                     </tr>
                                 </table>
-                                <div className="myPageOut">계정 탈퇴하기</div>
+                                <div className="myPageOut">계정 로그아웃</div>
                             </div>
                         </div>
                     </div>
