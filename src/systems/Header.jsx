@@ -157,8 +157,12 @@ export default function Header({coinNum}) {
                     <Link to = "/allNews" style={{ textDecoration: "none" }}>
                     <div css={item}>뉴스</div>
                     </Link>
+                    <Link to = "/Textbook" style={{ textDecoration: "none" }}>
                     <div css={item}>교과서</div>
+                    </Link>
+                    <Link to = "/Store" style={{ textDecoration: "none" }}>
                     <div css={item}>상점</div>
+                    </Link>
                 </div>
                 <div css={searchBox}>
                     <input css={search} placeholder="Search..."></input>
