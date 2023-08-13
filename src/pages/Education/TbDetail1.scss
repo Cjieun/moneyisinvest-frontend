@@ -28,10 +28,13 @@
                     overflow-y: scroll;
                     scrollbar-width: none; /* Firefox에 대한 스크롤바 숨김 */
                     -ms-overflow-style: none; /* IE 및 Edge에 대한 스크롤바 숨김 */
+                    .tbDetail2Img {
+                        margin-top: 20px;
+                        margin-right: 10px;
+                    }   
                     .tbDetailList {
                         width: 52.6875rem;
-                        height: 8rem;
-                        border-bottom: 1px solid #ABE2DF;      
+                        height: 6rem;
                         display: flex;
                         flex-direction: row;
                         padding: 1.13rem 1.94rem 1.19rem 1.81rem;
@@ -53,17 +56,16 @@
                     &::-webkit-scrollbar {
                         width: 0px;
                         height: 0px;
-                    }
-                }
+                    }                    
+                }  
             }
             .tbTitleInfo {
                 color: #000;                 
                 font-size: 1.25rem;                   
                 font-weight: 600;
-                margin-bottom: 10px;
-                
-            }    
-        }
+                margin-bottom: 10px;                
+            }       
+        }  
     }
 }
 .tbDetailList {
@@ -86,5 +88,5 @@
             font-weight: 400;
             margin-bottom: 0.25rem;            
         }
-    
+
 }

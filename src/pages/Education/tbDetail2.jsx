@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import "./TbDetail1.scss";
 import Header from 'systems/Header';
 import Footer from 'components/Footer';
-import {ReactComponent as Search} from "../../assets/images/search.svg";
+import {ReactComponent as Kospi} from "../../assets/images/kospi.svg";
+import {ReactComponent as Kosdaq} from "../../assets/images/kosdaq.svg";
 import {useLocation} from 'react-router-dom';
 
 export default function TbDetail2() {
@@ -44,11 +45,12 @@ export default function TbDetail2() {
                             {tbTitle}
                         </div>
                         <div className="tbDetailInfo">
-                            <div className="tbInfo-scrollable">
-                                <div className='table'></div>
+                            <div className="tbDetailInfo-scrollable">
+                                <div>                                
+                                <Kospi className='tbDetail2Img' /><Kosdaq/>                                                          
+                                </div>
                                 <div className='detail'>
                                     {tbDetailItem}
-
                                 </div>
                             </div>
                         </div>
