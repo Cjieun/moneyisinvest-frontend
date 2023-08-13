@@ -20,6 +20,7 @@ import Textbook from "pages/Education/Textbook";
 import TbDetail1 from "pages/Education/TbDetail1";
 import TbDetail2 from "pages/Education/tbDetail2";
 import TbDetail3 from "pages/Education/TbDetail3";
+import AskDetail from "pages/MyPage/AskDetail";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ const AppContent = () => {
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/askpage" element={<AskPage />} />
       <Route path="/askwrite" element={<AskWrite />} />
+      <Route path="/askpage/:supportId" element={<AskDetail />} />
       <Route path="/news" element={<News />} />
       <Route path="/Store" element={<Store />} />
       <Route path="/allNews" element={<AllNews />} />

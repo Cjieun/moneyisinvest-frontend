@@ -68,9 +68,11 @@ export default function MyPage() {
                     console.log("General error:", err.message);
                 }});
         } else {
+            alert("로그인 해주세요!");
+            navigate("/signIn", {replace: true});
             console.log("Token is null. Unable to send request.");
         }
-    },[]);
+    },[navigate]);
 
     const onClickFileUpload = () => {
         const token = sessionStorage.getItem("token");
@@ -86,7 +88,7 @@ export default function MyPage() {
                     'X-AUTH-TOKEN' : token,
                 }
             }).then(res => {
-                console.log("업로드 성공!!", res.data);
+                console.log("프로필 업로드 성공!", res.data);
                 axios.get("/api/v1/profile/get", {
                     headers: {
                         'X-Auth-Token': token,
@@ -96,10 +98,10 @@ export default function MyPage() {
                     console.log("프로필 불러오기 성공", res.data);
                     setProfile(res.data.url);
                 }).catch((res) => {
-                    console.log("프로필 불러오지 못함", res);
+                    console.log("프로필 불러오기 실패", res);
                 })                    
             }).catch((err) => {
-                console.log("업로드 오류", err);
+                console.log("프로필 업로드 오류", err);
             });
         }  
     };

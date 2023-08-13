@@ -5,13 +5,15 @@ import axios from "axios";
 import {ReactComponent as Logo} from '../assets/images/logo.svg';
 import {ReactComponent as Search} from "../assets/images/search.svg";
 import {ReactComponent as Coin} from "../assets/images/coin.svg";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 //import profileImage from "../assets/images/angma.jpg";
 
 export default function Header({coinNum}) {
     const [isLogin, setIsLogin] = useState(false);
     const [profileName, setProfileName] = useState("");
     const [profileImage, setProfileImage] = useState("");
+
+    const navigate = useNavigate();
 
     useEffect(() => {
 		if (sessionStorage.getItem("token") !== null) {
@@ -31,10 +33,12 @@ export default function Header({coinNum}) {
             }).catch((res) => {
                 console.log("헤더 프로필 불러오기 실패", res);
             })
-            } else {
+        } else {
+            alert("로그인 해주세요!");
+            navigate("/signIn", {replace: true});
 			// sessionStorage 에 token 라는 key 값으로 저장된 값이 없다면
 		}
-	}, [profileImage, profileName]);
+	}, [navigate, profileImage, profileName]);
 
     const headerContainer = css`
     position: sticky;
