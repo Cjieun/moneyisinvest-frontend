@@ -3,6 +3,7 @@ import "./TbDetail1.scss";
 import Header from 'systems/Header';
 import Footer from 'components/Footer';
 import {ReactComponent as Search} from "../../assets/images/search.svg";
+import {useLocation} from 'react-router-dom';
 
 export default function TbDetail3() {
 
@@ -55,6 +56,9 @@ export default function TbDetail3() {
         </div>
     ))
     
+    const location = useLocation();
+    const tbTitle = location.state && location.state.tbTitle;
+
     return(
         <div className="tbDetailContainer">
             <Header />
@@ -62,10 +66,10 @@ export default function TbDetail3() {
                 <div className="tbDetailContent">
                         <div className="tbDetailTop">
                             <div className="tbDetailTitle">교과서</div>
-                            <div className="tbDetailSearch">
-                                <input type="text" />
-                                <div><Search /></div>
-                            </div>
+
+                        </div>
+                        <div className='tbTitleInfo'>
+                            {tbTitle}
                         </div>
                         <div className="tbDetailInfo">
                             <div className="tbInfo-scrollable">

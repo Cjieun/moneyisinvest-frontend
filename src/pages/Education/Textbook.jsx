@@ -29,10 +29,11 @@ export default function Textbook() {
     const textbookItem = textbook.map((item, index) => (
         <div className="tbList" key={index}>            
                 <div className="tbItems">  
-                <Link to={`/tbDetail${index + 1}`} style={{ textDecoration: 'none' }}>          
+                <Link to= {`/tbDetail${index + 1}`} state= {{tbTitle:item.tbTitle}}
+                
+                 style={{ textDecoration: 'none' }}  >        
                     <div className="tbItemTitle">{item.tbTitle}</div>
-                    </Link>
-                    <div className="tbItemDate">{item.tbDate}</div>
+                    </Link>                    
                 </div>            
                 <img alt="썸네일" className="tbImage"/>      
         </div>
@@ -49,7 +50,7 @@ export default function Textbook() {
                                 <input type="text" />
                                 <div><Search /></div>
                             </div>
-                        </div>
+                        </div>                        
                         <div className="tbInfo">
                             <div className="tbInfo-scrollable">
                                 {textbookItem}
@@ -60,4 +61,5 @@ export default function Textbook() {
             </div>
         </div>
     )
+    
 }
