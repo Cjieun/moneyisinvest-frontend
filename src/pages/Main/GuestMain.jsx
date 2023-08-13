@@ -13,7 +13,7 @@ import { updateRanking } from './redux/action';
 export default function GuestMain() {
 
     const dispatch = useDispatch();
-    const ranking = useSelector((state) => state);
+    const ranking = useSelector((state) => state.rank);
   
     useEffect(() => {
       const webSocketUrl = 'ws://127.0.0.1:8080/stockRank';
@@ -37,7 +37,6 @@ export default function GuestMain() {
                 <div className="banner4-topCard" >
                     <TopCard ranking={ranking} startIdx={i} endIdx={i + 3} key={i} />
                     {i === 3 && (
-                    // eslint-disable-next-line react-hooks/rules-of-hooks
                     <div className="banner4-topCard">
                         <div className="banner4-topText">
                             <div className="banner4-topTitle">
@@ -99,7 +98,7 @@ export default function GuestMain() {
                                         </div>
                                     </div>
                                     <div className="banner3-second">
-                                        <div className="banner3-giftText" {...useScrollFadeIn('right', 1, 1.5)}>
+                                        <div className="banner3-giftText" {...useScrollFadeIn('right', 1, 1.75)}>
                                             <div className="banner3-giftTitle" >
                                                 <div>투자를 통해 코인을 모아</div>
                                                 <div>상품을 구매하세요</div>
@@ -125,7 +124,7 @@ export default function GuestMain() {
                                 </div>
                             </div>
                             <div className="banner4-content">
-                                <div className="banner4-top" {...useScrollFadeIn('up', 1, 0.5)}>실시간 TOP 5</div>
+                                <div className="banner4-top" {...useScrollFadeIn('up', 1, 0.75)}>실시간 TOP 5</div>
                                 {topItem}
                             </div>
                         </div>
