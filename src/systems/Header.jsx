@@ -34,7 +34,7 @@ export default function Header({coinNum}) {
             } else {
 			// sessionStorage 에 token 라는 key 값으로 저장된 값이 없다면
 		}
-	}, []);
+	}, [profileImage, profileName]);
 
     const headerContainer = css`
     position: sticky;
