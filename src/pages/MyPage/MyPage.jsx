@@ -1,10 +1,12 @@
-import React, {useEffect, useState, useRef} from "react";
+import React, {useEffect, useState, useRef, useContext} from "react";
 import axios from "axios";
 import "./MyPage.scss";
 import Header from "../../systems/Header";
 import Footer from "components/Footer";
 import Profile from "../../systems/Profile";
 import MyButton from "../../components/Button";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "context/AuthContext";
 
 export default function MyPage() {
     const [isNameEditing, setNameEditing] = useState(false);
@@ -13,6 +15,10 @@ export default function MyPage() {
     const [id, setId] = useState("");
 
     const nameRef = useRef("");
+
+    const navigate = useNavigate();
+
+    const { logout } = useContext(AuthContext);
 
     const handleNameEdit = () => {
         setNameEditing(true);
@@ -90,13 +96,18 @@ export default function MyPage() {
                     console.log("프로필 불러오기 성공", res.data);
                     setProfile(res.data.url);
                 }).catch((res) => {
-                    console.log("이미지 불러오지 못함", res);
+                    console.log("프로필 불러오지 못함", res);
                 })                    
             }).catch((err) => {
                 console.log("업로드 오류", err);
             });
         }  
     };
+
+    const onClickLogout = () => {
+        logout();
+        navigate("/", {replace: true});
+    }
 
     return (
         <div className="myPageContainer">
@@ -162,7 +173,7 @@ export default function MyPage() {
                                         <td></td>
                                     </tr>
                                 </table>
-                                <div className="myPageOut">계정 로그아웃</div>
+                                <div className="myPageOut" onClick={onClickLogout}>계정 로그아웃</div>
                             </div>
                         </div>
                     </div>

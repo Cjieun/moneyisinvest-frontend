@@ -1,6 +1,8 @@
 import React from "react";
 import "./styles/global.scss";
 import { Route, Routes } from "react-router-dom";
+import { AuthProvider, AuthContext } from "context/AuthContext";
+import { useContext } from "react";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
 import MyPage from "pages/MyPage/MyPage";
@@ -21,17 +23,17 @@ import TbDetail3 from "pages/Education/TbDetail3";
 
 function App() {
   return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}
+
+const AppContent = () => {
+  const { isLoggedIn } = useContext(AuthContext);
+  return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          sessionStorage.getItem("token") === null ? (
-            <GuestMain />
-          ) : (
-            <UserMain />
-          )
-        }
-      />
+      <Route path="/" element={isLoggedIn ? <UserMain /> : <GuestMain />} />
       <Route path="/signIn" element={<SignIn />} />
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/mypage" element={<MyPage />} />
@@ -50,6 +52,6 @@ function App() {
       <Route path="/TbDetail3" element={<TbDetail3 />} />
     </Routes>
   );
-}
+};
 
 export default App;

@@ -1,6 +1,7 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef, useEffect, useContext} from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
+import { AuthContext } from "context/AuthContext";
 import "./SignIn.scss";
 import Header from "../../systems/Header";
 import Button from "components/Button";
@@ -27,6 +28,8 @@ export default function SignIn() {
 
     const idRef = useRef("");
     const pwRef = useRef("");
+
+    const {login} = useContext(AuthContext);
 
     const onClickLogin = () => {
         const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -79,6 +82,7 @@ export default function SignIn() {
                     } else {
                         localStorage.removeItem('rememberedUserId');
                     }
+                    login();
                     navigate("/", {replace: true});
                 }
             }).catch((res) => {
