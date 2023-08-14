@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import "./TbDetail1.scss";
+import "./TbDetail.scss";
 import Header from 'systems/Header';
 import Footer from 'components/Footer';
 import {useLocation} from 'react-router-dom';
@@ -72,9 +72,78 @@ export default function TbDetail1() {
                         </div>
                         <div className="tbDetailInfo">
                             <div className="tbInfo-scrollable">
-                                <div className='table'>
+                                <div className='TbDetail1-Table'>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                        <th className='thtext'>주요재무정보</th>
+                                        <th>2023.12</th>
+                                        <th>2022.12</th>
+                                        <th>2021.12</th>
+                                        <th>2020.12</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>                                        
+                                        <tr>
+                                            <td className='rowtext'>매출액(억원)</td>
+                                            <td>84,689</td>
+                                            <td>3,022,314</td>
+                                            <td>2,796,048</td>
+                                            <td>2,368,070</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='rowtext'>영업이익(억원)</td>
+                                            <td>84,689</td>
+                                            <td>433,766</td>
+                                            <td>516,339</td>
+                                            <td>359,939</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='rowtext'>당기순이익(억원)</td>
+                                            <td>108,649</td>
+                                            <td>556,541</td>
+                                            <td>399,074</td>
+                                            <td>264,078</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='rowtext'>부채비율(%)</td>
+                                            <td></td>
+                                            <td>26.41</td>
+                                            <td>39.92</td>
+                                            <td>37.07</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='rowtext'>당좌비율(%)</td>
+                                            <td></td>
+                                            <td>211.68</td>
+                                            <td>196.75</td>
+                                            <td>214.82</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='rowtext'>유동비율(%)</td>
+                                            <td></td>
+                                            <td>38,144.29</td>
+                                            <td>33,143.62</td>
+                                            <td>30,692.79</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='rowtext'>PER(배)</td>
+                                            <td>45.20</td>
+                                            <td>6.86</td>
+                                            <td>13.55</td>
+                                            <td>21.09</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='rowtext'>PBR(배)</td>
+                                            <td>1.32</td>
+                                            <td>1.09</td>
+                                            <td>1.80</td>
+                                            <td>2.06</td>
+                                        </tr>
+                                    </tbody>
+                                    </table>
                                  
-                                    </div>
+                                </div>
                                 <div className='detail'>
                                      {tbDetailItem}
 

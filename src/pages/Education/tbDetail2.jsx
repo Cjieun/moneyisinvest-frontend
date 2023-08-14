@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import "./TbDetail1.scss";
+import "./TbDetail.scss";
 import Header from 'systems/Header';
 import Footer from 'components/Footer';
 import {ReactComponent as Kospi} from "../../assets/images/kospi.svg";

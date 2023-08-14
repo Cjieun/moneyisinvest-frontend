@@ -28,9 +28,9 @@
                     overflow-y: scroll;
                     scrollbar-width: none; /* Firefox에 대한 스크롤바 숨김 */
                     -ms-overflow-style: none; /* IE 및 Edge에 대한 스크롤바 숨김 */
-                    .tbDetail2Img {
+                    .tbDetail2Img { /* tbDetail2 코스피 코스닥 이미지 간격 */
                         margin-top: 20px;
-                        margin-right: 10px;
+                        margin-right: 20px;
                     }   
                     .tbDetailList {
                         width: 52.6875rem;
@@ -87,6 +87,48 @@
             font-size: 0.875rem;
             font-weight: 400;
             margin-bottom: 0.25rem;            
-        }
-
+        }    
 }
+.TbDetail1-Table {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    table {
+        width: 52.875rem;
+        border-collapse: collapse;
+        margin: 20px;
+        thead {
+            height: 3.84544rem;
+            border-radius: 0.625rem 0.625rem 0rem 0rem;
+            background: var(--main-2, #D1EFEE);
+            color: var(--main-3, #3EB7AF);                 
+            font-size: 1rem;                    
+            font-weight: 600;         
+        }
+        .thtext{
+            border-right : 1px solid #ABE2DF;
+        }
+        td {
+            height: 3.84544rem;
+            border-bottom : 1px solid #ABE2DF;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .rowtext {
+            color: #000;
+            font-size: 1rem;
+            font-weight: 600;
+            border-right : 1px solid #ABE2DF;
+        }
+    }
+}
+.TbDetail1-Table thead th:first-child {
+    border-top-left-radius: 10px;
+  }
+  
+.TbDetail1-Table thead th:last-child {
+    border-top-right-radius: 10px;
+  }
+
