@@ -140,31 +140,33 @@ const Store = () => {
             <div><Search/></div>
         </div>
       </div>
-        <table className="products-table">
-          <thead>
-              <tr>
-              <th></th>
-              <th>상품명</th>
-              <th>교환가</th>
-              <th>장바구니 또는 구매하기</th>
-              </tr>
-          </thead>
-          <tbody>
-              {filteredProducts.map((product) => (
-              <tr key={product.id} className="product-item">
-                  <td>
-                  <img className='product-img' src={product.image} alt={product.name} />
-                  </td>
-                  <td>{product.name}</td>
-                  <td>{product.price.toLocaleString()}스톡</td>
-                  <td className='td-btn'>
-                  <div onClick={() => addToCart(product)}><Button state="basket" >장바구니</Button></div>
-                  <div onClick={onBuy}><Button state="buy" >구매하기</Button></div>
-                  </td>
-              </tr>
-              ))}
-          </tbody>
-      </table>
+      <div className="products-table">
+        <table>
+            <thead>
+                <tr>
+                <th></th>
+                <th>상품명</th>
+                <th>교환가</th>
+                <th>장바구니 또는 구매하기</th>
+                </tr>
+            </thead>
+            <tbody>
+                {filteredProducts.map((product) => (
+                <tr key={product.id} className="product-item">
+                    <td>
+                    <img className='product-img' src={product.image} alt={product.name} />
+                    </td>
+                    <td>{product.name}</td>
+                    <td>{product.price.toLocaleString()}스톡</td>
+                    <td className='td-btn'>
+                    <div onClick={() => addToCart(product)}><Button state="basket" >장바구니</Button></div>
+                    <div onClick={onBuy}><Button state="buy" >구매하기</Button></div>
+                    </td>
+                </tr>
+                ))}
+            </tbody>
+        </table>
+      </div>
       </div>
       </div>
       <Footer/>
