@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from "react";
+import React, {useEffect, useContext, useState, useRef} from "react";
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import axios from "axios";
@@ -67,6 +67,11 @@ export default function Header({coinNum}) {
     font-size: 1rem;
     font-weight: 600;
     `;
+    const searchContainer = css`
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    `;
     const searchBox = css`
     width: ${isLoggedIn ? '16.0625rem' : '17.25rem'};
     height: 2rem;
@@ -99,6 +104,41 @@ export default function Header({coinNum}) {
     height: 1.5rem;
     flex-shrink: 0;
     margin: auto 0.94rem auto 0;
+    `;
+    const searchResultsContainer = css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 76%;
+    width: 76%;
+    min-height: auto;
+    max-height: 17.25rem;  
+    overflow: scroll;
+    background-color: #fff;
+    border-radius: 0 0 0.625rem 0.625rem;
+    z-index: 10;
+    margin: auto 1.25rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    align-items: center;
+    justify-content: center;
+    padding-top: 2.5rem; /* 수정을 추가합니다. */
+    &::-webkit-scrollbar {
+    width: 0;
+    }
+    & > div:not(:last-child) {
+        width: 100%;
+        border-bottom: 1px solid #D1EFEE;
+    }
+    `
+    const searchResultsItem = css`
+    height: 2.5rem;
+    width: 100%;
+    padding : 0.81rem 0 0.81rem 1.06rem;
+    font-size: 0.75rem;
+    color: #797979;
+    font-weight: 500;
     `;
     const login = css`
     color: #000;
@@ -141,6 +181,59 @@ export default function Header({coinNum}) {
     border-radius: 50%;
     `
 
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+    const searchResultRef = useRef();
+
+    useEffect(() => {
+        //검색어가 없으면 결과를 비움
+        if (!searchTerm) {
+            setSearchResults([]);
+            return;
+        }
+        const fetchData = async () => {
+        try {
+            // API 호출을 통해 검색 결과를 가져옵니다.
+            const response = await axios.get("/api/v1/stock/search", {
+            params: { keyword: searchTerm }, // keyword 파라미터로 수정했습니다.
+            headers: {
+                "X-Auth-Token": token,
+            },
+            })
+            console.log(response.data);
+            setSearchResults(response.data); // 결과를 state에 저장합니다.
+        } catch (error) {
+            console.error("검색 중 오류가 발생했습니다.", error);
+        }
+        };
+
+        // debounce 처리를 통해 API 호출을 제한합니다.
+        const timeoutId = setTimeout(() => {
+            fetchData();
+        }, 500);
+
+        return() => {
+            clearTimeout(timeoutId);
+        };
+    }, [searchTerm, token])
+
+    const handleClickOutside = (event) => {
+        if (searchResultRef.current && !searchResultRef.current.contains(event.target)) {
+            setSearchResults([]);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return() => {
+            document.removeEventListener("mosedown", handleClickOutside);
+        };
+    }, []);
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    }
+
     return (
         <div css={headerContainer}>
             <div css={header}>
@@ -159,9 +252,21 @@ export default function Header({coinNum}) {
                     <div css={item}>상점</div>
                     </Link>
                 </div>
-                <div css={searchBox}>
-                    <input css={search} placeholder="Search..."></input>
-                    <Search css={searchLogo} />
+                <div css={searchContainer}>
+                    <div css={searchBox}>
+                        <input css={search} placeholder="Search..." value={searchTerm} onChange={handleSearchChange}></input>
+                        <Search css={searchLogo} />
+                    </div>
+                    {searchResults.length > 0 && (
+                        <div ref={searchResultRef} css={searchResultsContainer}>
+                            {searchResults.map((result) => (
+                                <div key={result.stockId} css={searchResultsItem}>
+                                    {result.stockName}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
                 </div>
                 <Link to = "/signIn" style={{ textDecoration: "none" }} css={login}>
                 <div>로그인</div>

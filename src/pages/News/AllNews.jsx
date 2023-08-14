@@ -83,7 +83,7 @@ export default function AllNews() {
             <div className="newsBox">
                 <div className="newsContent">
                         <div className="newsTop">
-                            <div className="newsTitle">삼성전자 뉴스</div>
+                            <div className="newsTitle">전체 뉴스</div>
                             <div className="newsSearch">
                                 <input type="text" />
                                 <div><Search /></div>
