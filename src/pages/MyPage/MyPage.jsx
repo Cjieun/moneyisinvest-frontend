@@ -18,7 +18,7 @@ export default function MyPage() {
 
     const navigate = useNavigate();
 
-    const { logout } = useContext(AuthContext);
+    const { isLoggedIn, token, userProfile, userName, logout, updateProfile } = useContext(AuthContext);
 
     const handleNameEdit = () => {
         setNameEditing(true);
@@ -27,24 +27,38 @@ export default function MyPage() {
         }
     };
 
-    const handleNameSave = () => {
+    /*const handleNameSave = () => {
         setNameEditing(false);
         // 여기서 서버로 이름 업데이트 요청
-    };
+        try {
+            const response = await axios.patch(
+                "",
+                {},
+                {
+                    headers: {
+
+                    },
+                }
+            );
+            console.log("이름 업데이트 성공", response);
+            updateProfile(name, userProfile);
+        } catch(err) {
+            console.error("이름 업데이트 실패", err)
+        }
+    };*/
 
     const handleNameChange = (event) => {
         setName(event.target.value);
     };
 
-    const onClickEnter = (e) => {
+    /*const onClickEnter = (e) => {
         if (e.key === 'Enter') {
             handleNameSave();
         }
-    }
+    }*/
 
     useEffect (() => {
-        const token = sessionStorage.getItem("token");
-        if (token !== null) {
+        if (isLoggedIn) {
             axios.get("/api/v1/user/detail", {
                 headers: {
                     'X-Auth-Token': token,
@@ -72,10 +86,9 @@ export default function MyPage() {
             navigate("/signIn", {replace: true});
             console.log("Token is null. Unable to send request.");
         }
-    },[navigate]);
+    },[isLoggedIn, navigate, token]);
 
     const onClickFileUpload = () => {
-        const token = sessionStorage.getItem("token");
         const fileInput = document.getElementById("imgUpload");
         if(fileInput.files.length > 0) {
             const file = fileInput.files[0];
@@ -97,6 +110,7 @@ export default function MyPage() {
                 .then((res) => {
                     console.log("프로필 불러오기 성공", res.data);
                     setProfile(res.data.url);
+                    updateProfile(userName, res.data.url);
                 }).catch((res) => {
                     console.log("프로필 불러오기 실패", res);
                 })                    
@@ -148,14 +162,14 @@ export default function MyPage() {
                                                         value={name}
                                                         onChange={handleNameChange}
                                                         ref={nameRef}
-                                                        onKeyPress={(e) => onClickEnter(e)}
+                                                        //onKeyPress={(e) => onClickEnter(e)}
                                                     />
                                                 ) : (
                                                     <div className="myName">{name}</div>
                                                 )}
-                                                <div onClick={
-                                                        isNameEditing ? handleNameSave : handleNameEdit
-                                                    }>
+                                                <div //onClick={
+                                                        //isNameEditing ? handleNameSave : handleNameEdit}
+                                                    >
                                                     <MyButton
                                                     state="mine"
                                                     />

@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import "./AskPage.scss";
 import Header from 'systems/Header';
 import Profile from 'systems/Profile';
@@ -6,11 +6,14 @@ import Footer from 'components/Footer';
 import Button from 'components/Button';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from "context/AuthContext";
 
 export default function AskPage() {
     const [askList, setAskList] = useState([]);
 
     const navigate = useNavigate();
+
+    const { isLoggedIn, token, userId } = useContext(AuthContext);
 
     function formatDate(dateString) {
         const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
@@ -25,15 +28,13 @@ export default function AskPage() {
       }
 
     useEffect (() => {
-        const token = sessionStorage.getItem("token");
-        const id = sessionStorage.getItem("id");
-        if (token !== null) {
+        if (isLoggedIn) {
             axios.get("/api/v1/support/getAll", {
                 headers: {
                     'X-AUTH-TOKEN': token,
                 },
                 params: {
-                    uid: id
+                    uid: userId
                 }
             })
             .then((res) => {
@@ -56,7 +57,7 @@ export default function AskPage() {
             navigate("/signIn", {replace: true});
             console.log("Token is null. Unable to send request.");
         }
-    },[navigate]);
+    },[isLoggedIn, navigate, token, userId]);
 
     /*const onClickDetail = (supportId) => {
         const token = sessionStorage.getItem("token");
@@ -92,15 +93,13 @@ export default function AskPage() {
     }*/
 
     const onClickDelete = (supportId) => {
-        const token = sessionStorage.getItem("token");
-        const id = sessionStorage.getItem("id");
-        if (token !== null) {
+        if (isLoggedIn) {
             axios.delete("/api/v1/support/remove", {
                 headers: {
                     'X-AUTH-TOKEN': token,
                 },
                 params: {
-                    uid: id,
+                    uid: userId,
                     supportId: parseInt(supportId),
                 },
             })

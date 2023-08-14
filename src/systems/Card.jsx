@@ -111,7 +111,7 @@ export default function Card({isVisible, rank, img , company, code, rate, price,
                 <div className="info">
                     <div>
                         <div className="type">수익률</div>
-                        <div className="percent">{rateStatus ? "+" : "-"}{rate}%</div>
+                        <div className="percent">{rateStatus ? "+" : ""}{rate}%</div>
                     </div>
                     <div>
                         <div className="type">주가</div>

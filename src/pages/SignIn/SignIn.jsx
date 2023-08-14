@@ -29,7 +29,7 @@ export default function SignIn() {
     const idRef = useRef("");
     const pwRef = useRef("");
 
-    const {login} = useContext(AuthContext);
+    const {login, isLoggedIn} = useContext(AuthContext);
 
     const onClickLogin = () => {
         const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -66,9 +66,7 @@ export default function SignIn() {
             }).then((res) => {
                 console.log("!!", res.data);
                 if (res.data != null) {
-                    sessionStorage.setItem("token", res.data.token);
-                    sessionStorage.setItem("id", res.data.uid);
-                    sessionStorage.setItem("name", res.data.name);
+                    login(res.data.token, res.data.uid, res.data.name, res.data.profileImgUrl);
                     setIsMessage(false);
                     setMessage("");
                     setIsId(false);
@@ -113,12 +111,16 @@ export default function SignIn() {
     }
     
     useEffect(() => {
+        if (isLoggedIn) {
+            alert("이미 로그인 상태입니다!");
+            navigate(-1);
+        }
         const rememberedUserId = localStorage.getItem('rememberedUserId');
         if (rememberedUserId) {
             setInputId(rememberedUserId);
             setRememberId(true);
         }
-    }, []);
+    }, [isLoggedIn, navigate]);
 
     return (
         <div className="loginContainer">

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import "./AskWrite.scss";
 import Header from 'systems/Header';
 import Profile from 'systems/Profile';
@@ -6,12 +6,15 @@ import Footer from 'components/Footer';
 import Button from 'components/Button';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from "context/AuthContext";
 
 export default function AskWrite() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
     const navigate = useNavigate();
+
+    const { isLoggedIn, token, userId } = useContext(AuthContext);
 
     const handleInputTitle = (e) => {
         setTitle(e.target.value);
@@ -21,11 +24,9 @@ export default function AskWrite() {
     }
 
     const onClickSubmit = () => {
-        const token = sessionStorage.getItem("token");
-
-        if (token !== null) {
+        if (isLoggedIn) {
             axios.post('/api/v1/support/post', {
-                    uid: sessionStorage.getItem("id"),
+                    uid: userId,
                     title: title,
                     contents: content
                 }, {

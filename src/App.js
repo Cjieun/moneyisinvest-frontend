@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./styles/global.scss";
 import { Route, Routes } from "react-router-dom";
 import { AuthProvider, AuthContext } from "context/AuthContext";
-import { useContext } from "react";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
 import MyPage from "pages/MyPage/MyPage";
