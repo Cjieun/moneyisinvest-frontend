@@ -42,7 +42,7 @@
     }
 }
 
-.searchBox {
+/**.searchBox {
     width: 472px;
     height: 48px;
     flex-shrink: 0;
@@ -68,7 +68,28 @@
         flex-shrink: 0;
         margin: auto 0.94rem auto 0;
     }
-}
+} */
+
+/* 서치박스 */
+.Search {
+    width: 29.5rem;
+    height: 3rem;
+    border-radius: 1.875rem;
+    border: 2px solid #D1EFEE;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.63rem 1.31rem;
+    gap: 1.31rem;
+
+    input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: none;
+    }
+  }
+
 
 .writeComment {
     display: flex;
@@ -85,14 +106,19 @@
     background: #F0F9F8;
     font-size: 14pt;
     padding: 10px;
-    .inputComment:focus {
-        border-color: #85D6D1;
+    outline-color: #85D6D1;
+    resize: none;
+}
+
+.inputReplyForm {
+    display: flex;
+    align-items: center;
+    .inputReply {
+        resize: none;
+        outline-color: #F0F9F8;
     }
 }
-.textarea:focus {
-    border-color: #85D6D1;
-    color: #85D6D1;
-}
+
 
 .pagination {
     display: flex;

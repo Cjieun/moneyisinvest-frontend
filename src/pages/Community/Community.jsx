@@ -6,7 +6,7 @@ import Button from "components/Button";
 import Footer from "components/Footer";
 import {ReactComponent as ProfileImage} from "../../assets/images/profile.svg";
 import {ReactComponent as Search} from "../../assets/images/search.svg";
-
+import axios from "axios";
 
 
  
@@ -108,10 +108,39 @@ const Community = ({ stockName }) => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  const wrtieComment = () => {
+     // POST 요청할 API 주소입니다.
+     const url = 'http://localhost:8080/api/v1/community/post';
+
+     // header에 담을 정보를 설정합니다.
+     const headers = {
+       'Content-Type': 'application/json',
+       'X-AUTH-TOKEN' : sessionStorage.getItem("token")
+       // 추가적인 헤더 정보를 넣으실 수 있습니다.
+     };
+ 
+     // body에 담을 정보를 설정합니다.
+     const data = {
+       comment: newComment,
+       stockId: '005930'
+       // 추가적인 body 정보를 넣으실 수 있습니다.
+     };
+ 
+     // Axios를 이용해 POST 요청을 보냅니다.
+     axios.post(url, data, { headers })
+       .then((response) => {
+         console.log('응답 성공:', response.data);
+       })
+       .catch((error) => {
+         console.error('요청 실패:', error);
+         console.error('오류 메시지:', error.message); // 추가적인 오류 메시지 출력
+         console.error('오류 객체:', error.response); // 응답 객체 출력 (응답 코드, 응답 데이터 등)
+       });
+
+  };
   
   
-
-
   return (
     <div className="communityContainer">
     <Header/>
@@ -122,8 +151,10 @@ const Community = ({ stockName }) => {
                 <div>{stockName}</div>
                 <div className="communityTitle">커뮤니티</div>
                 <div className="searchBox">
-                    <div className="search">Search...</div>
-                    <div className="searchLogo"><Search /></div>
+                <div className="Search">
+                  <input type="text"/>
+                  <div><Search/></div>
+                 </div>
                 </div>
             </div>
 
@@ -175,7 +206,9 @@ const Community = ({ stockName }) => {
                                     onChange={handleReplyChange}
                                     placeholder="대댓글을 입력하세요"
                                 />
-                                <button type="submit">대댓글 작성</button>
+                                <div type="submit" className="replybtn">
+                                <Button state="comment">대댓글 작성</Button></div>
+                            
                                 </form>
                             )}
                             
@@ -208,7 +241,7 @@ const Community = ({ stockName }) => {
                     onChange={handleInputChange}
                     placeholder="댓글을 입력하세요"
                     />
-                    <button type="submit">작성</button>
+                    <button onClick={wrtieComment} type="submit">작성</button>
                 </form>
             </div>
         </div>
