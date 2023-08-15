@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useContext} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import axios from "axios";
 import "./MyPage.scss";
 import Header from "../../systems/Header";
@@ -6,7 +6,6 @@ import Footer from "components/Footer";
 import Profile from "../../systems/Profile";
 import MyButton from "../../components/Button";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "context/AuthContext";
 
 export default function MyPage() {
     const [isNameEditing, setNameEditing] = useState(false);
@@ -18,8 +17,6 @@ export default function MyPage() {
 
     const navigate = useNavigate();
 
-    const { isLoggedIn, token, userProfile, userName, logout, updateProfile } = useContext(AuthContext);
-
     const handleNameEdit = () => {
         setNameEditing(true);
         if (nameRef.current) {
@@ -27,38 +24,24 @@ export default function MyPage() {
         }
     };
 
-    /*const handleNameSave = () => {
+    const handleNameSave = () => {
         setNameEditing(false);
         // 여기서 서버로 이름 업데이트 요청
-        try {
-            const response = await axios.patch(
-                "",
-                {},
-                {
-                    headers: {
-
-                    },
-                }
-            );
-            console.log("이름 업데이트 성공", response);
-            updateProfile(name, userProfile);
-        } catch(err) {
-            console.error("이름 업데이트 실패", err)
-        }
-    };*/
+    };
 
     const handleNameChange = (event) => {
         setName(event.target.value);
     };
 
-    /*const onClickEnter = (e) => {
+    const onClickEnter = (e) => {
         if (e.key === 'Enter') {
             handleNameSave();
         }
-    }*/
+    }
 
     useEffect (() => {
-        if (isLoggedIn) {
+        const token = sessionStorage.getItem("token");
+        if (token !== null) {
             axios.get("/api/v1/user/detail", {
                 headers: {
                     'X-Auth-Token': token,
@@ -82,26 +65,24 @@ export default function MyPage() {
                     console.log("General error:", err.message);
                 }});
         } else {
-            alert("로그인 해주세요!");
-            navigate("/signIn", {replace: true});
             console.log("Token is null. Unable to send request.");
         }
-    },[isLoggedIn, navigate, token]);
+    },[]);
 
     const onClickFileUpload = () => {
+        const token = sessionStorage.getItem("token");
         const fileInput = document.getElementById("imgUpload");
         if(fileInput.files.length > 0) {
             const file = fileInput.files[0];
             console.log(file);
             const formData = new FormData();
             formData.append("file", file);
-
             axios.post("/api/v1/profile/upload", formData, {
                 headers: {
                     'X-AUTH-TOKEN' : token,
                 }
             }).then(res => {
-                console.log("프로필 업로드 성공!", res.data);
+                console.log("프로필 업로드 성공!!", res.data);
                 axios.get("/api/v1/profile/get", {
                     headers: {
                         'X-Auth-Token': token,
@@ -110,9 +91,9 @@ export default function MyPage() {
                 .then((res) => {
                     console.log("프로필 불러오기 성공", res.data);
                     setProfile(res.data.url);
-                    updateProfile(userName, res.data.url);
                 }).catch((res) => {
-                    console.log("프로필 불러오기 실패", res);
+                    console.log("프로필 불러오지 못함", res);
+                    console.log("프로필 불러오지 못함", res);
                 })                    
             }).catch((err) => {
                 console.log("프로필 업로드 오류", err);
@@ -121,7 +102,7 @@ export default function MyPage() {
     };
 
     const onClickLogout = () => {
-        logout();
+        sessionStorage.clear();
         navigate("/", {replace: true});
     }
 
@@ -162,7 +143,7 @@ export default function MyPage() {
                                                         value={name}
                                                         onChange={handleNameChange}
                                                         ref={nameRef}
-                                                        //onKeyPress={(e) => onClickEnter(e)}
+                                                        onKeyPress={(e) => onClickEnter(e)}
                                                     />
                                                 ) : (
                                                     <div className="myName">{name}</div>

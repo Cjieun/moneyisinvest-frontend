@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import "./styles/global.scss";
 import { Route, Routes } from "react-router-dom";
-import { AuthProvider, AuthContext } from "context/AuthContext";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
 import MyPage from "pages/MyPage/MyPage";
@@ -20,20 +19,21 @@ import TbDetail1 from "pages/Education/TbDetail1";
 import TbDetail2 from "pages/Education/tbDetail2";
 import TbDetail3 from "pages/Education/TbDetail3";
 import AskDetail from "pages/MyPage/AskDetail";
+import Company from "pages/Company/Company";
 
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
-  );
-}
-
-const AppContent = () => {
-  const { isLoggedIn } = useContext(AuthContext);
-  return (
     <Routes>
-      <Route path="/" element={isLoggedIn ? <UserMain /> : <GuestMain />} />
+      <Route
+        path="/"
+        element={
+          sessionStorage.getItem("token") === null ? (
+            <GuestMain />
+          ) : (
+            <UserMain />
+          )
+        }
+      />
       <Route path="/signIn" element={<SignIn />} />
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/mypage" element={<MyPage />} />
@@ -51,8 +51,9 @@ const AppContent = () => {
       <Route path="/TbDetail1" element={<TbDetail1 />} />
       <Route path="/TbDetail2" element={<TbDetail2 />} />
       <Route path="/TbDetail3" element={<TbDetail3 />} />
+      <Route path="/company" element={<Company />} />
     </Routes>
   );
-};
+}
 
 export default App;

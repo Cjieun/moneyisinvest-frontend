@@ -1,7 +1,6 @@
-import React, {useState, useRef, useEffect, useContext} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
-import { AuthContext } from "context/AuthContext";
 import "./SignIn.scss";
 import Header from "../../systems/Header";
 import Button from "components/Button";
@@ -28,8 +27,6 @@ export default function SignIn() {
 
     const idRef = useRef("");
     const pwRef = useRef("");
-
-    const {login, isLoggedIn} = useContext(AuthContext);
 
     const onClickLogin = () => {
         const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -66,7 +63,9 @@ export default function SignIn() {
             }).then((res) => {
                 console.log("!!", res.data);
                 if (res.data != null) {
-                    login(res.data.token, res.data.uid, res.data.name, res.data.profileImgUrl);
+                    sessionStorage.setItem("token", res.data.token);
+                    sessionStorage.setItem("id", res.data.uid);
+                    sessionStorage.setItem("name", res.data.name);
                     setIsMessage(false);
                     setMessage("");
                     setIsId(false);
@@ -80,8 +79,7 @@ export default function SignIn() {
                     } else {
                         localStorage.removeItem('rememberedUserId');
                     }
-                    login();
-                    navigate("/", {replace: true});
+                    navigate("/", {replace:true});
                 }
             }).catch((res) => {
                 console.log(res);
@@ -109,18 +107,14 @@ export default function SignIn() {
             onClickLogin();
         }
     }
-    
+
     useEffect(() => {
-        if (isLoggedIn) {
-            alert("이미 로그인 상태입니다!");
-            navigate(-1);
-        }
         const rememberedUserId = localStorage.getItem('rememberedUserId');
         if (rememberedUserId) {
             setInputId(rememberedUserId);
             setRememberId(true);
         }
-    }, [isLoggedIn, navigate]);
+    }, []);
 
     return (
         <div className="loginContainer">

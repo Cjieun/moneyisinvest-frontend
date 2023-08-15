@@ -1,11 +1,10 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import "./AskDetail.scss";
 import Header from 'systems/Header';
 import Profile from 'systems/Profile';
 import Footer from 'components/Footer';
 import Button from 'components/Button';
 import { useParams } from "react-router-dom";
-import { AuthContext } from "context/AuthContext";
 
 export default function AskDetail() {
     const [title, setTitle] = useState("");
@@ -13,14 +12,15 @@ export default function AskDetail() {
     const [createdAt, setCreatedAt] = useState("");
     const { supportId } = useParams(); // URL로부터 supportId를 가져옵니다.
 
-    const { token, userId } = useContext(AuthContext);
-
   // 서버로부터 상세 정보 조회
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchData = async () => {
     try {
+      const token = sessionStorage.getItem("token");
+      const id = sessionStorage.getItem("id");
+
       const response = await fetch(
-        `/api/v1/support/getOne?supportId=${supportId}&uid=${userId}`,
+        `/api/v1/support/getOne?supportId=${supportId}&uid=${id}`,
         {
           headers: {
             "X-AUTH-TOKEN": token,
