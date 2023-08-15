@@ -117,7 +117,6 @@ export default function SignIn() {
             .post("/api/v1/sign-up", {
                 name: name,
                 password: pw,
-                role: "user",
                 uid: id
               }).then((res)=> {
                 console.log("!!", res.data);
@@ -213,7 +212,7 @@ export default function SignIn() {
                     </div>
                     <Message text={nameMessage} state={isName} />
                     <div className="signConfirm">
-                        <label className="signupInput">아이디<input type="text" value={id} onChange={handleInputId} ref={idRef}/></label>
+                        <label className="signupInput">이메일<input type="text" value={id} onChange={handleInputId} ref={idRef}/></label>
                         <div onClick={onClickConfirm}>
                         <Button state="signConfirm" />
                         </div>

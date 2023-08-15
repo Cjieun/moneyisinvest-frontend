@@ -79,7 +79,7 @@ export default function Profile(props) {
         })
         .then((res) => {
             console.log("프로필 불러오기 성공", res.data);
-            setProfileImage(res.data.url)
+            setProfileImage(res.data.url);
         }).catch((res) => {
             console.log("프로필 불러오기 실패", res);
         })

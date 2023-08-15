@@ -29,7 +29,7 @@ export default function News() {
             <div className="newsItems" onClick={() => window.open(item.newsUrl)}>
                 <div className="newsItemCompany">{item.newsCompany}</div>
                 <div className="newsItemTitle">{item.newsTitle}</div>
-                <div className="newsItemContent">{item.newsContent}</div>
+                <div className="newsItemContent">{item.newsPreview}</div>
             </div>
             <img alt="썸네일" src={item.newsThumbnail} className="newsImage"/>
         </div>

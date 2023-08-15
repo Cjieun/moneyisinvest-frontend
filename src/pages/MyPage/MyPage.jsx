@@ -5,6 +5,7 @@ import Header from "../../systems/Header";
 import Footer from "components/Footer";
 import Profile from "../../systems/Profile";
 import MyButton from "../../components/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function MyPage() {
     const [isNameEditing, setNameEditing] = useState(false);
@@ -13,6 +14,8 @@ export default function MyPage() {
     const [id, setId] = useState("");
 
     const nameRef = useRef("");
+
+    const navigate = useNavigate();
 
     const handleNameEdit = () => {
         setNameEditing(true);
@@ -38,7 +41,6 @@ export default function MyPage() {
 
     useEffect (() => {
         const token = sessionStorage.getItem("token");
-        console.log(token);
         if (token !== null) {
             axios.get("/api/v1/user/detail", {
                 headers: {
@@ -75,13 +77,12 @@ export default function MyPage() {
             console.log(file);
             const formData = new FormData();
             formData.append("file", file);
-
             axios.post("/api/v1/profile/upload", formData, {
                 headers: {
                     'X-AUTH-TOKEN' : token,
                 }
             }).then(res => {
-                console.log("업로드 성공!!", res.data);
+                console.log("프로필 업로드 성공!!", res.data);
                 axios.get("/api/v1/profile/get", {
                     headers: {
                         'X-Auth-Token': token,
@@ -91,13 +92,19 @@ export default function MyPage() {
                     console.log("프로필 불러오기 성공", res.data);
                     setProfile(res.data.url);
                 }).catch((res) => {
-                    console.log("이미지 불러오지 못함", res);
+                    console.log("프로필 불러오지 못함", res);
+                    console.log("프로필 불러오지 못함", res);
                 })                    
             }).catch((err) => {
-                console.log("업로드 오류", err);
+                console.log("프로필 업로드 오류", err);
             });
         }  
     };
+
+    const onClickLogout = () => {
+        sessionStorage.clear();
+        navigate("/", {replace: true});
+    }
 
     return (
         <div className="myPageContainer">
@@ -141,9 +148,9 @@ export default function MyPage() {
                                                 ) : (
                                                     <div className="myName">{name}</div>
                                                 )}
-                                                <div onClick={
-                                                        isNameEditing ? handleNameSave : handleNameEdit
-                                                    }>
+                                                <div //onClick={
+                                                        //isNameEditing ? handleNameSave : handleNameEdit}
+                                                    >
                                                     <MyButton
                                                     state="mine"
                                                     />
@@ -163,7 +170,7 @@ export default function MyPage() {
                                         <td></td>
                                     </tr>
                                 </table>
-                                <div className="myPageOut">계정 탈퇴하기</div>
+                                <div className="myPageOut" onClick={onClickLogout}>계정 로그아웃</div>
                             </div>
                         </div>
                     </div>

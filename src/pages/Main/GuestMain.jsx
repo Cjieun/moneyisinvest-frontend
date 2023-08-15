@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useEffect} from "react";
 import "./GuestMain.scss";
 import {useScrollFadeIn} from "../../hooks/useScrollFadeIn";
 import Header from "systems/Header";
@@ -6,79 +6,30 @@ import Footer from "components/Footer";
 import {ReactComponent as SmartPhone} from "../../assets/images/smartphone.svg";
 import {ReactComponent as MainCoin} from "../../assets/images/mainCoin.svg";
 import {ReactComponent as Gift} from "../../assets/images/gift.svg";
-import TopCard from "systems/TopCard";
+import TopCard from "pages/Main/redux/TopCard";
+import { useSelector, useDispatch } from 'react-redux';
+import { updateRanking } from './redux/action';
 
 export default function GuestMain() {
 
+    const dispatch = useDispatch();
+    const ranking = useSelector((state) => state.rank);
+  
     useEffect(() => {
-        // 웹소켓 연결 설정
-        const socket = new WebSocket('ws://127.0.0.1:8080/stockRank');
-    
-        // 연결이 열릴 때 처리
-        socket.onopen = () => {
-          console.log('WebSocket connection opened');
-        };
-    
-        // 데이터 수신 처리
-        socket.onmessage = event => {
-          const receivedData = JSON.parse(event.data);
-          console.log('Received data:', receivedData);
-        };
-    
-        // 연결이 닫힐 때 처리
-        socket.onclose = () => {
-          console.log('WebSocket connection closed');
-        };
-
-        socket.onerror = (err) => {
-            console.log('Websocket connection error: ', err.message);
-        }
-    
-        // 컴포넌트가 언마운트될 때 연결 해제
-        return () => {
-          socket.close();
-        };
-      }, []);
-    
-    const [ranking] = useState([
-        {
-            company: "삼성전자",
-            code: "005930",
-            rate: "99.9",
-            price: "500,000",
-            value: "5,000"
-        },
-        {
-            company: "삼성전자",
-            code: "005930",
-            rate: "99.9",
-            price: "500,000",
-            value: "5,000"
-        },
-        {
-            company: "삼성전자",
-            code: "005930",
-            rate: "99.9",
-            price: "500,000",
-            value: "5,000"
-        },
-        {
-            company: "삼성전자",
-            code: "005930",
-            rate: "99.9",
-            price: "500,000",
-            value: "5,000"
-        },
-        {
-            company: "삼성전자",
-            code: "005930",
-            rate: "99.9",
-            price: "500,000",
-            value: "5,000"
-        },
-
-    ])
-
+      const webSocketUrl = 'ws://127.0.0.1:8080/stockRank';
+      const socket = new WebSocket(webSocketUrl);
+  
+      socket.onmessage = (event) => {
+        const receivedData = JSON.parse(event.data); // 데이터가 JSON 형식이면 파싱
+        dispatch(updateRanking(receivedData));
+        console.log(event.data)
+      };
+  
+      return () => {
+        socket.close();
+      };
+    }, [dispatch]);
+      
     const topItem = [];
     for (let i = 0; i < ranking.length; i += 3) {
         topItem.push(
@@ -86,8 +37,7 @@ export default function GuestMain() {
                 <div className="banner4-topCard" >
                     <TopCard ranking={ranking} startIdx={i} endIdx={i + 3} key={i} />
                     {i === 3 && (
-                    // eslint-disable-next-line react-hooks/rules-of-hooks
-                    <div className="banner4-topCard" {...useScrollFadeIn('left', 1, 1)}>
+                    <div className="banner4-topCard">
                         <div className="banner4-topText">
                             <div className="banner4-topTitle">
                                 <div>주식에 필요한</div>
@@ -137,7 +87,7 @@ export default function GuestMain() {
                                     <div className="banner3-first">
                                         <div className="banner3-coin">
                                             <MainCoin className="banner3-coinImage" {...useScrollFadeIn('left', 1, 0.75)}/>
-                                            <div {...useScrollFadeIn('down', 1, 1.25)}>* 6.0 코인이 입금 되었습니다.</div>
+                                            <div {...useScrollFadeIn('down', 1, 1.25)}>* 5 스톡이 입금 되었습니다.</div>
                                         </div>
                                         <div className="banner3-coinText" {...useScrollFadeIn('left', 1, 1)}>
                                             <div className="banner3-coinTitle" >
@@ -148,7 +98,7 @@ export default function GuestMain() {
                                         </div>
                                     </div>
                                     <div className="banner3-second">
-                                        <div className="banner3-giftText" {...useScrollFadeIn('right', 1, 1.5)}>
+                                        <div className="banner3-giftText" {...useScrollFadeIn('right', 1, 1.75)}>
                                             <div className="banner3-giftTitle" >
                                                 <div>투자를 통해 코인을 모아</div>
                                                 <div>상품을 구매하세요</div>
@@ -174,7 +124,7 @@ export default function GuestMain() {
                                 </div>
                             </div>
                             <div className="banner4-content">
-                                <div className="banner4-top" {...useScrollFadeIn('up', 1, 0.5)}>실시간 TOP 5</div>
+                                <div className="banner4-top" {...useScrollFadeIn('up', 1, 0.75)}>실시간 TOP 5</div>
                                 {topItem}
                             </div>
                         </div>

@@ -6,6 +6,8 @@ import { css } from "@emotion/react";
 로그인: login, 글쓰기: write, *댓글: comment, 댓글수정: edit, 댓글삭제: delete, 대댓글작성: reply, *마이페이지: mine, *거래내역: interest, *문의사항: ask
 인증하기: signConfirm, 문의사항글쓰기: askWrite 문의사항업로드: askUpload*/
 
+
+
 const buttonwidth = {
     default: "5.0625rem",
     stocksell: "6.25rem",
@@ -111,7 +113,8 @@ const buttontext = {
     signup: "회원가입",
     signConfirm: "인증하기",
     askWrite: "작성하기",
-    askUpload: "업로드 하기"
+    askUpload: "업로드 하기",
+    askDetail: "삭제하기",
 }
 export default function Button(props) {
     const button = css`

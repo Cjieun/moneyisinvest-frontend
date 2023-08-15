@@ -1,27 +1,27 @@
-.newsContainer {
+.textbookContainer {
     margin: 0;
-    .newsBox {
+    .tbBox {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        .newsContent {
+        .tbContent {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            .newsTop {
+            .tbTop {
                 justify-content: center;
                 display: flex;
                 flex-direction: row;
                 margin: 2.69rem auto 1.37rem auto;
                 gap: 17.75rem;
                 align-items: center;
-                .newsTitle {
+                .tbTitle {
                     color: #000;
                     font-size: 1.5rem;
                     font-weight: 700;
                 }    
-                .newsSearch {
+                .tbSearch {
                     width: 29.5rem;
                     height: 3rem;
                     border-radius: 1.875rem;
@@ -40,47 +40,46 @@
                     }
                 }
             }
-            .newsInfo {
+            .tbInfo {
                 width: 52.875rem;
-                .newsInfo-scrollable {
+                .tbInfo-scrollable {
                     max-height: 48.125rem; /* 원하는 높이로 조정 */
                     overflow-y: scroll;
                     scrollbar-width: none; /* Firefox에 대한 스크롤바 숨김 */
                     -ms-overflow-style: none; /* IE 및 Edge에 대한 스크롤바 숨김 */
-                    .newsList {
+                    .tbList {
                         width: 52.6875rem;
                         height: 8rem;
-                        border-bottom: 1px solid #E4E4E4;      
+                        border-bottom: 1px solid #ABE2DF;      
                         display: flex;
                         flex-direction: row;
-                        padding: 1.13rem 1.94rem 1.19rem 1.81rem;
-                        gap: 9rem;
-                        .newsItems {
+                        padding: 1.13rem 1.94rem 1.19rem 1.81rem;                
+                        gap: 3rem;
+                        .tbItems {
                             display: flex;
-                            flex-direction: column;
-                            width: 33.9375rem;
-                            cursor: pointer;
-                            .newsItemCompany {
-                                color: #000;
-                                font-size: 0.875rem;
-                                font-weight: 500;
-                                margin-bottom: 0.25rem;
-                            }
-                            .newsItemTitle {
+                            flex-direction: row;
+                            justify-content: space-between;
+                            align-items: center;
+                            width: 40.9375rem;
+                            .tbItemTitle {
                                 color: #000;
                                 font-size: 1.125rem;
                                 font-weight: 600;
-                                margin-bottom: 0.94rem;
+                                margin-bottom: 0.94rem;             
                             }
-                            .newsItemContent {
+                            .tbContent {
                                 color: #797979;
                                 font-size: 0.875rem;
                                 font-weight: 500;
-                                overflow: hidden;  		// 을 사용해 영역을 감출 것
-                                text-overflow: ellipsis;  	// 로 ... 을 만들기 
                             }
+                        }
+                        .tbItemDate {
+                            color: #797979;
+                            font-size: 0.875rem;
+                            font-weight: 400;
+                            margin-bottom: 0.25rem;                             
                         }      
-                        .newsImage {
+                        .tbImage {
                             width: 6rem;
                             height: 6rem;
                             border-radius: 0.625rem;
