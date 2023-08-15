@@ -6,6 +6,11 @@ import {ReactComponent as Coin} from "../assets/images/coin.svg";
 import { Link, useLocation } from "react-router-dom";
 
 export default function Profile(props) {
+
+    const apiClient = axios.create({
+        baseURL: process.env.REACT_APP_API_URL,
+    });
+
     const [profileImage, setProfileImage] = useState("");
     const profileName = sessionStorage.getItem('name');
     
@@ -72,7 +77,7 @@ export default function Profile(props) {
 
     useEffect (() => {
         const token = sessionStorage.getItem('token');
-        axios.get("/api/v1/profile/get", {
+        apiClient.get("/api/v1/profile/get", {
             headers: {
                 'X-Auth-Token': token,
             }

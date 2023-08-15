@@ -8,6 +8,12 @@ import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
 export default function AskPage() {
+
+    const apiClient = axios.create({
+        baseURL: process.env.REACT_APP_API_URL,
+    });
+
+
     const [askList, setAskList] = useState([]);
 
     const navigate = useNavigate();
@@ -28,7 +34,7 @@ export default function AskPage() {
         const token = sessionStorage.getItem("token");
         const id = sessionStorage.getItem("id");
         if (token !== null) {
-            axios.get("/api/v1/support/getAll", {
+            apiClient.get("/api/v1/support/getAll", {
                 headers: {
                     'X-AUTH-TOKEN': token,
                 },
@@ -95,7 +101,7 @@ export default function AskPage() {
         const token = sessionStorage.getItem("token");
         const id = sessionStorage.getItem("id");
         if (token !== null) {
-            axios.delete("/api/v1/support/remove", {
+            apiClient.delete("/api/v1/support/remove", {
                 headers: {
                     'X-AUTH-TOKEN': token,
                 },
