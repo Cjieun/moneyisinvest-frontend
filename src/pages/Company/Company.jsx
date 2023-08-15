@@ -12,6 +12,10 @@ import {ReactComponent as Heart} from "../../assets/images/heart.svg";
 import Button from "components/Button";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import {ReactComponent as Profile} from "../../assets/images/profile.svg";
+import {ReactComponent as CommentHeart} from "../../assets/images/commentHeart.svg";
+import {ReactComponent as Comment} from "../../assets/images/comment.svg";
+
 
 export default function Company({handleSetCompanyName}) {
 
@@ -21,6 +25,7 @@ export default function Company({handleSetCompanyName}) {
 
     const [stockName, setStockName] = useState('');
     const [news, setNews] = useState([]);
+    const [community, setCommunity] = useState([]);
 
     const { stockId } = useParams(); // URL로부터 supportId를 가져옵니다.
 
@@ -34,7 +39,6 @@ export default function Company({handleSetCompanyName}) {
     const stock = useSelector(state => state.stock);
     const storedStock = useSelector(state => state.storedStock);
 
-    console.log(storedStock);
     useEffect(() => {   
         
         const token = sessionStorage.getItem('token');
@@ -58,14 +62,27 @@ export default function Company({handleSetCompanyName}) {
             console.log(err);
         })
 
-        const apiUrl = `/api/v1/stock/get/news?stockId=${stockId}`;
-        apiClient.get(apiUrl)
+        const newsapiUrl = `/api/v1/stock/get/news?stockId=${stockId}`;
+        apiClient.get(newsapiUrl)
           .then(response => {
-            console.log('응답 데이터:', response.data);
+            console.log('뉴스 응답 데이터:', response.data);
             setNews(response.data.slice(0, 3));
           })
           .catch(error => {
-            console.error('에러 발생:', error);
+            console.error('뉴스 에러 발생:', error);
+          });
+
+        apiClient.get(`/api/v1/community/get?stockId=${stockId}`, {
+            headers: {
+                "X-AUTH-TOKEN": token,
+            }
+        })
+          .then(response => {
+            console.log('커뮤니티 응답 데이터:', response.data);
+            setCommunity(response.data.slice(0, 3));
+          })
+          .catch(error => {
+            console.error('커뮤니티 에러 발생:', error);
           });
 
         const stockSocket = new WebSocket("ws://127.0.0.1:8080/stock");
@@ -76,7 +93,7 @@ export default function Company({handleSetCompanyName}) {
         stockSocket.onmessage = (res) => {
             const receivedData = JSON.parse(res.data); // 데이터를 객체로 변환
             dispatch(updateStock(receivedData));
-            console.log(receivedData); // 수정된 데이터를 출력
+            //console.log(receivedData); // 수정된 데이터를 출력
         };
         stockSocket.onclose = () => {
             console.log("Stock DisConnnected");
@@ -104,6 +121,25 @@ export default function Company({handleSetCompanyName}) {
         </div>
     ))
 
+    const communityItem = community.map((item) => (
+        <div className="companycommunityList">
+            <div className="companycommunityProfile">
+                <Profile className="companycommunityProfileImg" />
+                <div className="companycommunityName">{item.name}</div>
+            </div>
+            <div className="companycommunityComment">{item.comment}</div>
+            <div className="companycommunityReply">
+                <div className="companycommunityIcons">
+                    <CommentHeart className="companycommunityIcon"/>
+                    <div>0</div>
+                </div>
+                <div className="companycommunityIcons">
+                    <Comment className="companycommunityIcon"/>
+                    <div>{item.replyCount}</div>
+                </div>
+            </div>
+        </div>
+    ))
 
     return (
         <div className="companyContainer">
@@ -151,11 +187,97 @@ export default function Company({handleSetCompanyName}) {
                             {newsItem}
                         </div>
                     </div>
-                    <div>
-
+                    <div className="companyCommunity">
+                        <div className="companyCommunityText">
+                            <div className="companyCommunityTitle">커뮤니티</div>
+                            <Link to= {`/community/${stockId}`} style={{ textDecoration: "none" }} onClick={handleClick}>
+                            <div className="companyCommunitySubtitle">더보기</div>
+                            </Link>
+                        </div>
+                        <div className="companyCommunityList">
+                            {communityItem}
+                        </div>
                     </div>
-                    <div></div>
-                    <div></div>
+                    <div className="companyTable">
+                        <div className="companyTableTitle">실적 분석</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>주요재무정보</th>
+                                    <th>2023.12</th>
+                                    <th>2022.12</th>
+                                    <th>2021.12</th>
+                                    <th>2021.12</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <Link to= {`/tbDetail1`} style={{ textDecoration: "none" }}>
+                        <div className="companyHelp">
+                            <div className="companyHelpText">
+                                <Warning className="companyStockIcon"/>
+                                <div>기업 실적 분석에 쓰이는 재무제표에 대해 알아볼까요?</div>
+                            </div>
+                        </div>
+                        </Link>
+                    </div>
                 </div>
                 <Footer />
             </div>
