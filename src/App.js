@@ -20,6 +20,7 @@ import TbDetail2 from "pages/Education/tbDetail2";
 import TbDetail3 from "pages/Education/TbDetail3";
 import AskDetail from "pages/MyPage/AskDetail";
 import Company from "pages/Company/Company";
+import Community from "pages/Commmunity/Community";
 
 function App() {
   return (
@@ -52,7 +53,9 @@ function App() {
       <Route path="/TbDetail2" element={<TbDetail2 />} />
       <Route path="/TbDetail3" element={<TbDetail3 />} />
       <Route path="/company" element={<Company />} />
+      <Route path="/Community" element={<Community />} />
     </Routes>
+
   );
 }
 
