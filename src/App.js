@@ -20,7 +20,7 @@ import TbDetail2 from "pages/Education/tbDetail2";
 import TbDetail3 from "pages/Education/TbDetail3";
 import AskDetail from "pages/MyPage/AskDetail";
 import Company from "pages/Company/Company";
-import Community from "pages/Commmunity/Community";
+import Community from "pages/Community/Community";
 
 function App() {
   return (
