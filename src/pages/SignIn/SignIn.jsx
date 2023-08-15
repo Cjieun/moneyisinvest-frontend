@@ -7,7 +7,12 @@ import Button from "components/Button";
 import Footer from "components/Footer";
 import Message from "components/Message";
 
-export default function SignIn() {
+export default function SignIn({setIsLoggedIn}) {
+
+    const apiClient = axios.create({
+        baseURL: process.env.REACT_APP_API_URL,
+    });
+
     const [inputId, setInputId] = useState("");
     const [inputPw, setInputPw] = useState("");
     const [isId, setIsId] = useState(false);
@@ -56,13 +61,14 @@ export default function SignIn() {
             setIsId(false);
             setIdMessage("");
         } else {
-        axios
+        apiClient
             .post("/api/v1/sign-in", {
                 password: inputPw,
                 uid: inputId,
             }).then((res) => {
                 console.log("!!", res.data);
                 if (res.data != null) {
+                    setIsLoggedIn(true);
                     sessionStorage.setItem("token", res.data.token);
                     sessionStorage.setItem("id", res.data.uid);
                     sessionStorage.setItem("name", res.data.name);

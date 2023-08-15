@@ -9,6 +9,11 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function SignIn() {
+
+    const apiClient = axios.create({
+        baseURL: process.env.REACT_APP_API_URL,
+    });
+
     const [name, setName] = useState("");
     const [id, setId] = useState("");
     const [pw, setPw] = useState("");
@@ -113,7 +118,7 @@ export default function SignIn() {
         }
         else {
         sessionStorage.removeItem('rememberId');
-        axios
+        apiClient
             .post("/api/v1/sign-up", {
                 name: name,
                 password: pw,

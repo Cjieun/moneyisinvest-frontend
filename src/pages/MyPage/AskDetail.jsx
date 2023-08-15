@@ -5,37 +5,48 @@ import Profile from 'systems/Profile';
 import Footer from 'components/Footer';
 import Button from 'components/Button';
 import { useParams } from "react-router-dom";
+import axios from 'axios';
 
 export default function AskDetail() {
+
+  const apiClient = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+  });
+
+  
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [createdAt, setCreatedAt] = useState("");
     const { supportId } = useParams(); // URL로부터 supportId를 가져옵니다.
 
-  // 서버로부터 상세 정보 조회
+  // fetchData 함수 정의
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchData = async () => {
     try {
       const token = sessionStorage.getItem("token");
       const id = sessionStorage.getItem("id");
 
-      const response = await fetch(
-        `/api/v1/support/getOne?supportId=${supportId}&uid=${id}`,
-        {
+      const response = await apiClient.get(
+        `/api/v1/support/getOne`, {
+          params: {
+            supportId: supportId,
+            uid: id
+          },
           headers: {
             "X-AUTH-TOKEN": token,
-          },
+          }
         }
       );
-      const data = await response.json();
-      console.log("문의사항 상세보기 성공", data);
-      setTitle(data.title);
-      setContent(data.contents);
-      setCreatedAt(data.createdAt);
-    } catch (error) {
-      console.log("문의사항 상세보기 실패:", error);
-    }
-  };
+
+    const data = response.data;
+    console.log("문의사항 상세보기 성공", data);
+    setTitle(data.title);
+    setContent(data.contents);
+    setCreatedAt(data.createdAt);
+  } catch (error) {
+    console.log("문의사항 상세보기 실패:", error);
+  }
+};
 
   useEffect(() => {
     fetchData();

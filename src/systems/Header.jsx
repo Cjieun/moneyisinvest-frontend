@@ -9,18 +9,24 @@ import {Link} from "react-router-dom";
 //import profileImage from "../assets/images/angma.jpg";
 
 export default function Header({coinNum}) {
+
+    const apiClient = axios.create({
+        baseURL: process.env.REACT_APP_API_URL,
+    });
+
     const [isLogin, setIsLogin] = useState(false);
     const [profileName, setProfileName] = useState("");
     const [profileImage, setProfileImage] = useState("");
 
     useEffect(() => {
-		if (sessionStorage.getItem("token") !== null) {
+        const token = sessionStorage.getItem('token');
+		if (token !== null) {
             // sessionStorage 에 token 라는 key 값으로 저장된 값이 있다면
 			// 로그인 상태 변경
 			setIsLogin(true);
             setProfileName(sessionStorage.getItem("name"));
             const token = sessionStorage.getItem('token');
-            axios.get("/api/v1/profile/get", {
+            apiClient.get("/api/v1/profile/get", {
                 headers: {
                     'X-Auth-Token': token,
                 }
@@ -33,6 +39,7 @@ export default function Header({coinNum}) {
             })
         } else {
 			// sessionStorage 에 token 라는 key 값으로 저장된 값이 없다면
+            setIsLogin(false);
 		}
 	}, [profileImage, profileName]);
 
@@ -202,7 +209,7 @@ export default function Header({coinNum}) {
         const fetchData = async () => {
         try {
             // API 호출을 통해 검색 결과를 가져옵니다.
-            const response = await axios.get("/api/v1/stock/search", {
+            const response = await apiClient.get("/api/v1/stock/search", {
             params: { keyword: searchTerm }, // keyword 파라미터로 수정했습니다.
             headers: {
                 "X-Auth-Token": token,
@@ -242,6 +249,10 @@ export default function Header({coinNum}) {
         setSearchTerm(event.target.value);
     }
 
+    const onClickCompany = () => {
+
+    }
+
     return (
         <div css={headerContainer}>
             <div css={header}>
@@ -269,7 +280,9 @@ export default function Header({coinNum}) {
                         <div ref={searchResultRef} css={searchResultsContainer}>
                             {searchResults.map((result) => (
                                 <div key={result.stockId} css={searchResultsItem}>
+                                <Link to={`/company/${result.stockId}`} style={{ textDecoration: "none",  color: "#797979"}}>
                                     {result.stockName}
+                                </Link>
                                 </div>
                             ))}
                         </div>
