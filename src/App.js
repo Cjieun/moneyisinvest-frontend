@@ -20,6 +20,7 @@ import TbDetail2 from "pages/Education/tbDetail2";
 import TbDetail3 from "pages/Education/TbDetail3";
 import AskDetail from "pages/MyPage/AskDetail";
 import Company from "pages/Company/Company";
+import Community from "pages/Community/Community";
 
 function App() {
   const [companyName, setCompanyName] = React.useState("");
@@ -65,7 +66,9 @@ function App() {
         path="/company/:stockId"
         element={<Company handleSetCompanyName={handleSetCompanyName} />}
       />
+      <Route path="/Community" element={<Community />} />
     </Routes>
+
   );
 }
 
