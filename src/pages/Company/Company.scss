@@ -1,0 +1,143 @@
+.companyContainer {
+    margin: 0;
+    .companyBox {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .companyContent {
+            flex-grow: 1;
+            padding: 0;
+            margin: 0;
+            .companyChart {
+                display: flex;
+                flex-direction: column;
+                .companyStockChart {
+                    width: 61.875rem;
+                    height: 28.6875rem;
+                    border-radius: 1.25rem;
+                    border: 2px solid #D1EFEE;
+                }
+            }
+            .companyHelp {
+                height: 2.5rem;
+                border-radius: 0.625rem;
+                background: #F0F9F8;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                padding: 0 1.25rem 0 0.62rem;
+                gap: 1rem;
+                color: #3EB7AF;
+                font-size: 0.875rem;
+                font-weight: 500;
+                justify-content: space-between;
+                margin-top: 1.25rem;
+                .companyHelpText {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 1rem;
+                    .companyStockIcon {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                    }
+                }
+                .companyStockDown {
+                    width: 1.25rem;
+                    height: 1.25rem;
+                }    
+            }
+            .companyInfo {
+                display: flex;
+                flex-direction: column;
+                border-bottom: 2px solid #D1EFEE;
+                padding-bottom: 0.81rem;
+                margin-top: 1.75rem;
+                .companyInfoTitle {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    margin-bottom: 0.19rem;
+                    .companyName {
+                        color: #000;
+                        font-size: 1.75rem;
+                        font-weight: 700;
+                    }
+                    .companyMyStock {
+                        color: #3EB7AF;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                    }
+                }
+                .companyInfoContent {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    .companyStockDeal {
+                        display: flex;
+                        flex-direction: row;
+                        gap: 1rem;
+                        align-items: center;
+                        .companyStockDeal-stock {
+                            color: #000;
+                            font-size: 2.25rem;
+                            font-weight: 700;
+                        }
+                        .companyStockDeal-price {
+                            color: #797979;
+                            font-size: 1.25rem;
+                            font-weight: 500;
+                        }
+                        .companyStockTimeBox {
+                            display: flex;
+                            flex-direction: column;
+                            .companyStockTime {
+                                display: flex;
+                                color: #797979;
+                                font-size: 0.8125rem;
+                                font-weight: 500;
+                                margin-bottom: 0.37rem;
+                            }
+                            .companyStockTimeInfo {
+                                color: #797979;
+                                font-size: 0.625rem;
+                                font-weight: 500;
+                                margin-bottom: 0.19rem;
+                            }
+                            .companyStockTimeBook {
+                                display: flex;
+                                flex-direction: row;
+                                gap: 0.19rem;
+                                color: #3EB7AF;
+                                font-size: 0.625rem;
+                                font-weight: 500;
+                                align-items: center;
+                                .companyStockTimeIcon {
+                                    width: 0.625rem;
+                                    height: 0.625rem;
+                                }
+                            }
+                        }
+                    }
+                    .companyStockBtn {
+                        display: flex;
+                        flex-direction: row;
+                        gap: 2rem;
+                        .companyStockHeart {
+                            width: 1.75rem;
+                            height: 1.75rem;
+                        }
+                        .companyStockDealBtn {
+                            display: flex;
+                            flex-direction: row;
+                            gap: 0.88rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
