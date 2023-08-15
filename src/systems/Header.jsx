@@ -35,7 +35,13 @@ export default function Header({coinNum}) {
                 console.log("헤더 프로필 불러오기 성공", res.data);
                 setProfileImage(res.data.url)
             }).catch((res) => {
-                console.log("헤더 프로필 불러오기 실패", res);
+                console.log("헤더 프로필 불러오기 실패", res.status);
+                if(res.response.status === 401) {
+                    sessionStorage.removeItem("token");
+                    sessionStorage.clear();
+                    alert("자동 로그아웃 되었습니다!");
+                    window.location.href = '/signIn';
+                }
             })
         } else {
 			// sessionStorage 에 token 라는 key 값으로 저장된 값이 없다면
