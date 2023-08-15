@@ -32,6 +32,7 @@ function App() {
         <Route path="/buyList" element={<BuyList />} />
         <Route path="/main" element={<UserMain />} />
         <Route path="/Community" element={<Community />} />
+
       </Routes>
     </BrowserRouter>
   );

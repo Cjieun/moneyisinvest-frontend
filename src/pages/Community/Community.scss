@@ -90,13 +90,30 @@
     }
   }
 
-
-.writeComment {
+.commentList {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     padding: 20px;
+    .writeComment {
+        /*display: flex;
+        /*flex-direction: row;*/
+        align-items: flex-start;
+        padding: 10px 0;
+    }
 }
 
+.repliesContainer {
+    margin-left: 40px;
+    justify-content: space-between;
+    .reply {
+        display: flex;
+        flex-direction: column;
+        margin: 5px;
+        
+      }
+  }
+  
+ 
 .inputComment {
     width: 596px;
     height: 92px;

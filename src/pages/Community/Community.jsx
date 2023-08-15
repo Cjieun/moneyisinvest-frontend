@@ -1,15 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Community.scss";
 import Header from 'systems/Header';
-/**import Pagenation from "systems/Pagination";*/
 import Button from "components/Button";
 import Footer from "components/Footer";
 import {ReactComponent as ProfileImage} from "../../assets/images/profile.svg";
 import {ReactComponent as Search} from "../../assets/images/search.svg";
 import axios from "axios";
 
-
- 
 const Community = ({ stockName }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
@@ -17,6 +14,7 @@ const Community = ({ stockName }) => {
   const [replyIndex, setReplyIndex] = useState(-1); // 현재 대댓글을 작성중인 댓글 인덱스
   const [newReply, setNewReply] = useState('');
   const [likeStatus, setLikeStatus] = useState([]); // 각 댓글의 좋아요 상태를 저장하는 배열
+  const [showActions, setShowActions] = useState(false);
 
   const handleInputChange = (event) => {
     setNewComment(event.target.value);
@@ -109,9 +107,9 @@ const Community = ({ stockName }) => {
     setCurrentPage(pageNumber);
   };
 
-  const wrtieComment = () => {
+  const postComment = () => {
      // POST 요청할 API 주소입니다.
-     const url = 'http://localhost:8080/api/v1/community/post';
+     const url = '/api/v1/community/post';
 
      // header에 담을 정보를 설정합니다.
      const headers = {
@@ -139,6 +137,64 @@ const Community = ({ stockName }) => {
        });
 
   };
+
+  const postReply = () => {
+    // POST 요청할 API 주소입니다.
+    const url = '/api/v1/community/reply';
+
+    // header에 담을 정보를 설정합니다.
+    const headers = {
+      'Content-Type': 'application/json',
+      'X-AUTH-TOKEN' : sessionStorage.getItem("token")
+      // 추가적인 헤더 정보를 넣으실 수 있습니다.
+    };
+
+    // body에 담을 정보를 설정합니다.
+    const data = {
+      comment: newReply,
+      targetCommentId: 0
+      // 추가적인 body 정보를 넣으실 수 있습니다.
+    };
+
+    // Axios를 이용해 POST 요청을 보냅니다.
+    axios.post(url, data, { headers })
+      .then((response) => {
+        console.log('응답 성공:', response.data);
+      })
+      .catch((error) => {
+        console.error('요청 실패:', error);
+        console.error('오류 메시지:', error.message); // 추가적인 오류 메시지 출력
+        console.error('오류 객체:', error.response); // 응답 객체 출력 (응답 코드, 응답 데이터 등)
+      });
+
+ };
+
+ //해당 주식의 커뮤니티 댓글(대댓글은 개수만) 가져오기
+  useEffect (() => {
+    const stockId = '005930'; // 주식 종목 코드
+
+    // GET 요청을 보낼 URL 설정 (query parameter 포함)
+    const apiUrl = `/api/v1/community/get=${stockId}`;
+
+    // header에 담을 정보를 설정합니다.
+    const headers = {
+      //'Content-Type': 'application/json',
+      'X-AUTH-TOKEN' : sessionStorage.getItem("token")
+      // 추가적인 헤더 정보를 넣으실 수 있습니다.
+    };
+    
+    axios.get(apiUrl, {headers})
+      .then(response => {
+        console.log('응답 데이터:', response.data);
+        
+      })
+      .catch(error => {
+        console.error('에러 발생:', error);
+      });
+}, []);
+
+//해당 주식의 커뮤니티 댓글(대댓글 정보 포함) 가져오기
+
   
   
   return (
@@ -176,15 +232,23 @@ const Community = ({ stockName }) => {
                         ) : (
                         <>
                             <div>{comment.text}</div>
-                            <div onClick={() => handleEdit(index)}>
-                            <button state="edit">수정</button>
-                            </div>
-                            <div onClick={() => handleDelete(index)}>
-                            <button state="delete">삭제</button>
-                            </div>
+                            <span onClick={() => setShowActions(!showActions)} className="edit-icon">✏️</span>
+                            {showActions && (
+                              <div className="actions">
+                                <div onClick={() => handleEdit(index)}>
+                                <Button state="edit">수정</Button>
+                                </div>
+                                <div onClick={() => handleDelete(index)}>
+                                <Button state="delete">삭제</Button>
+                                </div>
+                                
+                              </div>
+                            )}
                             <div onClick={() => handleReply(index)}>
-                            <Button state="comment">대댓글 작성</Button>
-                            </div>
+                                <Button state="reply">대댓글 작성</Button>
+                                </div>
+                            
+                            
                             
                             <div className="repliesContainer">
                            {/* 대댓글 목록 */}
@@ -192,7 +256,7 @@ const Community = ({ stockName }) => {
                                 <div className="reply" key={replyIndex}>
                                 {reply}
                                 <div onClick={() => handleDeleteReply(index, replyIndex)}>
-                                    <button state="delete">삭제</button>
+                                    <Button state="delete">삭제</Button>
                                 </div>
                                 </div>
                             ))}
@@ -207,7 +271,7 @@ const Community = ({ stockName }) => {
                                     placeholder="대댓글을 입력하세요"
                                 />
                                 <div type="submit" className="replybtn">
-                                <Button state="comment">대댓글 작성</Button></div>
+                                <Button onClick={postReply} state="reply">대댓글 작성</Button></div>
                             
                                 </form>
                             )}
@@ -241,7 +305,7 @@ const Community = ({ stockName }) => {
                     onChange={handleInputChange}
                     placeholder="댓글을 입력하세요"
                     />
-                    <button onClick={wrtieComment} type="submit">작성</button>
+                    <button onClick={postComment} type="submit">작성</button>
                 </form>
             </div>
         </div>
