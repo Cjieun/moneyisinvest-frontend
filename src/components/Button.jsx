@@ -3,8 +3,10 @@ import React from "react";
 import { css } from "@emotion/react";
 
 /* 매도: stocksell, 매수: stockbuy, 장바구니 구매하기: shopping, *담기: basket, *구매: buy,
-로그인: login, 글쓰기: write, *댓글: comment, *마이페이지: mine, *거래내역: interest, *문의사항: ask
-인증하기: signConfirm, 문의사항글쓰기: askWrite 문의사항업로드: askUpload 문의사항상세: askDetail*/
+로그인: login, 글쓰기: write, *댓글: comment, 댓글수정: edit, 댓글삭제: delete, 대댓글작성: reply, *마이페이지: mine, *거래내역: interest, *문의사항: ask
+인증하기: signConfirm, 문의사항글쓰기: askWrite 문의사항업로드: askUpload*/
+
+
 
 const buttonwidth = {
     default: "5.0625rem",
@@ -15,6 +17,9 @@ const buttonwidth = {
     signup: "23.625rem",
     write: "2rem",
     comment: "2.9375rem",
+    edit: "2.9375rem",
+    delete: "2.9375rem",
+    reply: "2.9375rem",
     mine: "2.9375rem",
     signConfirm: "2.9375rem"
 };
@@ -26,12 +31,18 @@ const buttonheight = {
     signup: "3.25rem",
     write: "5.75rem",
     comment: "1.1875rem",
+    delete: "1.1875rem",
+    edit: "1.1875rem",
+    reply: "1.1875rem",
     mine: "1.1875rem",
     signConfirm: "1.1875rem"
 }
 const buttonradius = {
     default: "0.4375rem",
     comment: "0.1875rem",
+    edit: "0.1875rem",
+    delete: "0.1875rem",
+    reply: "0.1875rem",
     login: "0.625rem",
     signup: "0.625rem",
     mine: "0.1875rem",
@@ -40,6 +51,7 @@ const buttonradius = {
 const buttonborder = {
     default: "none",
     comment: "0.0625rem solid #3EB7AF",
+    reply: "0.0625rem solid #3EB7AF",
     basket: "0.0625rem solid #3EB7AF",
     mine: "0.0625rem solid #3EB7AF",
     interest: "0.0625rem solid #3EB7AF",
@@ -51,6 +63,7 @@ const buttonbackground = {
     stockbuy: "#69A5FF",
     stocksell: "#FF7474",
     comment: "none",
+    reply: "none",
     basket: "none",
     mine: "none",
     interest: "none",
@@ -69,6 +82,9 @@ const buttonsize = {
     stocksell: "1rem",
     stockbuy: "1rem",   
     comment: "0.625rem",
+    edit: "0.625rem",
+    delete: "0.625rem",
+    reply: "0.625rem",
     mine: "0.625rem",
     login: "0.875rem",
     signup: "0.875rem",
@@ -87,7 +103,10 @@ const buttontext = {
     basket: "장바구니",
     buy: "구매하기",
     login: "로그인",
-    comment: "완료",
+    comment: "작성",
+    edit: "수정",
+    delete: "삭제",
+    reply: "대댓글",
     mine: "변경",
     interest: "취소하기",
     ask: "삭제하기",
