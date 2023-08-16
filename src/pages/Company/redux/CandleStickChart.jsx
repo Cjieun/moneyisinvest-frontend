@@ -15,25 +15,17 @@ const processData = (data, realTimeData) => {
     return [];
   }
 
-  const realTimeDataByDate = realTimeData && realTimeData.length > 0 ? realTimeData.slice(-1).reduce((dataMap, item) => {
+  const realTimeDataByDate = realTimeData && realTimeData.length > 0 ? realTimeData.reduce((dataMap, item) => {
     if(item.currnet_time) {
-      const year = item.currnet_time.slice(0, 4);
-      const month = item.currnet_time.slice(5, 7) - 1;
-      const day = item.currnet_time.slice(8, 10);
-      const dateStr = new Date(year, month, day).toDateString();
-  
+      const dateStr = new Date(item.currnet_time).toDateString();
       dataMap[dateStr] = item;
     }
     
     return dataMap;
-  }, {}) : {};  
+  }, {}) : {};
 
-  return data.map((item) => {
-    const year = item.current_date.slice(0, 4);
-    const month = item.current_date.slice(4, 6) - 1;
-    const day = item.current_date.slice(6, 8);
-
-    const date = new Date(year, month, day);
+  const result = data.map((item) => {
+    const date = new Date(item.current_date.slice(0,4), item.current_date.slice(4,6)-1, item.current_date.slice(6,8));
     const dateStr = date.toDateString();
     const realTimeDataForDate = realTimeDataByDate[dateStr];
 
@@ -59,6 +51,24 @@ const processData = (data, realTimeData) => {
       };
     }
   });
+
+  const latestDate = result[result.length - 1].x;
+  const latestRealTimeData = realTimeData[realTimeData.length - 1];
+  const latestRealTimeDate = new Date(latestRealTimeData.currnet_time).toDateString();
+
+  if (latestDate.toDateString() !== latestRealTimeDate) {
+    result.push({
+      x: new Date(latestRealTimeData.currnet_time),
+      y: [
+        Number(latestRealTimeData.stock_open_price),
+        Number(latestRealTimeData.stock_high_price),
+        Number(latestRealTimeData.stock_low_price),
+        Number(latestRealTimeData.stock_price),
+      ],
+    });
+  }
+
+  return result;
 };
 
 const CandleStickChart = ({ chartData, realTimeData = []}) => {

@@ -15,6 +15,7 @@ import axios from "axios";
 import {ReactComponent as Profile} from "../../assets/images/profile.svg";
 import {ReactComponent as CommentHeart} from "../../assets/images/commentHeart.svg";
 import {ReactComponent as Comment} from "../../assets/images/comment.svg";
+import {ReactComponent as Education} from "../../assets/images/더보기 화면.svg";
 
 
 export default function Company({handleSetCompanyName}) {
@@ -110,6 +111,14 @@ export default function Company({handleSetCompanyName}) {
 
     }, [dispatch, stockId]);      
 
+      // useState를 사용하여 Education 컴포넌트 표시 상태를 저장합니다.
+        const [isEducationVisible, setIsEducationVisible] = useState(false);
+
+        // 클릭 이벤트 핸들러를 작성합니다.
+        const handleCompanyHelpClick = () => {
+            setIsEducationVisible(!isEducationVisible);
+        };
+
     const newsItem = news.map((item) => (
         <div className="companynewsList">
             <div className="companynewsItems" onClick={() => window.open(item.newsUrl)}>
@@ -149,13 +158,14 @@ export default function Company({handleSetCompanyName}) {
                     <div className="companyChart">
                         <StockChart stock={stock} storedStock={storedStock}/>
                     </div>
-                    <div className="companyHelp">
+                    <div className="companyHelp" onClick={handleCompanyHelpClick}>
                         <div className="companyHelpText">
                             <Warning className="companyStockIcon"/>
                             <div>주식 차트에도 패턴이 있다는 거 알고 계신가요?</div>
                         </div>
                         <FiChevronDown className="companyStockDown"/>
                     </div>
+                    {isEducationVisible && <Education className="companyEducation"/>}
                     <div className="companyInfo">
                         <div className="companyInfoTitle">
                             <div className="companyName">{companyName}</div>
