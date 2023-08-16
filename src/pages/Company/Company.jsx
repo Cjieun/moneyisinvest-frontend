@@ -9,6 +9,7 @@ import { FiChevronDown } from "react-icons/fi";
 import {ReactComponent as Warning} from "../../assets/images/warning.svg";
 import StockTime from "./StockTime";
 import {ReactComponent as Heart} from "../../assets/images/heart.svg";
+import {ReactComponent as FilledHeart} from "../../assets/images/filledHeart.svg";
 import Button from "components/Button";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
@@ -27,6 +28,8 @@ export default function Company({handleSetCompanyName}) {
     const [stockName, setStockName] = useState('');
     const [news, setNews] = useState([]);
     const [community, setCommunity] = useState([]);
+    const [isOpen, setIsOpen] = useState();
+    const [holiday, setHoliday] = useState("");
 
     const { stockId } = useParams(); // URL로부터 supportId를 가져옵니다.
 
@@ -57,11 +60,29 @@ export default function Company({handleSetCompanyName}) {
         apiClient.post("/api/v1/stock/get/stockByDay", {
             stockCode: stockId,
         }).then((res) => {
-            console.log(res.data);
+            console.log("일별 주식 조회",res.data);
             dispatch(storeStock(res.data));
         }).catch(err => {
-            console.log(err);
+            console.log("일별 주식 조회 실패",err);
         })
+
+        apiClient.get("/api/v1/stock/holiday/now")
+          .then(response => {
+            console.log('장 시간 데이터:', response.data.opened);
+            setIsOpen(response.data.opened);
+            setHoliday(response.data.reason);
+          })
+          .catch(error => {
+            console.error('장 시간 조회 에러:', error);
+          });
+
+        /*apiClient.get("/api/v1/stock/holiday/year")
+          .then(response => {
+            console.log('공휴일 데이터:', response.data);
+          })
+          .catch(error => {
+            console.error('공휴일 조회 에러:', error);
+          });*/
 
         const newsapiUrl = `/api/v1/stock/get/news?stockId=${stockId}`;
         apiClient.get(newsapiUrl)
@@ -106,18 +127,50 @@ export default function Company({handleSetCompanyName}) {
         return () => {
             stockSocket.close();
         };
-
-
-
     }, [dispatch, stockId]);      
 
-      // useState를 사용하여 Education 컴포넌트 표시 상태를 저장합니다.
-        const [isEducationVisible, setIsEducationVisible] = useState(false);
+    // useState를 사용하여 Education 컴포넌트 표시 상태를 저장
+    const [isEducationVisible, setIsEducationVisible] = useState(false);
 
-        // 클릭 이벤트 핸들러를 작성합니다.
-        const handleCompanyHelpClick = () => {
-            setIsEducationVisible(!isEducationVisible);
-        };
+    // 클릭 이벤트 핸들러를 작성
+    const handleCompanyHelpClick = () => {
+        setIsEducationVisible(!isEducationVisible);
+    };
+
+    // useState를 사용하여 하트의 토글 상태를 저장
+    const [isHeartFilled, setIsHeartFilled] = useState(false);
+
+    // 하트 클릭 시 상태를 변경하는 함수를 작성
+    const handleHeartClick = () => {
+        setIsHeartFilled(!isHeartFilled);
+    
+        const token = sessionStorage.getItem("token");
+        const id = sessionStorage.getItem("id");
+    
+        if (!isHeartFilled) {
+        apiClient.post(`/api/v1/favorite/add/stockId=${stockId}/uid=${id}`, {
+            headers: {
+            "X-AUTH-TOKEN": token,
+            },
+        })
+            .then((res) => {
+            console.log("관심 주식 추가",res.data);
+            }).catch(err => {
+            console.log(err);
+            });
+        } else {
+        apiClient.delete(`/api/v1/favorite/remove/stockId=${stockId}/uid=${id}`, {
+            headers: {
+            "X-AUTH-TOKEN": token,
+            },
+        })
+            .then((res) => {
+            console.log("관심 주식 삭제", res.data);
+            }).catch(err => {
+            console.log(err);
+            });
+        }
+    };  
 
     const newsItem = news.map((item) => (
         <div className="companynewsList">
@@ -131,7 +184,7 @@ export default function Company({handleSetCompanyName}) {
     ))
 
     const communityItem = community.map((item) => (
-        <div className="companycommunityList">
+        <div className="companycommunityList" key={item.id}>
             <div className="companycommunityProfile">
                 <Profile className="companycommunityProfileImg" />
                 <div className="companycommunityName">{item.name}</div>
@@ -167,24 +220,38 @@ export default function Company({handleSetCompanyName}) {
                     </div>
                     {isEducationVisible && <Education className="companyEducation"/>}
                     <div className="companyInfo">
-                        <div className="companyInfoTitle">
-                            <div className="companyName">{companyName}</div>
-                            <div className="companyMyStock">나는 이 주식을 총 100 주 보유하고 있어요</div>
-                        </div>
-                        <div className="companyInfoContent">
-                            <div className="companyStockDeal">
-                                <div className="companyStockDeal-stock">694스톡</div>
-                                <div className="companyStockDeal-price">69,400원</div>
-                                <StockTime />
-                            </div>
-                            <div className="companyStockBtn">
-                                <Heart className="companyStockHeart"/>
-                                <div className="companyStockDealBtn">
-                                    <Button state="stocksell"/>
-                                    <Button state="stockbuy"/>
+                        <div className="companyInformation">
+                            <div className="companyInfoTitle">
+                                <div className="companyName">{companyName}</div>
+                                <div className="companyStockDeal">
+                                    <div className="companyStockDeal-stock">694스톡</div>
+                                    <div className="companyStockDeal-price">69,400원</div>
                                 </div>
                             </div>
+                            <div className="companyInfoContent">
+                                <StockTime isOpen={isOpen} holiday={holiday}/>
+                            </div>
                         </div>
+                        <div className="companyStockBtn">
+                            <div className="companyStockDealBtn">
+                                {isHeartFilled ? (
+                                    <FilledHeart
+                                        onClick={handleHeartClick}
+                                        className="companyStockHeart"
+                                        color="#85D6D1"
+                                    />
+                                    ) : (
+                                    <Heart
+                                        onClick={handleHeartClick}
+                                        className="companyStockHeart"
+                                        color="#85D6D1"
+                                    />
+                                )}
+                                <Button state="stocksell"/>
+                                <Button state="stockbuy"/>
+                            </div>
+                        </div>
+
                     </div>
                     <div className="companyNews">
                         <div className="companyNewsText">
@@ -222,56 +289,56 @@ export default function Company({handleSetCompanyName}) {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
+                                    <td>매출액(억원)</td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
+                                    <td>영업이익(억원)</td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
+                                    <td>당기순이익(억원)</td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td></td>
+                                    <td>부채비율(%)</td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
+                                    <td>당좌비율(%)</td>
                                     <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>유동비율(%)</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>PER(배)</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>PBR(배)</td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
