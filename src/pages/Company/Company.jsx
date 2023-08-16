@@ -17,6 +17,8 @@ import {ReactComponent as Profile} from "../../assets/images/profile.svg";
 import {ReactComponent as CommentHeart} from "../../assets/images/commentHeart.svg";
 import {ReactComponent as Comment} from "../../assets/images/comment.svg";
 import {ReactComponent as Education} from "../../assets/images/더보기 화면.svg";
+import StockMessage from "./StockMessage";
+import Message from "./Message";
 
 
 export default function Company({handleSetCompanyName}) {
@@ -145,10 +147,9 @@ export default function Company({handleSetCompanyName}) {
         setIsHeartFilled(!isHeartFilled);
     
         const token = sessionStorage.getItem("token");
-        const id = sessionStorage.getItem("id");
     
         if (!isHeartFilled) {
-        apiClient.post(`/api/v1/favorite/add/stockId=${stockId}/uid=${id}`, {
+        apiClient.post(`/api/v1/favorite/post/stockId=${stockId}`, {
             headers: {
             "X-AUTH-TOKEN": token,
             },
@@ -159,7 +160,7 @@ export default function Company({handleSetCompanyName}) {
             console.log(err);
             });
         } else {
-        apiClient.delete(`/api/v1/favorite/remove/stockId=${stockId}/uid=${id}`, {
+        apiClient.delete(`/api/v1/favorite/remove/stockId=${stockId}`, {
             headers: {
             "X-AUTH-TOKEN": token,
             },

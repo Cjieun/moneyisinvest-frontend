@@ -4,7 +4,8 @@ import { css } from "@emotion/react";
 
 /* 매도: stocksell, 매수: stockbuy, 장바구니 구매하기: shopping, *담기: basket, *구매: buy,
 로그인: login, 글쓰기: write, *댓글: comment, 댓글수정: edit, 댓글삭제: delete, 대댓글작성: reply, *마이페이지: mine, *거래내역: interest, *문의사항: ask
-인증하기: signConfirm, 문의사항글쓰기: askWrite 문의사항업로드: askUpload*/
+인증하기: signConfirm, 문의사항글쓰기: askWrite 문의사항업로드: askUpload +: plus -: minus 거래하기: stockDeal 거래완료: dealdone, 거래취소: dealnone
+완료: paydone, 결제취소: paynone*/
 
 
 
@@ -21,7 +22,14 @@ const buttonwidth = {
     delete: "2.9375rem",
     reply: "2.9375rem",
     mine: "2.9375rem",
-    signConfirm: "2.9375rem"
+    signConfirm: "2.9375rem",
+    plus: "3.75rem",
+    minus: "3.75rem",
+    stockDeal: "22.6875rem",
+    dealdone: "7.5rem",
+    dealnone: "7.5rem",
+    paydone: "8.875rem",
+    paynone: "10.31463rem",
 };
 const buttonheight = {
     default: "2.125rem",
@@ -35,7 +43,14 @@ const buttonheight = {
     edit: "1.1875rem",
     reply: "1.1875rem",
     mine: "1.1875rem",
-    signConfirm: "1.1875rem"
+    signConfirm: "1.1875rem",
+    plus: "2.875rem",
+    minus: "2.875rem",
+    stockDeal: "2.625rem",
+    dealdone: "2.25rem",
+    dealnone: "2.25rem",
+    paydone: "1.93594rem",
+    paynone: "2.25rem"
 }
 const buttonradius = {
     default: "0.4375rem",
@@ -46,7 +61,7 @@ const buttonradius = {
     login: "0.625rem",
     signup: "0.625rem",
     mine: "0.1875rem",
-    signConfirm: "0.1875rem"
+    signConfirm: "0.1875rem",
 }
 const buttonborder = {
     default: "none",
@@ -68,14 +83,16 @@ const buttonbackground = {
     mine: "none",
     interest: "none",
     ask: "none",
-    signConfirm: "none"
+    signConfirm: "none",
+    stockDeal: "#3EB7AF",
 }
 const buttoncolor = {
     default: "#000",
     stockbuy: "#fff",
     stocksell: "#fff",
     mine: "#797979",
-    signConfirm: "#797979"
+    signConfirm: "#797979",
+    stockDeal: "#fff"
 }
 const buttonsize = {
     default: "0.75rem",
@@ -88,12 +105,18 @@ const buttonsize = {
     mine: "0.625rem",
     login: "0.875rem",
     signup: "0.875rem",
-    signConfirm: "0.625rem"
+    signConfirm: "0.625rem",
+    plus: "1.875rem",
+    minus: "1.875rem",
+    stockDeal: "0.875rem"
 };
 const buttonweight = {
     default: "500",
     login: "600",
     signup: "600",
+    plus: "300",
+    minus: "300",
+    stockDeal: "700"
 }
 const buttontext = {
     default: "버튼",
@@ -115,6 +138,13 @@ const buttontext = {
     askWrite: "작성하기",
     askUpload: "업로드 하기",
     askDetail: "삭제하기",
+    plus: "+",
+    minus: "-",
+    stockDeal: "거래하기",
+    dealdone: "거래 내역 확인하기",
+    dealnone: "다시 거래하기",
+    paydone: "홈으로 돌아가기",
+    paynone: "결제 페이지로 돌아가기",
 }
 export default function Button(props) {
     const button = css`
