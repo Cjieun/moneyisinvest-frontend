@@ -6,7 +6,6 @@
         justify-content: center;
         align-items: center;
         .communityContent {
-
             .communityTop{
                 flex-grow: 1;
                 padding: auto;
@@ -16,7 +15,7 @@
                 justify-content: space-between;
                 margin-top: 3.25rem;
                 margin: 2.69rem auto 1.37rem auto;
-                
+                //gap: 17.75rem;
             }
             .communityTitle {
                 color: #000;
@@ -31,7 +30,7 @@
                     .user {
                         display: flex;
                         .userName{
-                            padding: 7px;
+                            padding: 0.4375rem;
                             color: #000;
                             font-size: 1rem;
                             font-weight: 600;
@@ -39,108 +38,97 @@
                         }
                     }
                     .commentText {
-                        width: 590px;
-                        padding: 15px;
+                        width: 37.25rem;
+                        padding: 0.9375rem;
                     }
                     .group {
                         display: flex;
                         flex-direction: row;
-                        border-bottom: 1px solid var(--line, #E4E4E4);
+                        border-bottom: 1px solid var(--line, #ABE2DF);
                         padding-bottom: 1rem;
                         margin-bottom: 1rem;
                     }
+                    .likeCount, replyCount {
+                        margin-right: 0.5rem; 
+                    }
                     .repliesContainer {
-                        margin-left: 40px;
-                        padding: 10px;
+                        margin-left: 2.5rem;
+                        padding: 0.625rem;
                         justify-content: space-between;
+                        align-items: center;
                         .reply {
                             display: flex;
                             flex-direction: row;
-                            padding: 5px;
+                            align-items: center;
+                            padding: 1rem;
                             .replyText {
-                                width: 300px;
+                                width: 30rem;
+                                padding: 0.3125rem;
                             }
-                            .replyUser {
+                            .replyUserName {
                                 display: flex;
                                 color: #000;
                                 font-size: 1rem;
                                 font-weight: 600;
-                                .replyUserName {
-                                    padding: 7px;
-                                }
+                                padding-left: 0.3125rem;
+                                
                             }
-                            
+                        }
+                        .inputReplyForm {
+                            align-items: center;
+                            margin-top: 2rem;
+                            .replyUserName {
+                                padding-left: 0.3125rem;
+                                color: #000;
+                                font-size: 1rem;
+                                font-weight: 600;
+                            }
+                            .inputReply {
+                                width: 30.5rem;
+                                padding: 0.3125rem;
+                            }
+                            .replybtn {
+                                margin-left:0.5rem
+                            }
                         }
                     }
-
                 }
-                
                 div {
-                    margin-right: 10px;
+                    margin-right: 0.625rem;
                 }
-                
-
             }
             .newComment {
                 display: flex;
                 flex-direction: row;
-                /*vertical-align: middle;  수직 가운데 정렬 */
-                /*justify-content: center;  세로 중앙 정렬 */
+                .postComment {
+                    display: flex;
+                    align-items: center;
+                    .postUserName {
+                        color: #000;
+                        font-size: 1rem;
+                        font-weight: 600;
+                        padding-left: 0.3125rem;
+                    }
+                    .inputComment {
+                        width: 37.25rem;
+                        height: 5.75rem;
+                    }
+                    .postBtn {
+                        width: 2rem;
+                        height: 5.75rem;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 0.625rem;
+                        border-radius: 0.4375rem;
+                        background: #85D6D1;
+                        border-style: none;
+                    }
+                }
             }
         }
     }
 }
 
-/*.commentList {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    .writeComment {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        padding: 10px 0;
-        .repliesContainer {
-            margin-left: 40px;
-            justify-content: space-between;
-            .reply {
-                display: flex;
-                flex-direction: column;
-                margin: 5px;
-              }
-          }
-    }
-}*/
-
-/**.searchBox {
-    width: 472px;
-    height: 48px;
-    flex-shrink: 0;
-    border-radius: 30px;
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-right: 2rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    border-style: solid;
-    border-color: #D1EFEE;
-    .search {
-        color: #B0B0B0;
-        font-size: 14pt;
-        font-weight: 500;
-        text-align: center;
-        margin: auto 0 auto 1.25rem;
-    }
-    .searchLogo {
-        width: 1.5rem;
-        height: 1.5rem;
-        flex-shrink: 0;
-        margin: auto 0.94rem auto 0;
-    }
-} */
-
-/* 서치박스 */
 .Search {
     width: 29.5rem;
     height: 3rem;
@@ -160,20 +148,15 @@
     }
   }
 
-
-
-
-  
- 
 .inputComment {
-    width: 596px;
-    height: 92px;
-    margin: 10px;
-    border-radius: 10px;
+    width: 37.25rem;
+    height: 5.75rem;
+    margin: 0.625rem;
+    border-radius: 0.625rem;
     border: none;
     background: #F0F9F8;
-    font-size: 14pt;
-    padding: 10px;
+    font-size: 0.875rem;
+    padding: 0.625rem;
     outline-color: #85D6D1;
     resize: none;
 }
@@ -181,12 +164,14 @@
 .inputReplyForm {
     display: flex;
     align-items: center;
+    
     .inputReply {
         resize: none;
         outline-color: #F0F9F8;
+        width: 25rem;
+        border: none;
     }
 }
-
 
 .pagination {
     display: flex;

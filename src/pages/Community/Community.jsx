@@ -6,6 +6,7 @@ import Footer from "components/Footer";
 import {ReactComponent as ProfileImage} from "../../assets/images/profile.svg";
 import {ReactComponent as Search} from "../../assets/images/search.svg";
 import axios from "axios";
+import { RxHeartFilled, RxHeart, RxChatBubble, RxDotsVertical } from "react-icons/rx";
 
 const Community = ({ stockName }) => {
   const [comments, setComments] = useState([]);
@@ -13,8 +14,14 @@ const Community = ({ stockName }) => {
   const [editIndex, setEditIndex] = useState(-1);
   const [replyIndex, setReplyIndex] = useState(-1); // 현재 대댓글을 작성중인 댓글 인덱스
   const [newReply, setNewReply] = useState('');
-  const [likeStatus, setLikeStatus] = useState([]); // 각 댓글의 좋아요 상태를 저장하는 배열
   const [showActions, setShowActions] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+
+  const toggleLike = () => {
+    setIsLiked(!isLiked);
+    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+  };
 
   const handleInputChange = (event) => {
     setNewComment(event.target.value);
@@ -260,7 +267,9 @@ const deleteComment = async (id, index) => {
                         <>
                             <div className="group">
                             <div className="commentText">{comment.text}</div>
-                            <span onClick={() => setShowActions(!showActions)} className="edit-icon">✏️</span>
+                            <span className="likeCount" onClick={toggleLike}><RxHeart/><span >{likeCount}</span></span>
+                            <span className="replyCount"><RxChatBubble/></span>
+                            <span onClick={() => setShowActions(!showActions)} className="edit-icon"><RxDotsVertical/></span>
                             {showActions && (
                               <div className="actions">
                                 <div onClick={() => handleEdit(index)}>
@@ -279,7 +288,8 @@ const deleteComment = async (id, index) => {
                            {/* 대댓글 목록 */}
                            {comment.replies.map((reply, replyIndex) => (
                                 <div className="reply" key={replyIndex}>
-                                  <div className="replyUser"><ProfileImage /><div className="replyUserName">최지은</div></div>
+                                  <div className="replyUser"><ProfileImage /></div>
+                                  <div className="replyUserName">최지은</div>
                                 <div className="replyText">{reply}</div>
                                 <div onClick={() => handleDeleteReply(index, replyIndex)}>
                                     <Button state="delete">삭제</Button>
@@ -291,6 +301,7 @@ const deleteComment = async (id, index) => {
                             {replyIndex === index && (
                                 <form onSubmit={(event) => handleReplySubmit(event, index)} className="inputReplyForm">
                                 <div><ProfileImage /></div>
+                                <div className="replyUserName">최지은</div>
                                 <textarea
                                     className="inputReply"
                                     value={newReply}
@@ -323,16 +334,17 @@ const deleteComment = async (id, index) => {
             <div className="newComment">
                 {/* 새로 작성하는 댓글 입력창 */}
                 <form 
-                className="writeComment"
+                className="postComment"
                 onSubmit={handleSubmit}>
                     <ProfileImage />
+                    <div className="postUserName">최지은</div>
                     <textarea
                     className="inputComment"
                     value={editIndex === -1 ? newComment : ''} 
                     onChange={handleInputChange}
                     placeholder="댓글을 입력하세요"
                     />
-                    <button onClick={postComment} type="submit">작성</button>
+                    <button onClick={postComment} type="submit" className="postBtn">작성</button>
                 </form>
             </div>
         </div>
