@@ -13,6 +13,10 @@ import StockChartCard from "./redux/StockChartCard";
 import axios from "axios";
 
 export default function UserMain() {
+
+    const apiClient = axios.create({
+        baseURL: process.env.REACT_APP_API_URL,
+    });
     
     const [ranking] = useState([
         {
@@ -52,6 +56,9 @@ export default function UserMain() {
         },
 
     ])
+
+    const [holdStock, setHoldStock] = useState([]);
+    const [interestStock, setInterestStock] = useState([]);
     
     const dispatch = useDispatch();
     const rank = useSelector(state => state.rank);
@@ -61,7 +68,7 @@ export default function UserMain() {
     useEffect(() => {
         const stockRankWebSocketUrl = 'ws://127.0.0.1:8080/stockRank';
         
-        axios.get("/api/v1/stock/get/kospi")
+        apiClient.get("/api/v1/stock/get/kospi")
         .then((res) => {
             console.log(res.data);
             dispatch(updateKOSPIData(res.data));
@@ -79,7 +86,7 @@ export default function UserMain() {
             }
         });
 
-        axios.get("/api/v1/stock/get/kosdaq")
+        apiClient.get("/api/v1/stock/get/kosdaq")
         .then((res) => {
             console.log(res.data);
             dispatch(updateKOSDAQData(res.data));
@@ -96,7 +103,58 @@ export default function UserMain() {
                 console.log("General error:", err.message);
             }
         });
+
+        const token = sessionStorage.getItem("token");
+        if (token !== null) {
+            apiClient.get("/api/v1/favorite/get", {
+                headers: {
+                    'X-Auth-Token': token,
+                }
+            })
+            .then((res) => {
+                console.log("관심 주식 렌더링 성공",res);
+                setInterestStock(res.data);
+            })
+            .catch((err) => {
+                if (err.response) {
+                    // 서버 응답이 온 경우 (에러 응답)
+                    console.log("Error response:", err.response.status, err.response.data);
+                } else if (err.request) {
+                    // 요청은 보내졌지만 응답이 없는 경우 (네트워크 오류)
+                    console.log("Request error:", err.request);
+                } else {
+                    // 오류가 발생한 경우 (일반 오류)
+                    console.log("General error:", err.message);
+                }});
+        } else {
+            console.log("Token is null. Unable to send request.");
+        }
         
+        if (token !== null) {
+            apiClient.get("/api/v1/stock/get/users/stocks", {
+                headers: {
+                    'X-Auth-Token': token,
+                }
+            })
+            .then((res) => {
+                console.log("보유 주식 렌더링 성공",res);
+                setHoldStock(res.data)
+            })
+            .catch((err) => {
+                if (err.response) {
+                    // 서버 응답이 온 경우 (에러 응답)
+                    console.log("Error response:", err.response.status, err.response.data);
+                } else if (err.request) {
+                    // 요청은 보내졌지만 응답이 없는 경우 (네트워크 오류)
+                    console.log("Request error:", err.request);
+                } else {
+                    // 오류가 발생한 경우 (일반 오류)
+                    console.log("General error:", err.message);
+                }});
+        } else {
+            console.log("Token is null. Unable to send request.");
+        }
+
         // 주식 랭킹 웹소켓 열기
         const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
         stockRankSocket.onopen = () => {
@@ -122,14 +180,20 @@ export default function UserMain() {
     // 받아온 값 자르기 예시
     const numberOfItemsToShow = 3;
     const filteredData = ranking.slice(0, numberOfItemsToShow);
+    const filteredDataFavorite = filteredData.slice(0, numberOfItemsToShow);
     const userStock = filteredData.map((item, index) => (
-        <UserCard item={item} index={index} key={index} />
+        <UserCard item={item} index={index} key={index} isHold={true}/>
     ));
+
+    const favoriteStock = filteredDataFavorite.map((item, index) => (
+        <UserCard item={item} index={index} key={index} isHold={false}/>
+    ));
+
 
     const topItem = [];
     for (let i = 0; i < rank.length; i += 3) {
         topItem.push(
-            <TopCard ranking={rank} startIdx={i} endIdx={i + 3} key={i}/>
+            <TopCard ranking={rank} startIdx={i} endIdx={i + 3} key={i} isHold={false}/>
         );
     }
 
@@ -174,7 +238,7 @@ export default function UserMain() {
                                 </Link>
                             </div>
                             <div className="userStockCard">
-                                {userStock}
+                                {favoriteStock}
                             </div>
                         </div>
                         <div className="topStockBox">

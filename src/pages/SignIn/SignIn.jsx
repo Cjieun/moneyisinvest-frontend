@@ -61,7 +61,7 @@ export default function SignIn({setIsLoggedIn}) {
             setIsId(false);
             setIdMessage("");
         } else {
-        apiClient
+        axios
             .post("/api/v1/sign-in", {
                 password: inputPw,
                 uid: inputId,
