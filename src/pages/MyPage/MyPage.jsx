@@ -46,7 +46,7 @@ export default function MyPage({setIsLoggedIn}) {
     useEffect (() => {
         const token = sessionStorage.getItem("token");
         if (token !== null) {
-            apiClient.get("/api/v1/user/detail", {
+            apiClient.get("/api/v1/profile/user/detail", {
                 headers: {
                     'X-Auth-Token': token,
                 }
