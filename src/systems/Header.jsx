@@ -28,7 +28,7 @@ export default function Header({coinNum}) {
             const token = sessionStorage.getItem('token');
             apiClient.get("/api/v1/profile/get", {
                 headers: {
-                    'X-Auth-Token': token,
+                    'X-AUTH-TOKEN': token,
                 }
             })
             .then((res) => {

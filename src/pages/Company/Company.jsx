@@ -79,7 +79,7 @@ export default function Company({handleSetCompanyName}) {
             }
         })
           .then(response => {
-            console.log('커뮤니티 응답 데이터:', response.data);
+            console.log('커뮤니티 응답 데이터:', response);
             setCommunity(response.data.slice(0, 3));
           })
           .catch(error => {
