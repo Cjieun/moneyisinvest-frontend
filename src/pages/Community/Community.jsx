@@ -52,11 +52,7 @@ const Community = ({ stockName }) => {
     setNewComment('');
   };
 
-  const handleDelete = (index) => {
-    const updatedComments = [...comments];
-    updatedComments.splice(index, 1);
-    setComments(updatedComments);
-  };
+
 
   const handleEdit = (index) => {
     // 선택한 댓글의 내용을 댓글 작성창에 표시하고 수정 모드로 설정
@@ -107,6 +103,7 @@ const Community = ({ stockName }) => {
     setCurrentPage(pageNumber);
   };
 
+  //커뮤니티 댓글 달기
   const postComment = () => {
      // POST 요청할 API 주소입니다.
      const url = '/api/v1/community/post';
@@ -138,6 +135,7 @@ const Community = ({ stockName }) => {
 
   };
 
+  //커뮤니티 대댓글 달기
   const postReply = () => {
     // POST 요청할 API 주소입니다.
     const url = '/api/v1/community/reply';
@@ -195,6 +193,34 @@ const Community = ({ stockName }) => {
 
 //해당 주식의 커뮤니티 댓글(대댓글 정보 포함) 가져오기
 
+
+//댓글 삭제
+const deleteComment = async (id, index) => {
+  // DELETE 요청할 API 주소입니다. id를 동적으로 적용해 주세요.
+  const url = `/api/v1/community/remove${id}`;
+
+  // header에 담을 정보를 설정합니다.
+  const headers = {
+    'X-AUTH-TOKEN': sessionStorage.getItem('token')
+    // 추가적인 헤더 정보를 넣으실 수 있습니다.
+  };
+
+  try {
+    // Axios를 이용해 DELETE 요청을 보냅니다.
+    await axios.delete(url, {  headers });
+
+    // API 요청이 성공적으로 이루어진 후에, 상태를 업데이트합니다.
+    const updatedComments = [...comments];
+    updatedComments.splice(index, 1);
+    setComments(updatedComments);
+  } catch (error) {
+    console.error('요청 실패:', error);
+    console.error('오류 메시지:', error.message); // 추가적인 오류 메시지 출력
+    console.error('오류 객체:', error.response); // 응답 객체 출력 (응답 코드, 응답 데이터 등)
+  }
+};
+
+
   
   
   return (
@@ -215,11 +241,11 @@ const Community = ({ stockName }) => {
             </div>
 
             <div className="commentList">
-                
                 {/* 댓글 목록 */}
                 {currentComments.map((comment, index) => (
                     <div key={index} className="writeComment">
-                        <div><ProfileImage /></div>
+                      
+                        <div className="user"><ProfileImage /> <div className="userName">손민기</div> </div>
                         {editIndex === index ? (
                         <form onSubmit={handleSubmit}>
                             <textarea
@@ -229,32 +255,32 @@ const Community = ({ stockName }) => {
                             />
                             <button type="submit">수정 완료</button>
                         </form>
+                      
                         ) : (
                         <>
-                            <div>{comment.text}</div>
+                            <div className="group">
+                            <div className="commentText">{comment.text}</div>
                             <span onClick={() => setShowActions(!showActions)} className="edit-icon">✏️</span>
                             {showActions && (
                               <div className="actions">
                                 <div onClick={() => handleEdit(index)}>
                                 <Button state="edit">수정</Button>
                                 </div>
-                                <div onClick={() => handleDelete(index)}>
+                                <div onClick={() =>  deleteComment(comment.id, index)} >
                                 <Button state="delete">삭제</Button>
                                 </div>
-                                
                               </div>
                             )}
                             <div onClick={() => handleReply(index)}>
                                 <Button state="reply">대댓글 작성</Button>
                                 </div>
-                            
-                            
-                            
+                            </div>
                             <div className="repliesContainer">
                            {/* 대댓글 목록 */}
                            {comment.replies.map((reply, replyIndex) => (
                                 <div className="reply" key={replyIndex}>
-                                {reply}
+                                  <div className="replyUser"><ProfileImage /><div className="replyUserName">최지은</div></div>
+                                <div className="replyText">{reply}</div>
                                 <div onClick={() => handleDeleteReply(index, replyIndex)}>
                                     <Button state="delete">삭제</Button>
                                 </div>
@@ -264,14 +290,15 @@ const Community = ({ stockName }) => {
                             {/* 대댓글 작성창 */}
                             {replyIndex === index && (
                                 <form onSubmit={(event) => handleReplySubmit(event, index)} className="inputReplyForm">
+                                <div><ProfileImage /></div>
                                 <textarea
                                     className="inputReply"
                                     value={newReply}
                                     onChange={handleReplyChange}
                                     placeholder="대댓글을 입력하세요"
                                 />
-                                <div type="submit" className="replybtn">
-                                <Button onClick={postReply} state="reply">대댓글 작성</Button></div>
+                                <div onClick={postReply} type="submit" className="replybtn">
+                                <Button state="reply">대댓글 작성</Button></div>
                             
                                 </form>
                             )}
@@ -298,7 +325,7 @@ const Community = ({ stockName }) => {
                 <form 
                 className="writeComment"
                 onSubmit={handleSubmit}>
-                    <div><ProfileImage /></div>
+                    <ProfileImage />
                     <textarea
                     className="inputComment"
                     value={editIndex === -1 ? newComment : ''} 

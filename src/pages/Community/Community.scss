@@ -15,6 +15,7 @@
                 flex-direction: row;
                 justify-content: space-between;
                 margin-top: 3.25rem;
+                margin: 2.69rem auto 1.37rem auto;
                 
             }
             .communityTitle {
@@ -24,23 +25,92 @@
             }
 
             .commentList {
+                .writeComment {
+                    display: flex;
+                    flex-direction: column;
+                    .user {
+                        display: flex;
+                        .userName{
+                            padding: 7px;
+                            color: #000;
+                            font-size: 1rem;
+                            font-weight: 600;
+                            line-height: normal;
+                        }
+                    }
+                    .commentText {
+                        width: 590px;
+                        padding: 15px;
+                    }
+                    .group {
+                        display: flex;
+                        flex-direction: row;
+                        border-bottom: 1px solid var(--line, #E4E4E4);
+                        padding-bottom: 1rem;
+                        margin-bottom: 1rem;
+                    }
+                    .repliesContainer {
+                        margin-left: 40px;
+                        padding: 10px;
+                        justify-content: space-between;
+                        .reply {
+                            display: flex;
+                            flex-direction: row;
+                            padding: 5px;
+                            .replyText {
+                                width: 300px;
+                            }
+                            .replyUser {
+                                display: flex;
+                                color: #000;
+                                font-size: 1rem;
+                                font-weight: 600;
+                                .replyUserName {
+                                    padding: 7px;
+                                }
+                            }
+                            
+                        }
+                    }
+
+                }
+                
                 div {
                     margin-right: 10px;
                 }
-                .reply {
-                    margin-Left: "20px";
-                    display: flex;
-                    flex-direction: row;
-                }
+                
 
             }
             .newComment {
                 display: flex;
                 flex-direction: row;
+                /*vertical-align: middle;  수직 가운데 정렬 */
+                /*justify-content: center;  세로 중앙 정렬 */
             }
         }
     }
 }
+
+/*.commentList {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    .writeComment {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 10px 0;
+        .repliesContainer {
+            margin-left: 40px;
+            justify-content: space-between;
+            .reply {
+                display: flex;
+                flex-direction: column;
+                margin: 5px;
+              }
+          }
+    }
+}*/
 
 /**.searchBox {
     width: 472px;
@@ -90,28 +160,9 @@
     }
   }
 
-.commentList {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    .writeComment {
-        /*display: flex;
-        /*flex-direction: row;*/
-        align-items: flex-start;
-        padding: 10px 0;
-    }
-}
 
-.repliesContainer {
-    margin-left: 40px;
-    justify-content: space-between;
-    .reply {
-        display: flex;
-        flex-direction: column;
-        margin: 5px;
-        
-      }
-  }
+
+
   
  
 .inputComment {
