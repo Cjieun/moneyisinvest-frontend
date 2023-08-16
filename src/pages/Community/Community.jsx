@@ -15,12 +15,21 @@ const Community = ({ stockName }) => {
   const [replyIndex, setReplyIndex] = useState(-1); // 현재 대댓글을 작성중인 댓글 인덱스
   const [newReply, setNewReply] = useState('');
   const [showActions, setShowActions] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
+  //const [isLiked, setIsLiked] = useState(false);
+  //const [likeCount, setLikeCount] = useState(0);
 
-  const toggleLike = () => {
-    setIsLiked(!isLiked);
-    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+  const handleLikeToggle = (index) => {
+    const updatedComments = [...comments];
+    const currentComment = updatedComments[index];
+
+    if (currentComment.isLiked) {
+      currentComment.likeCount -= 1;
+    } else {
+      currentComment.likeCount += 1;
+    }
+    currentComment.isLiked = !currentComment.isLiked;
+
+    setComments(updatedComments);
   };
 
   const handleInputChange = (event) => {
@@ -51,7 +60,11 @@ const Community = ({ stockName }) => {
         setEditIndex(-1);
       } else {
         // 새 댓글을 댓글 목록의 맨 위에 추가하여 최근 댓글이 가장 위에 오도록 함
-        setComments([{ id: Date.now(), text: newComment, replies: [] }, ...comments]);
+        setComments([{ id: Date.now(), 
+          text: newComment, 
+          replies: [],
+          likeCount: 0,
+          isLiked: false}, ...comments]);
       }
   
 
@@ -267,7 +280,8 @@ const deleteComment = async (id, index) => {
                         <>
                             <div className="group">
                             <div className="commentText">{comment.text}</div>
-                            <span className="likeCount" onClick={toggleLike}><RxHeart/><span >{likeCount}</span></span>
+                            <span className={`likeCount${comment.isLiked ? " liked" : ""}`}
+              onClick={() => handleLikeToggle(index)}><RxHeart/><span > {comment.likeCount}</span></span>
                             <span className="replyCount"><RxChatBubble/></span>
                             <span onClick={() => setShowActions(!showActions)} className="edit-icon"><RxDotsVertical/></span>
                             {showActions && (
