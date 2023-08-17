@@ -1,51 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./Store.scss";
 /** @jsxImportSource @emotion/react */
 import Header from 'systems/Header';
 import Button from "components/Button";
 import Footer from "components/Footer";
 import {ReactComponent as Search} from "../../assets/images/search.svg";
-
-const productsList = [
-  {
-    id: 1,
-    category: '카페',
-    name: 'Product 1',
-    price: 10000,
-    image: 'https://via.placeholder.com/68x68'
-  },
-  {
-    id: 2,
-    category: '카페',
-    name: 'Product 2',
-    price: 15000,
-    image: 'https://via.placeholder.com/68x68'
-  },
-  {
-    id: 3,
-    category: '식당',
-    name: 'Product 3',
-    price: 13000,
-    image: 'https://via.placeholder.com/68x68'
-  },
-  {
-    id: 4,
-    category: '패스트푸드',
-    name: 'Product 4',
-    price: 13000,
-    image: 'https://via.placeholder.com/68x68'
-  },
-  {
-    id: 5,
-    category: '전자기기',
-    name: 'Product 5',
-    price: 13000,
-    image: 'https://via.placeholder.com/68x68'
-  }
-];
-
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Store = () => {
+
+  //상점에 등록된 모든 상품 조회
+  const [productsList, setProductsList] = useState([
+    
+      {
+        id: 1,
+        category: '카페',
+        name: 'Product 1',
+        price: 10000,
+        image: 'https://via.placeholder.com/68x68'
+      },
+      {
+        id: 2,
+        category: '카페',
+        name: 'Product 2',
+        price: 15000,
+        image: 'https://via.placeholder.com/68x68'
+      }
+   
+  ]);
+  
+  /*useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/api/v1/shop/get/items', {
+          headers: {
+            "X-AUTH-TOKEN": token
+          }
+        });
+        setProductsList(response.data);
+        console.log('success')
+      } catch (error) {
+        // 에러 처리
+        console.error('API 요청 중 에러가 발생했습니다:', error);
+      }
+      if (!token || token.trim() === '') {
+        console.error('토큰이 누락되었습니다. 로그인 후 다시 시도해 주세요.');
+        return;
+      }
+    };
+  
+    fetchData();
+  }, []); // 빈 배열을 넣어서 컴포넌트 마운트 시에만 실행되도록 합니다.  */
+
+  //상품의 고유 ID 값으로 상품 구매
+  const navigate = useNavigate();
+
+  const onBuy = () => {
+    const token = sessionStorage.getItem("token");
+
+    if (token !== null) {
+        axios.post('/api/v1/shop/buy/items/id',{
+          params: { id: 1 }, // id
+          headers: {
+            "X-Auth-Token": token,
+          },
+            })
+            .then((res) => {
+                console.log("구매 완료",res.data);
+                navigate("/buyList", {replace: true})
+            })
+            .catch((err) => {
+                if (err.response) {
+                    // 서버 응답이 온 경우 (에러 응답)
+                    console.log("Error response:", err.response.status, err.response.data);
+                } else if (err.request) {
+                    // 요청은 보내졌지만 응답이 없는 경우 (네트워크 오류)
+                    console.log("Request error:", err.request);
+                } else {
+                    // 오류가 발생한 경우 (일반 오류)
+                    console.log("General error:", err.message);
+                }});
+    } else {
+        alert("로그인 해주세요!");
+        navigate("/signIn", {replace: true});
+        console.log("Token is null. Unable to send request.");
+    }
+}
+  
     const [cart, setCart] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -53,10 +96,10 @@ const Store = () => {
     setCart([...cart, item]);
   };
 
-  const onBuy = () => {
+  /*const onBuy = () => {
     alert("구매가 완료되었습니다!");
     setCart([]);
-  };
+  };*/
 
     // 버튼을 클릭하면 선택된 카테고리를 설정하는 함수
     const selectCategory = (category) => {

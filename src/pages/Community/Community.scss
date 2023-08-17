@@ -12,10 +12,8 @@
                 margin: auto;
                 display: flex;
                 flex-direction: row;
-                justify-content: space-between;
                 margin-top: 3.25rem;
-                margin: 2.69rem auto 1.37rem auto;
-                //gap: 17.75rem;
+                margin: 2.69rem 0 1.37rem 0; 
             }
             .communityTitle {
                 color: #000;
@@ -129,24 +127,7 @@
     }
 }
 
-.Search {
-    width: 29.5rem;
-    height: 3rem;
-    border-radius: 1.875rem;
-    border: 2px solid #D1EFEE;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0.63rem 1.31rem;
-    gap: 1.31rem;
 
-    input {
-        width: 100%;
-        border: none;
-        outline: none;
-        background: none;
-    }
-  }
 
 .inputComment {
     width: 37.25rem;
