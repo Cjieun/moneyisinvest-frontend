@@ -21,6 +21,7 @@ import TbDetail3 from "pages/Education/TbDetail3";
 import AskDetail from "pages/MyPage/AskDetail";
 import Company from "pages/Company/Company";
 import Community from "pages/Community/Community";
+import Payment from "pages/Payment/Payment";
 
 function App() {
   const [companyName, setCompanyName] = React.useState("");
@@ -67,8 +68,8 @@ function App() {
         element={<Company handleSetCompanyName={handleSetCompanyName} />}
       />
       <Route path="/Community" element={<Community />} />
+      <Route path="/pay" element={<Payment />} />
     </Routes>
-
   );
 }
 
