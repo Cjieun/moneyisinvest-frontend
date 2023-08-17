@@ -3,7 +3,6 @@ import React, {useEffect, useState} from "react";
 import { css } from "@emotion/react";
 import Button from "components/Button";
 import axios from "axios";
-import Message from "components/Message";
 import { useNavigate } from "react-router-dom";
 
 export default function StockMessage({stockId, state, onClick, stockPrice, setIsDeal}) {
@@ -92,12 +91,15 @@ export default function StockMessage({stockId, state, onClick, stockPrice, setIs
     };
 
     useEffect(() => {
-        console.log(stockId);
         const token = sessionStorage.getItem("token");
         apiClient
-        .get(`/api/v1/stock/get/users/stockQ?stockId=${stockId}`, {
+        .get(`/api/v1/stock/get/users/stockQ`, {},
+        {
           headers: {
             "X-AUTH-TOKEN": token,
+          },
+          params: {
+            stockId: stockId,
           },
         })
         .then((res) => {
@@ -113,7 +115,7 @@ export default function StockMessage({stockId, state, onClick, stockPrice, setIs
         if(state === "buy") {
           if (stock <= quantity) {
           apiClient.post("/api/v1/stock/buy", {
-          conclusion_price: String(stockNeed),
+          conclusion_price: String(stockPrice),
           stockAmount: String(quantity),
           stockCode: stockId
         }, {
@@ -150,12 +152,12 @@ export default function StockMessage({stockId, state, onClick, stockPrice, setIs
         <div css={MessageContainer} onClick={onClick}>
             <div css={MessageText}>얼마나 {state === "buy" ? "매수" : "매도"} 하실건가요?</div>
             <div css={MessageStock}>
-              <div onClick={handlePlusButtonClick}>
-                <Button state={"plus"}/>
+              <div onClick={handleMinusButtonClick}>
+                <Button state={"minus"}/>
                 </div>
                 <div css={MessageStockText}>{quantity}주</div>
-                <div onClick={handleMinusButtonClick}>
-                <Button state={"minus"}/>
+                <div onClick={handlePlusButtonClick}>
+                <Button state={"plus"}/>
                 </div>
             </div>
             <div css={MessageInfo}>

@@ -20,11 +20,11 @@ export default function StockHold() {
       apiClient
         .get("/api/v1/stock/get/users/stocks", {
           headers: {
-            "X-Auth-Token": token,
+            "X-AUTH-TOKEN": token,
           },
         })
         .then((res) => {
-          console.log("보유 주식 렌더링 성공", res.data);
+          console.log("보유 주식 렌더링 성공", res);
           
           // Check if the response data is an array before setting the state.
           if (Array.isArray(res.data)) { 
@@ -37,7 +37,7 @@ export default function StockHold() {
        .catch((err) => {/* Error handling code */});
   } else {/* Token handling code */}
   }, []);
-  
+
   const handleToggleHeart = async (index) => {
     const updatedHoldStock = [...holdStock];
     updatedHoldStock[index].favorite_status = !updatedHoldStock[index].favorite_status;

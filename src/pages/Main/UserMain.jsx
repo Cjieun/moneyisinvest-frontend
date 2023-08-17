@@ -11,6 +11,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateRanking, updateKOSPIData, updateKOSDAQData } from './redux/action';
 import StockChartCard from "./redux/StockChartCard";
 import axios from "axios";
+import { ReactComponent as Computer } from "../../assets/images/메인 배너(컴퓨터).svg";
+import { ReactComponent as Text } from "../../assets/images/메인 배너(타이틀).svg";
 
 export default function UserMain() {
 
@@ -27,8 +29,8 @@ export default function UserMain() {
     const kosdaqData = useSelector(state => state.kosdaqData);
 
     useEffect(() => {
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
+        /*const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;*/
         
         apiClient.get("/api/v1/stock/get/kospi")
         .then((res) => {
@@ -118,7 +120,7 @@ export default function UserMain() {
         }
 
         // 주식 랭킹 웹소켓 열기
-        const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
+        /*const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
         stockRankSocket.onopen = () => {
             //console.log("Top 5 Connected");
         };
@@ -136,7 +138,7 @@ export default function UserMain() {
         
         return () => {
         stockRankSocket.close();
-      };
+      };*/
     }, [dispatch]);      
 
     // 받아온 값 자르기 예시
@@ -164,7 +166,10 @@ export default function UserMain() {
             <Header/>
             <div className="MainBox">
                 <div className="MainContent">
-                    <div className="MainBannerImage"/>
+                <div className="MainBannerImage">
+                    <Text/>
+                    <Computer/>
+                    </div>
                     <div className="mainStock">
                         <div className="mainStockContent">
                             <div className="mainStockTitle" {...useScrollFadeIn('up', 1, 0)}>주요 지수</div>
