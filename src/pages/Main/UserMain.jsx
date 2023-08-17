@@ -17,45 +17,6 @@ export default function UserMain() {
     const apiClient = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
     });
-    
-    const [ranking] = useState([
-        {
-            company: "삼성전자",
-            code: "005930",
-            rate: "99.9",
-            price: "500,000",
-            value: "5,000"
-        },
-        {
-            company: "삼성전자",
-            code: "005930",
-            rate: "99.9",
-            price: "500,000",
-            value: "5,000"
-        },
-        {
-            company: "삼성전자",
-            code: "005930",
-            rate: "99.9",
-            price: "500,000",
-            value: "5,000"
-        },
-        {
-            company: "삼성전자",
-            code: "005930",
-            rate: "99.9",
-            price: "500,000",
-            value: "5,000"
-        },
-        {
-            company: "삼성전자",
-            code: "005930",
-            rate: "99.9",
-            price: "500,000",
-            value: "5,000"
-        },
-
-    ])
 
     const [holdStock, setHoldStock] = useState([]);
     const [interestStock, setInterestStock] = useState([]);
@@ -66,7 +27,8 @@ export default function UserMain() {
     const kosdaqData = useSelector(state => state.kosdaqData);
 
     useEffect(() => {
-        const stockRankWebSocketUrl = 'ws://127.0.0.1:8080/stockRank';
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
         
         apiClient.get("/api/v1/stock/get/kospi")
         .then((res) => {
@@ -179,8 +141,8 @@ export default function UserMain() {
 
     // 받아온 값 자르기 예시
     const numberOfItemsToShow = 3;
-    const filteredData = ranking.slice(0, numberOfItemsToShow);
-    const filteredDataFavorite = filteredData.slice(0, numberOfItemsToShow);
+    const filteredData = holdStock.slice(0, numberOfItemsToShow);
+    const filteredDataFavorite = interestStock.slice(0, numberOfItemsToShow);
     const userStock = filteredData.map((item, index) => (
         <UserCard item={item} index={index} key={index} isHold={true}/>
     ));

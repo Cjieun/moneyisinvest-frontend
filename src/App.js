@@ -23,6 +23,7 @@ import Company from "pages/Company/Company";
 import Community from "pages/Community/Community";
 import Payment from "pages/Payment/Payment";
 import MessagePage from "components/MessagePage";
+import Payment from "pages/Payment/Payment";
 import MyWallet from "pages/MyPage/MyWallet";
 
 function App() {
@@ -73,6 +74,7 @@ function App() {
       <Route path="/pay" element={<Payment />} />
       <Route path="/MessagePage" element={<MessagePage />} />
       <Route path="/myWallet" element={<MyWallet />} />
+      <Route path="/pay" element={<Payment />} />
     </Routes>
   );
 }

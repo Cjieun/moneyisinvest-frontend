@@ -16,6 +16,7 @@ const UserCard = ({ item, index, isHold }) => {
                 price={item.price}
                 stock={item.stockPrice}
                 isHold={isHold}
+                img={item.stockLogoUrl}
             />
         </div>
     );
