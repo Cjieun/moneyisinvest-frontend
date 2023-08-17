@@ -70,7 +70,7 @@ function App() {
         element={<Company handleSetCompanyName={handleSetCompanyName} />}
       />
       <Route path="/Community" element={<Community />} />
-      <Route path="/MessagePage" element={<MessagePage />} />
+      <Route path="/messagePage" element={<MessagePage />} />
       <Route path="/myWallet" element={<MyWallet />} />
       <Route path="/pay" element={<Payment />} />
     </Routes>

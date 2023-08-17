@@ -6,7 +6,7 @@ import axios from "axios";
 import Message from "components/Message";
 import { useNavigate } from "react-router-dom";
 
-export default function StockMessage({stockId, state, onClick, stockPrice}) {
+export default function StockMessage({stockId, state, onClick, stockPrice, setIsDeal}) {
     const MessageContainer = css`
     width: 28.1875rem;
     height: 17.25rem;
@@ -77,7 +77,7 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
     
     useEffect(() => {
       getStockNeed(quantity);
-    }, [getStockNeed, quantity]);
+    }, [quantity]);
 
     // 수량 증가 버튼 핸들러
     const handlePlusButtonClick = () => {
@@ -111,6 +111,7 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
 
       const onClickDeal = () => {
         if(state === "buy") {
+          if (stock <= quantity) {
           apiClient.post("/api/v1/stock/buy", {
           conclusion_price: String(stockNeed),
           stockAmount: String(quantity),
@@ -123,7 +124,10 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
           console.log(res.data);
           alert("거래가 완료되었습니다!");
           window.location.reload(); // 페이지 다시 로드
-        })
+        })} else {
+          alert("거래가 취소되었습니다!");
+          window.location.reload();
+        }
         } else {
           apiClient.post("/api/v1/stock/sell", {
             sell_price: String(stockPrice),
@@ -136,6 +140,7 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
           }).then((res)=> {
             console.log(res.data);
             alert("거래가 완료되었습니다!");
+            setIsDeal(true);
             window.location.reload(); // 페이지 다시 로드
           })  
         }

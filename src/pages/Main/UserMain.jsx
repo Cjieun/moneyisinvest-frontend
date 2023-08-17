@@ -143,11 +143,11 @@ export default function UserMain() {
     const numberOfItemsToShow = 3;
     const filteredData = holdStock.slice(0, numberOfItemsToShow);
     const filteredDataFavorite = interestStock.slice(0, numberOfItemsToShow);
-    const userStock = filteredData.map((item, index) => (
+    const userStock = (filteredData || []).map((item, index) => (
         <UserCard item={item} index={index} key={index} isHold={true}/>
     ));
-
-    const favoriteStock = filteredDataFavorite.map((item, index) => (
+    
+    const favoriteStock = (filteredDataFavorite || []).map((item, index) => (
         <UserCard item={item} index={index} key={index} isHold={false}/>
     ));
 
