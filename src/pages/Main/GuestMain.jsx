@@ -9,29 +9,44 @@ import { ReactComponent as Gift } from "../../assets/images/gift.svg";
 import TopCard from "pages/Main/redux/TopCard";
 import { useSelector, useDispatch } from "react-redux";
 import { updateRanking } from "./redux/action";
+import axios from "axios";
+import { ReactComponent as Computer } from "../../assets/images/메인 배너(컴퓨터).svg";
+import { ReactComponent as Text } from "../../assets/images/메인 배너(타이틀).svg";
 
 export default function GuestMain() {
   const dispatch = useDispatch();
   const ranking = useSelector((state) => state.rank);
 
   useEffect(() => {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const webSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
-    const socket = new WebSocket(webSocketUrl);
+    // 주식 랭킹 웹소켓 열기
+        /*const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
+        stockRankSocket.onopen = () => {
+            //console.log("Top 5 Connected");
+        };
+        stockRankSocket.onmessage = (event) => {
+            const receivedData = JSON.parse(event.data);
+            dispatch(updateRanking(receivedData));
+            console.log(receivedData);
+        };
+        stockRankSocket.onclose = () => {
+            //console.log("Top5 DisConnnected");
+        };
+        stockRankSocket.onerror = (event) => {
+            //console.log(event);
+        };
+        
+        return () => {
+        stockRankSocket.close();
+      };*/
+      const apiClient = axios.create({
+        baseURL: process.env.REACT_APP_API_URL,
+      });
 
-    socket.onmessage = (event) => {
-      const receivedData = JSON.parse(event.data); // 데이터가 JSON 형식이면 파싱
-      dispatch(updateRanking(receivedData));
-      console.log(event);
-    };
-
-    socket.onerror = (event) => {
-      console.log(event);
-    };
-
-    return () => {
-      socket.close();
-    };
+      apiClient.get("/api/v1/stock/get/stockRank").then((res) => {
+        const receivedData = JSON.parse(res.data);
+            dispatch(updateRanking(receivedData));
+            console.log(receivedData);
+      })
   }, [dispatch]);
 
   const topItem = [];
@@ -63,7 +78,10 @@ export default function GuestMain() {
       <Header />
       <div className="MainBox">
         <div className="MainContent">
-          <div className="MainBannerImage" />
+          <div className="MainBannerImage">
+              <Text/>
+              <Computer/>
+            </div>
           <div className="banner2">
             <div className="banner2-box">
               <SmartPhone

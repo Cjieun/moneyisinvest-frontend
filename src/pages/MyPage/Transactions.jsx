@@ -111,7 +111,6 @@
           
           fetchStockHistory();
         }, []); 
-          
         
     
         const transItem = transStock.map((item, index) => (
