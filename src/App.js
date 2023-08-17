@@ -71,6 +71,8 @@ function App() {
       />
       <Route path="/Community" element={<Community />} />
       <Route path="/messagePage" element={<MessagePage />} />
+      <Route path="/pay" element={<Payment />} />
+      <Route path="/MessagePage" element={<MessagePage />} />
       <Route path="/myWallet" element={<MyWallet />} />
       <Route path="/pay" element={<Payment />} />
     </Routes>

@@ -6,7 +6,7 @@ import Footer from "components/Footer";
 import {ReactComponent as ProfileImage} from "../../assets/images/profile.svg";
 import {ReactComponent as Search} from "../../assets/images/search.svg";
 import axios from "axios";
-import { RxHeartFilled, RxHeart, RxChatBubble, RxDotsVertical } from "react-icons/rx";
+import {  RxHeart, RxChatBubble, RxDotsVertical } from "react-icons/rx";
 
 const Community = ({ stockName }) => {
   const [comments, setComments] = useState([]);
@@ -252,12 +252,6 @@ const deleteComment = async (id, index) => {
             <div className="communityTop">
                 <div>{stockName}</div>
                 <div className="communityTitle">커뮤니티</div>
-                <div className="searchBox">
-                <div className="Search">
-                  <input type="text"/>
-                  <div><Search/></div>
-                 </div>
-                </div>
             </div>
 
             <div className="commentList">
