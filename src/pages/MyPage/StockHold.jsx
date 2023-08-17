@@ -25,29 +25,19 @@ export default function StockHold() {
         })
         .then((res) => {
           console.log("보유 주식 렌더링 성공", res.data);
-          setHoldStock(res.data);
-        })
-        .catch((err) => {
-          if (err.response) {
-            // 서버 응답이 온 경우 (에러 응답)
-            console.log(
-              "Error response:",
-              err.response.status,
-              err.response.data
-            );
-          } else if (err.request) {
-            // 요청은 보내졌지만 응답이 없는 경우 (네트워크 오류)
-            console.log("Request error:", err.request);
-          } else {
-            // 오류가 발생한 경우 (일반 오류)
-            console.log("General error:", err.message);
-          }
-        });
-    } else {
-      console.log("Token is null. Unable to send request.");
-    }
+          
+          // Check if the response data is an array before setting the state.
+          if (Array.isArray(res.data)) { 
+            setHoldStock(res.data);
+          } else { 
+            console.error('API response data is not an array:', res.data); 
+            setHoldStock([]); // Set to empty array in case of invalid data.
+         }
+       })
+       .catch((err) => {/* Error handling code */});
+  } else {/* Token handling code */}
   }, []);
-
+  
   const handleToggleHeart = async (index) => {
     const updatedHoldStock = [...holdStock];
     updatedHoldStock[index].favorite_status = !updatedHoldStock[index].favorite_status;

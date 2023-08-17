@@ -82,12 +82,15 @@ export default function Header({ coinNum }) {
     justify-content: center;
     width: 61.625rem;
     height: 3.875rem;
+    align-items: center;
   `;
   const logo = css`
     width: 9.375rem;
     height: 3.125rem;
     flex-shrink: 0;
     margin: auto 0;
+    display: flex;
+    align-items: center;
   `;
   const nav = css`
     display: inline-flex;
@@ -141,34 +144,33 @@ export default function Header({ coinNum }) {
     flex-shrink: 0;
     margin: auto 0.94rem auto 0;
   `;
-  const searchResultsContainer = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    top: 76%;
-    width: 76%;
-    min-height: auto;
-    max-height: 17.25rem;
-    overflow: scroll;
-    background-color: #fff;
-    border-radius: 0 0 0.625rem 0.625rem;
-    z-index: 10;
-    margin: auto 1.25rem;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    align-items: center;
-    justify-content: center;
-    padding-top: 0; /* 수정을 추가합니다. */
-    &::-webkit-scrollbar {
-      width: 0;
-    }
-    & > div:not(:last-child) {
-      width: 100%;
-      border-bottom: 1px solid #d1efee;
-    }
-  `;
-  const searchResultsItem = css`
+const searchResultsContainer = css`
+display: flex;
+flex-direction: column;
+align-items: center;
+position: absolute;
+top: 100%;
+width: 76%;
+min-height: auto;
+max-height: 25rem;
+overflow: scroll;
+background-color: #fff;
+border-radius: 0 0 0.625rem 0.625rem;
+z-index: -1;
+margin: auto 1.25rem;
+overflow-y: scroll;
+overflow-x: hidden;
+align-items: center;
+justify-content: center;
+padding-top: 0; /* 수정을 추가합니다. */
+&::-webkit-scrollbar {
+  width: 0;
+}
+& > div:not(:last-child) {
+  width: 100%;
+  border-bottom: 1px solid #d1efee;
+}
+`;  const searchResultsItem = css`
     height: 2.5rem;
     width: 100%;
     padding: 0.81rem 0 0.81rem 1.06rem;
@@ -322,7 +324,9 @@ export default function Header({ coinNum }) {
         <Link to="/signIn" style={{ textDecoration: "none" }} css={login}>
           <div>로그인</div>
         </Link>
+        <Link to="/myWallet" style={{ textDecoration: "none" }}>
         <div css={coin}>{stock} 스톡</div>
+        </Link>
         <Coin css={coinLogo} />
         <Link to="/mypage" style={{ textDecoration: "none" }} css={profile}>
           <div css={nickname}>{profileName}</div>

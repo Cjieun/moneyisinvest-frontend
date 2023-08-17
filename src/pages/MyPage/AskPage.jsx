@@ -116,7 +116,7 @@ export default function AskPage() {
         .then((response) => {
           alert("문의사항이 삭제되었습니다!");
           console.log("문의사항 삭제 완료", response.data);
-          window.location.reload(); // 페이지 다시 로드
+          navigate("/askPage"); // 페이지 다시 로드
         })
         .catch((err) => {
           if (err.response) {

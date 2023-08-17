@@ -73,16 +73,16 @@ export default function StockInterest() {
         jim ? (
         <div className="interestItems" keys={index}>
            <div className="holdItem-title">
-                <img alt="company" src={item.stockLogoUrl} className="holdItem-image"></img>
+                <img alt="company" src={item.stockUrl} className="holdItem-image"></img>
                 <div className="holdItem-events">
-                    <div className="holdItem-event">{item.companyName}</div>
+                    <div className="holdItem-event">{item.stockName}</div>
                     <div className="holdItem-code">{item.stockCode}</div>
                 </div>
             </div>
             <div className="holdItem-content">
-                <div className="holdItem-percent">+{item.preparation_day_before_rate}%</div>
-                <div className="holdItem-price">{item.price}원</div>
-                <div className="holdItem-price">{item.stockPrice}스톡</div>
+                <div className="holdItem-percent">+{item.rate}%</div>
+                <div className="holdItem-price">{item.real_per_price}원</div>
+                <div className="holdItem-price">{item.real_per_coin}스톡</div>
                 <div className="holdItem-heart" onClick={() => handleToggleHeart(index)}>
                     {jim ? <RxHeartFilled color="#85D6D1" /> : <RxHeart color="#85D6D1" />}
                 </div>

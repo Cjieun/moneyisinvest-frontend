@@ -21,7 +21,6 @@ import TbDetail3 from "pages/Education/TbDetail3";
 import AskDetail from "pages/MyPage/AskDetail";
 import Company from "pages/Company/Company";
 import Community from "pages/Community/Community";
-import Payment from "pages/Payment/Payment";
 import MessagePage from "components/MessagePage";
 import Payment from "pages/Payment/Payment";
 import MyWallet from "pages/MyPage/MyWallet";
@@ -71,6 +70,7 @@ function App() {
         element={<Company handleSetCompanyName={handleSetCompanyName} />}
       />
       <Route path="/Community" element={<Community />} />
+      <Route path="/messagePage" element={<MessagePage />} />
       <Route path="/pay" element={<Payment />} />
       <Route path="/MessagePage" element={<MessagePage />} />
       <Route path="/myWallet" element={<MyWallet />} />

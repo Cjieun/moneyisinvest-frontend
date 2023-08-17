@@ -94,13 +94,29 @@ export default function Company({ handleSetCompanyName }) {
         console.error("장 시간 조회 에러:", error);
       });
 
-    /*apiClient.get("/api/v1/stock/holiday/year")
-          .then(response => {
-            console.log('공휴일 데이터:', response.data);
-          })
-          .catch(error => {
-            console.error('공휴일 조회 에러:', error);
-          });*/
+      apiClient.get("/api/v1/favorite/get", {
+        headers: {
+            'X-Auth-Token': token,
+        }
+      })
+      .then((res) => {
+          console.log("관심 주식 렌더링 성공",res);
+          const favoriteStockIds = res.data.map((item) => item.stockId);
+          setIsHeartFilled(favoriteStockIds.includes(stockId));
+      })
+      .catch((err) => {
+          if (err.response) {
+              // 서버 응답이 온 경우 (에러 응답)
+              console.log("Error response:", err.response.status, err.response.data);
+          } else if (err.request) {
+              // 요청은 보내졌지만 응답이 없는 경우 (네트워크 오류)
+              console.log("Request error:", err.request);
+          } else {
+              // 오류가 발생한 경우 (일반 오류)
+              console.log("General error:", err.message);
+        }});
+
+    
 
     const newsapiUrl = `/api/v1/stock/get/news?stockId=${stockId}`;
     apiClient
@@ -237,6 +253,8 @@ export default function Company({ handleSetCompanyName }) {
     e.stopPropagation();
   };
 
+  const [isDeal, setIsDeal] = useState(false);
+
   const newsItem = news.map((item) => (
     <div className="companynewsList">
       <div
@@ -327,7 +345,9 @@ export default function Company({ handleSetCompanyName }) {
             {isPopupVisible ? (
                <div className="overlay" onClick={handleOutsideClick}>
                 <div className="stockMessage" onClick={stopPropagation}>
-                <StockMessage className="stockMessage" stockId={stockId} state={buttonState} stockPrice={stockPrice} onClick={stopPropagation}/>
+                  {isDeal ? (<Message setIsDeal={setIsDeal}/>) : (
+                    <StockMessage className="stockMessage" stockId={stockId} state={buttonState} stockPrice={stockPrice} setIsDeal={setIsDeal} onClick={stopPropagation}/>
+                  )}
                 </div>
                 </div>
             ):null}

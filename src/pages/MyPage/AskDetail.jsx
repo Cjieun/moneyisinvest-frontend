@@ -5,7 +5,7 @@ import Profile from "systems/Profile";
 import Footer from "components/Footer";
 import Button from "components/Button";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function AskDetail() {
   const apiClient = axios.create({
@@ -13,6 +13,7 @@ export default function AskDetail() {
   });
 
   const navigate = useNavigate();
+  const { supportId } = useParams(); // URL로부터 supportId를 가져옵니다.
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -24,7 +25,7 @@ export default function AskDetail() {
     try {
       const token = sessionStorage.getItem("token");
 
-      const response = await apiClient.get(`/api/v1/support/get/user-support`, {
+      const response = await apiClient.get(`/api/v1/support/get/user-support?support_id=${supportId}`, {
         headers: {
           "X-AUTH-TOKEN": token,
         },
@@ -49,7 +50,7 @@ export default function AskDetail() {
     return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
   };
 
-  const onClickDelete = (supportId) => {
+  const onClickDelete = () => {
     const token = sessionStorage.getItem("token");
     const id = sessionStorage.getItem("id");
     if (token !== null) {
@@ -63,8 +64,9 @@ export default function AskDetail() {
           },
         })
         .then((response) => {
+          alert("문의사항이 삭제되었습니다!");
           console.log("문의사항 삭제 완료", response.data);
-          window.location.href = "/askpage";
+          window.location.href = "/askPage";
         })
         .catch((err) => {
           if (err.response) {
