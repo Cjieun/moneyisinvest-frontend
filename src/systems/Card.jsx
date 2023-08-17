@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 
 /* isVisible={true} && rank={1} #3EB7AF */
 
-export default function Card({isVisible, rank, imageUrl , company, code, rate, price, stock}) {
+export default function Card({isVisible, rank, img , company, code, rate, price, stock, rateStatus, isHold}) {
     const cardContainer = css`
     width: ${isVisible ? '20.125rem' : '19.5rem'};
     height: ${isVisible ? '12.6875rem' : '12.1875rem'};
@@ -30,7 +30,7 @@ export default function Card({isVisible, rank, imageUrl , company, code, rate, p
     width: 19.5rem;
     height: 12.1875rem;
     border-radius: 1.25rem;
-    background: ${rank === 1 ? "#D1EFEE" : "#F0F9F8"};
+    background: ${rank === "1" ? "#D1EFEE" : "#F0F9F8"};
     padding-bottom: 1.81rem;
     position: ${isVisible ? 'absolute' : 'static'};
     top: 0.5rem;
@@ -84,7 +84,7 @@ export default function Card({isVisible, rank, imageUrl , company, code, rate, p
                 font-weight: 500;
             }
             .percent {
-                color: #FF1C1C;
+                color: ${rateStatus ? "#FF1C1C" : "#1C77FF"};
                 text-align: center;
                 font-size: 0.875rem;
                 font-weight: 500;
@@ -105,12 +105,12 @@ export default function Card({isVisible, rank, imageUrl , company, code, rate, p
             </div>
             <div css={card}>
                 <div className="title">
-                    <img src={imageUrl} alt={company} />
+                    <img src={img} alt={company} />
                     <div><span className="name">{company}</span><span className="code">{code}</span></div>
                 </div>
                 <div className="info">
                     <div>
-                        <div className="type">수익률</div>
+                        <div className="type">{isHold? "수익률" : "등락률"}</div>
                         <div className="percent">{rate}%</div>
                     </div>
                     <div>
