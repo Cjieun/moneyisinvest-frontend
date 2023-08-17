@@ -29,8 +29,8 @@ export default function UserMain() {
     const kosdaqData = useSelector(state => state.kosdaqData);
 
     useEffect(() => {
-        /*const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;*/
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
         
         apiClient.get("/api/v1/stock/get/kospi")
         .then((res) => {
@@ -125,7 +125,7 @@ export default function UserMain() {
         })
 
         // 주식 랭킹 웹소켓 열기
-        /*const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
+        const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
         stockRankSocket.onopen = () => {
             //console.log("Top 5 Connected");
         };
@@ -143,7 +143,7 @@ export default function UserMain() {
         
         return () => {
         stockRankSocket.close();
-      };*/
+      };
     }, [dispatch]);      
 
     // 받아온 값 자르기 예시
