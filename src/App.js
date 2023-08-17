@@ -12,6 +12,8 @@ import AllNews from "pages/News/AllNews";
 import StockHold from "pages/MyPage/StockHold";
 import StockInterest from "pages/MyPage/StockInterest";
 import BuyList from "pages/MyPage/BuyList";
+import StockTransaction from "pages/MyPage/Transactions";
+
 import GuestMain from "pages/Main/GuestMain";
 import UserMain from "pages/Main/UserMain";
 import Textbook from "pages/Education/Textbook";
@@ -25,6 +27,7 @@ import MessagePage from "components/MessagePage";
 import Payment from "pages/Payment/Payment";
 import MyWallet from "pages/MyPage/MyWallet";
 
+
 function App() {
   const [companyName, setCompanyName] = React.useState("");
 
@@ -37,6 +40,23 @@ function App() {
   );
 
   return (
+
+    <BrowserRouter>
+      <Routes>
+        <Route path="/signIn" element={<SignIn />} />
+        <Route path="/signUp" element={<SignUp />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/askpage" element={<AskPage />} />
+        <Route path="/askwrite" element={<AskWrite />} />
+        <Route path="/news" element={<News />} />
+        <Route path="/allNews" element={<AllNews />} />
+        <Route path="/stockHold" element={<StockHold />} />
+        <Route path="/stockInterest" element={<StockInterest />} />
+        <Route path="/buyList" element={<BuyList />} />
+        <Route path="/transactions" element={<StockTransaction />}/>
+      </Routes>
+    </BrowserRouter>
+
     <Routes>
       <Route path="/" element={isLoggedIn ? <UserMain /> : <GuestMain />} />
       <Route
@@ -76,6 +96,7 @@ function App() {
       <Route path="/myWallet" element={<MyWallet />} />
       <Route path="/pay" element={<Payment />} />
     </Routes>
+
   );
 }
 
