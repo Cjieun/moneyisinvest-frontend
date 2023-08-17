@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import "./MyWallet.scss";
 import Header from "../../systems/Header";
 import Footer from "components/Footer";
@@ -7,6 +7,7 @@ import MyButton from "../../components/Button";
 import {ReactComponent as Wallet} from "../../assets/images/wallet-bifold.svg";
 import {ReactComponent as Right1} from "../../assets/images/화살표 민트.svg"
 import {ReactComponent as Right2} from "../../assets/images/화살표 검정.svg";
+import axios from "axios";
 
 export default function MyWallet() {
 
@@ -21,6 +22,36 @@ export default function MyWallet() {
         state: "입금"
         }
 ])
+
+    const apiClient = axios.create({
+        baseURL: process.env.REACT_APP_API_URL,
+    });
+
+    const [walletAddress, setWalletAddress] = useState("");
+
+    const token = sessionStorage.getItem("token");
+    useEffect (() => {
+        apiClient.get("/api/v1/coin/get/address", {
+            headers: {
+                'X-AUTH-TOKEN': token
+            }
+        }).then((res) => {
+            console.log(res.data);
+            setWalletAddress(res.data);
+        },).catch((err)=> {
+            console.log(err);
+        })
+
+        apiClient.get("/api/v1/coin/get/info", {
+            headers: {
+                'X-AUTH-TOKEN': token
+            }
+        }).then((res) => {
+            console.log("지갑 정보 조회",res.data);
+        }).catch((err)=> {
+            console.log(err);
+        })
+    },[])
 
     const walletItem = wallet.map((item) => (
         <div className="myWalletItem-top">
@@ -52,7 +83,7 @@ export default function MyWallet() {
                                     <Wallet className="myWalletInfo-addressImg" />
                                     <div className="myWalletInfo-addressText">나의 지갑 주소</div>
                                 </div>
-                                <div className="myWalletInfo-addressInfo">da74458133d81dc0a40509dea51e8ce06f6f4b06a5ba181c1b0e7e9b1f0b38c</div>
+                                <div className="myWalletInfo-addressInfo">{walletAddress}</div>
                             </div>
                             <div className="myWalletInfo-info">
                                 <div className="myWalletInfo-infoTitle">지갑 생성일</div>
