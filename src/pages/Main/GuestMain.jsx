@@ -9,29 +9,24 @@ import { ReactComponent as Gift } from "../../assets/images/gift.svg";
 import TopCard from "pages/Main/redux/TopCard";
 import { useSelector, useDispatch } from "react-redux";
 import { updateRanking } from "./redux/action";
+import axios from "axios";
+import { ReactComponent as Computer } from "../../assets/images/메인 배너(컴퓨터).svg";
+import { ReactComponent as Text } from "../../assets/images/메인 배너(타이틀).svg";
 
 export default function GuestMain() {
   const dispatch = useDispatch();
   const ranking = useSelector((state) => state.rank);
 
   useEffect(() => {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const webSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
-    const socket = new WebSocket(webSocketUrl);
-
-    socket.onmessage = (event) => {
-      const receivedData = JSON.parse(event.data); // 데이터가 JSON 형식이면 파싱
+    const apiClient = axios.create({
+      baseURL: process.env.REACT_APP_API_URL,
+    });
+  
+    apiClient.get("/api/v1/stock/get/stockRank").then((res) => {
+      const receivedData = JSON.parse(res.data); // 데이터가 JSON 형식이면 파싱
       dispatch(updateRanking(receivedData));
-      console.log(event);
-    };
-
-    socket.onerror = (event) => {
-      console.log(event);
-    };
-
-    return () => {
-      socket.close();
-    };
+      console.log(res);
+    })
   }, [dispatch]);
 
   const topItem = [];
@@ -63,7 +58,10 @@ export default function GuestMain() {
       <Header />
       <div className="MainBox">
         <div className="MainContent">
-          <div className="MainBannerImage" />
+          <div className="MainBannerImage">
+              <Text />
+              <Computer />
+          </div>
           <div className="banner2">
             <div className="banner2-box">
               <SmartPhone

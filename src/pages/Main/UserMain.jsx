@@ -11,6 +11,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateRanking, updateKOSPIData, updateKOSDAQData } from './redux/action';
 import StockChartCard from "./redux/StockChartCard";
 import axios from "axios";
+import { ReactComponent as Computer } from "../../assets/images/메인 배너(컴퓨터).svg";
+import { ReactComponent as Text } from "../../assets/images/메인 배너(타이틀).svg";
 
 export default function UserMain() {
 
@@ -26,10 +28,7 @@ export default function UserMain() {
     const kospiData = useSelector(state => state.kospiData);
     const kosdaqData = useSelector(state => state.kosdaqData);
 
-    useEffect(() => {
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
-        
+    useEffect(() => {        
         apiClient.get("/api/v1/stock/get/kospi")
         .then((res) => {
             console.log(res.data);
@@ -117,26 +116,11 @@ export default function UserMain() {
             console.log("Token is null. Unable to send request.");
         }
 
-        // 주식 랭킹 웹소켓 열기
-        const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
-        stockRankSocket.onopen = () => {
-            //console.log("Top 5 Connected");
-        };
-        stockRankSocket.onmessage = (event) => {
-            const receivedData = JSON.parse(event.data);
-            dispatch(updateRanking(receivedData));
-            console.log(receivedData);
-        };
-        stockRankSocket.onclose = () => {
-            //console.log("Top5 DisConnnected");
-        };
-        stockRankSocket.onerror = (event) => {
-            //console.log(event);
-        };
-        
-        return () => {
-        stockRankSocket.close();
-      };
+    apiClient.get("/api/v1/stock/get/stockRank").then((res) => {
+      const receivedData = JSON.parse(res.data); // 데이터가 JSON 형식이면 파싱
+      dispatch(updateRanking(receivedData));
+      console.log(res);
+    })
     }, [dispatch]);      
 
     // 받아온 값 자르기 예시
@@ -164,7 +148,10 @@ export default function UserMain() {
             <Header/>
             <div className="MainBox">
                 <div className="MainContent">
-                    <div className="MainBannerImage"/>
+                    <div className="MainBannerImage">
+                        <Text />
+                        <Computer />
+                    </div>
                     <div className="mainStock">
                         <div className="mainStockContent">
                             <div className="mainStockTitle" {...useScrollFadeIn('up', 1, 0)}>주요 지수</div>
