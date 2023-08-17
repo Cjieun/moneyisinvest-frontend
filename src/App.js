@@ -69,7 +69,7 @@ function App() {
         path="/company/:stockId"
         element={<Company handleSetCompanyName={handleSetCompanyName} />}
       />
-      <Route path="/Community" element={<Community />} />
+      <Route path="/Community/:stockId" element={<Community />} />
       <Route path="/messagePage" element={<MessagePage />} />
       <Route path="/pay" element={<Payment />} />
       <Route path="/MessagePage" element={<MessagePage />} />

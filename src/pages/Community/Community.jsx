@@ -9,8 +9,11 @@ import {ReactComponent as CommentHeart} from "../../assets/images/commentHeart.s
 import {ReactComponent as Comment} from "../../assets/images/comment.svg";
 import axios from "axios";
 import {  RxHeart, RxChatBubble, RxDotsVertical } from "react-icons/rx";
+import { Link, useParams } from "react-router-dom";
 
 const Community = ({ stockName }) => {
+  const { stockId } = useParams();  //URL로부터 supportId를 가져옵니다.
+
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [editIndex, setEditIndex] = useState(-1);
@@ -125,7 +128,28 @@ const Community = ({ stockName }) => {
     setCurrentPage(pageNumber);
   };
 
-  //커뮤니티 댓글 달기
+  const apiClient = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+  });
+  
+  const token = sessionStorage.getItem("token");
+  
+  const postComment = () => {
+    apiClient.post("/api/v1/community/post", {
+      comment: newComment,
+      stockId: stockId,
+    }, {
+      headers: {
+        "X-AUTH-TOKEN": token,
+      }
+    }).then((res)=> {
+      console.log(res.data);
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
+  /*//커뮤니티 댓글 달기
   const postComment = () => {
      // POST 요청할 API 주소입니다.
      const url = `/api/v1/community/post`;
@@ -140,7 +164,7 @@ const Community = ({ stockName }) => {
      // body에 담을 정보를 설정합니다.
      const data = {
        comment: newComment,
-       stockId: '005930'
+       stockId: stockId
        // 추가적인 body 정보를 넣으실 수 있습니다.
      };
  
@@ -155,7 +179,7 @@ const Community = ({ stockName }) => {
          console.error('오류 객체:', error.response); // 응답 객체 출력 (응답 코드, 응답 데이터 등)
        });
 
-  };
+  };*/
 
 
   /*커뮤니티 대댓글 달기
@@ -190,8 +214,25 @@ const Community = ({ stockName }) => {
 
  }; */
 
+
+
+ const postReply = () => {
+  apiClient.post("/api/v1/community/reply", {
+    targetCommentId: targetCommentId,
+    comment: newReply,
+  }, {
+    headers: {
+      "X-AUTH-TOKEN": sessionStorage.getItem("token")
+    }
+  }).then((res) => {
+    console.log("대댓글 달기 성공", res.data);
+  }).catch((err) => {
+    console.log(err);
+  })
+ }
+
  // 대댓글을 등록하는 함수입니다.
-const postReply = async () => {
+/*const postReply = async () => {
   const url = "/api/v1/community/reply";
 
   const token = sessionStorage.getItem("token");
@@ -213,19 +254,19 @@ const postReply = async () => {
   try {
     const response = await axios.post(url, data, { headers });
     const { success, msg } = response.data;
-    console.log("응답 성공:", success, msg);
+    console.log("응답 성공:", success, msg);*/
 
     // 성공적으로 생성된 대댓글에 대한 후속 처리를 여기에 작성하세요.
     // 예: 댓글 목록 새로 고침, 입력 창 초기화 등
 
-  } catch (error) {
+  /*} catch (error) {
     console.error("요청 실패:", error);
     console.error("오류 메시지:", error.message);
     console.error("오류 객체:", error.response);
   }
-};
+};*/
 
-  //const { stockId } = useParams();  URL로부터 supportId를 가져옵니다.
+ 
  //해당 주식의 커뮤니티 댓글 가져오기
   useEffect (() => {
 
@@ -233,7 +274,7 @@ const postReply = async () => {
       baseURL: process.env.REACT_APP_API_URL,
     });
 
-    const stockId = '005930'; // 주식 종목 코드
+    //const stockId = '005930'; // 주식 종목 코드
     const token = sessionStorage.getItem('token');
 
       apiClient.get(`/api/v1/community/get?stockId=${stockId}`, {
