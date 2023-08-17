@@ -11,6 +11,7 @@ import AllNews from "pages/News/AllNews";
 import StockHold from "pages/MyPage/StockHold";
 import StockInterest from "pages/MyPage/StockInterest";
 import BuyList from "pages/MyPage/BuyList";
+import StockTransaction from "pages/MyPage/Transactions";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/stockHold" element={<StockHold />} />
         <Route path="/stockInterest" element={<StockInterest />} />
         <Route path="/buyList" element={<BuyList />} />
+        <Route path="/transactions" element={<StockTransaction />}/>
       </Routes>
     </BrowserRouter>
   );
