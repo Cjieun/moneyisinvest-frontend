@@ -119,6 +119,11 @@ export default function UserMain() {
             console.log("Token is null. Unable to send request.");
         }
 
+        apiClient.get("/api/v1/stock/get/stockRank").then((res) => {
+            dispatch(updateRanking(res.data));
+            console.log(res.data);
+        })
+
         // 주식 랭킹 웹소켓 열기
         /*const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
         stockRankSocket.onopen = () => {

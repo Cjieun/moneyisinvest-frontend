@@ -380,7 +380,7 @@ export default function Company({ handleSetCompanyName }) {
             <div className="companyCommunityText">
               <div className="companyCommunityTitle">커뮤니티</div>
               <Link
-                to={`/community/${stockId}`}
+                to={`/Community/${stockId}`}
                 style={{ textDecoration: "none" }}
                 onClick={handleClick}
               >

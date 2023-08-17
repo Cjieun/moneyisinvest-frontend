@@ -43,9 +43,8 @@ export default function GuestMain() {
       });
 
       apiClient.get("/api/v1/stock/get/stockRank").then((res) => {
-        const receivedData = JSON.parse(res.data);
-            dispatch(updateRanking(receivedData));
-            console.log(receivedData);
+            dispatch(updateRanking(res.data));
+            console.log(res.data);
       })
   }, [dispatch]);
 
