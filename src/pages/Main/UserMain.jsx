@@ -28,7 +28,10 @@ export default function UserMain() {
     const kospiData = useSelector(state => state.kospiData);
     const kosdaqData = useSelector(state => state.kosdaqData);
 
-    useEffect(() => {        
+    useEffect(() => {
+        /*const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;*/
+        
         apiClient.get("/api/v1/stock/get/kospi")
         .then((res) => {
             console.log(res.data);
@@ -116,11 +119,26 @@ export default function UserMain() {
             console.log("Token is null. Unable to send request.");
         }
 
-    apiClient.get("/api/v1/stock/get/stockRank").then((res) => {
-      const receivedData = JSON.parse(res.data); // 데이터가 JSON 형식이면 파싱
-      dispatch(updateRanking(receivedData));
-      console.log(res);
-    })
+        // 주식 랭킹 웹소켓 열기
+        /*const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
+        stockRankSocket.onopen = () => {
+            //console.log("Top 5 Connected");
+        };
+        stockRankSocket.onmessage = (event) => {
+            const receivedData = JSON.parse(event.data);
+            dispatch(updateRanking(receivedData));
+            console.log(receivedData);
+        };
+        stockRankSocket.onclose = () => {
+            //console.log("Top5 DisConnnected");
+        };
+        stockRankSocket.onerror = (event) => {
+            //console.log(event);
+        };
+        
+        return () => {
+        stockRankSocket.close();
+      };*/
     }, [dispatch]);      
 
     // 받아온 값 자르기 예시
@@ -148,9 +166,9 @@ export default function UserMain() {
             <Header/>
             <div className="MainBox">
                 <div className="MainContent">
-                    <div className="MainBannerImage">
-                        <Text />
-                        <Computer />
+                <div className="MainBannerImage">
+                    <Text/>
+                    <Computer/>
                     </div>
                     <div className="mainStock">
                         <div className="mainStockContent">

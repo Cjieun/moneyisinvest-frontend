@@ -18,15 +18,35 @@ export default function GuestMain() {
   const ranking = useSelector((state) => state.rank);
 
   useEffect(() => {
-    const apiClient = axios.create({
-      baseURL: process.env.REACT_APP_API_URL,
-    });
-  
-    apiClient.get("/api/v1/stock/get/stockRank").then((res) => {
-      const receivedData = JSON.parse(res.data); // 데이터가 JSON 형식이면 파싱
-      dispatch(updateRanking(receivedData));
-      console.log(res);
-    })
+    // 주식 랭킹 웹소켓 열기
+        /*const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
+        stockRankSocket.onopen = () => {
+            //console.log("Top 5 Connected");
+        };
+        stockRankSocket.onmessage = (event) => {
+            const receivedData = JSON.parse(event.data);
+            dispatch(updateRanking(receivedData));
+            console.log(receivedData);
+        };
+        stockRankSocket.onclose = () => {
+            //console.log("Top5 DisConnnected");
+        };
+        stockRankSocket.onerror = (event) => {
+            //console.log(event);
+        };
+        
+        return () => {
+        stockRankSocket.close();
+      };*/
+      const apiClient = axios.create({
+        baseURL: process.env.REACT_APP_API_URL,
+      });
+
+      apiClient.get("/api/v1/stock/get/stockRank").then((res) => {
+        const receivedData = JSON.parse(res.data);
+            dispatch(updateRanking(receivedData));
+            console.log(receivedData);
+      })
   }, [dispatch]);
 
   const topItem = [];
@@ -59,9 +79,9 @@ export default function GuestMain() {
       <div className="MainBox">
         <div className="MainContent">
           <div className="MainBannerImage">
-              <Text />
-              <Computer />
-          </div>
+              <Text/>
+              <Computer/>
+            </div>
           <div className="banner2">
             <div className="banner2-box">
               <SmartPhone

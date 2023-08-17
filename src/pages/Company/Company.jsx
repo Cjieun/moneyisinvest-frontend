@@ -195,11 +195,18 @@ export default function Company({ handleSetCompanyName }) {
 
     if (!isHeartFilled) {
       apiClient
-        .post(`/api/v1/favorite/post?stockId=${stockId}`, {
-          headers: {
-            "X-AUTH-TOKEN": token,
-          },
-        })
+        .post(
+          "/api/v1/favorite/post",
+          {},
+          {
+            headers: {
+              "X-AUTH-TOKEN": token,
+            },
+            params: {
+              stockId: stockId,
+            },
+          }
+        )
         .then((res) => {
           console.log("관심 주식 추가", res.data);
         })
@@ -208,9 +215,13 @@ export default function Company({ handleSetCompanyName }) {
         });
     } else {
       apiClient
-        .delete(`/api/v1/favorite/remove?stockId=${stockId}`,{}, {
+        .delete("/api/v1/favorite/remove",{},
+        {
           headers: {
             "X-AUTH-TOKEN": token,
+          },
+          params: {
+            stockId: stockId,
           },
         })
         .then((res) => {

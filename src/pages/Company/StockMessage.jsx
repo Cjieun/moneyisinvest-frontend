@@ -91,12 +91,15 @@ export default function StockMessage({stockId, state, onClick, stockPrice, setIs
     };
 
     useEffect(() => {
-        console.log(stockId);
         const token = sessionStorage.getItem("token");
         apiClient
-        .get(`/api/v1/stock/get/users/stockQ?stockId=${stockId}`, {
+        .get(`/api/v1/stock/get/users/stockQ`, {},
+        {
           headers: {
             "X-AUTH-TOKEN": token,
+          },
+          params: {
+            stockId: stockId,
           },
         })
         .then((res) => {
