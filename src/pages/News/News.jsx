@@ -54,10 +54,6 @@ export default function News({companyName}) {
                 <div className="newsContent">
                         <div className="newsTop">
                             <div className="newsTitle">{companyName} 뉴스</div>
-                            <div className="newsSearch">
-                                <input type="text" />
-                                <div><Search /></div>
-                            </div>
                         </div>
                         <div className="newsInfo">
                             <div className="newsInfo-scrollable">

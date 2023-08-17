@@ -112,6 +112,8 @@ export default function AskPage() {
             })
             .then(response => {
                 console.log("문의사항 삭제 완료",response.data);
+                /*window.location.href = '/askpage';*/
+                navigate("/askpage", {replace: true});
             })
             .catch(err => {
                 if (err.response) {

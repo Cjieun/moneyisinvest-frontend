@@ -22,6 +22,8 @@ import AskDetail from "pages/MyPage/AskDetail";
 import Company from "pages/Company/Company";
 import Community from "pages/Community/Community";
 import Payment from "pages/Payment/Payment";
+import MessagePage from "components/MessagePage";
+import MyWallet from "pages/MyPage/MyWallet";
 
 function App() {
   const [companyName, setCompanyName] = React.useState("");
@@ -69,6 +71,8 @@ function App() {
       />
       <Route path="/Community" element={<Community />} />
       <Route path="/pay" element={<Payment />} />
+      <Route path="/MessagePage" element={<MessagePage />} />
+      <Route path="/myWallet" element={<MyWallet />} />
     </Routes>
   );
 }

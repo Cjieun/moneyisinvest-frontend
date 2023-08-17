@@ -37,6 +37,7 @@ export default function Header({coinNum}) {
             }).catch((res) => {
                 console.log("헤더 프로필 불러오기 실패", res.status);
                 if(res.response.status === 401) {
+                    setIsLogin(false);
                     sessionStorage.removeItem("token");
                     sessionStorage.clear();
                     alert("자동 로그아웃 되었습니다!");
@@ -78,8 +79,8 @@ export default function Header({coinNum}) {
     align-items: flex-start;
     margin-top: auto;
     margin-bottom: auto;
-    margin-left: ${isLogin ? '2.63rem' : '3.25rem' };
-    margin-right: ${isLogin ? '2.62rem' : '3.31rem' };
+    margin-left: ${isLogin ? '1.75rem' : '2.37rem' };
+    margin-right: ${isLogin ? '1.75rem' : '2.44rem' };
     gap: ${isLogin ? '3.25rem' : '5rem' };
     `;
     const item = css`
@@ -255,10 +256,6 @@ export default function Header({coinNum}) {
         setSearchTerm(event.target.value);
     }
 
-    const onClickCompany = () => {
-
-    }
-
     return (
         <div css={headerContainer}>
             <div css={header}>
@@ -266,7 +263,6 @@ export default function Header({coinNum}) {
                 <Logo css={logo}/>
                 </Link>
                 <div css={nav}>
-                    <div css={item}>회사</div>
                     <Link to = "/allNews" style={{ textDecoration: "none" }}>
                     <div css={item}>뉴스</div>
                     </Link>
@@ -276,6 +272,7 @@ export default function Header({coinNum}) {
                     <Link to = "/Store" style={{ textDecoration: "none" }}>
                     <div css={item}>상점</div>
                     </Link>
+                    <div css={item}>프리미엄</div>
                 </div>
                 <div css={searchContainer}>
                     <div css={searchBox}>

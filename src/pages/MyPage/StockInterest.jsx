@@ -1,85 +1,46 @@
-import React, {useState} from "react";
-import "./StockHold.scss";
+import React, {useState, useEffect} from "react";
+import "./StockInterest.scss";
 //import axios from "axios";
 import Header from "systems/Header";
 import Profile from "systems/Profile";
 import Footer from "components/Footer";
 import { RxHeartFilled, RxHeart } from "react-icons/rx";
+import axios from "axios";
 
 export default function StockInterest() {
-    const [interestStock, setInterestStock] = useState([
-        {
-            image: "",
-            company: "삼",
-            code: "005930",
-            percent: "99.9",
-            rate: true,
-            price: "500,000",
-            value: "5,000",
-            jim: true,
-        },
-        {
-            image: "",
-            company: "자",
-            code: "005930",
-            percent: "99.9",
-            rate: true,
-            price: "500,000",
-            value: "5,000",
-            jim: false,
-        },
+    const apiClient = axios.create({
+        baseURL: process.env.REACT_APP_API_URL,
+    });
 
-        {
-            image: "",
-            company: "성",
-            code: "005930",
-            percent: "99.9",
-            rate: true,
-            price: "500,000",
-            value: "5,000",
-            jim: true,
-        },
-        {
-            image: "",
-            company: "전",
-            code: "005930",
-            percent: "99.9",
-            rate: true,
-            price: "500,000",
-            value: "5,000",
-            jim: true,
-        },
-        {
-            image: "",
-            company: "삼성",
-            code: "005930",
-            percent: "99.9",
-            rate: true,
-            price: "500,000",
-            value: "5,000",
-            jim: true,
-        },
-        {
-            image: "",
-            company: "전자",
-            code: "005930",
-            percent: "99.9",
-            rate: true,
-            price: "500,000",
-            value: "5,000",
-            jim: true,
-        },
-        {
-            image: "",
-            company: "성전",
-            code: "005930",
-            percent: "99.9",
-            rate: true,
-            price: "500,000",
-            value: "5,000",
-            jim: true,
-        },
-    ]);
+
+    const [interestStock, setInterestStock] = useState([]);
+
+    useEffect (() => {
+        const token = sessionStorage.getItem("token");
+        if (token !== null) {
+            apiClient.get("/api/v1/favorite/get", {
+                headers: {
+                    'X-Auth-Token': token,
+                }
+            })
+            .then((res) => {
+                console.log("관심 주식 렌더링 성공",res);
+            })
+            .catch((err) => {
+                if (err.response) {
+                    // 서버 응답이 온 경우 (에러 응답)
+                    console.log("Error response:", err.response.status, err.response.data);
+                } else if (err.request) {
+                    // 요청은 보내졌지만 응답이 없는 경우 (네트워크 오류)
+                    console.log("Request error:", err.request);
+                } else {
+                    // 오류가 발생한 경우 (일반 오류)
+                    console.log("General error:", err.message);
+                }});
+        } else {
+            console.log("Token is null. Unable to send request.");
+        }
+    },[]);
 
     const handleToggleHeart = async (index) => {
         const updateInterestStock = [...interestStock];
@@ -118,16 +79,16 @@ export default function StockInterest() {
         item.jim ? (
         <div className="holdItems" keys={index}>
            <div className="holdItem-title">
-                <img alt="company" className="holdItem-image"></img>
+                <img alt="company" src={item.stockLogoUrl} className="holdItem-image"></img>
                 <div className="holdItem-events">
-                    <div className="holdItem-event">{item.company}</div>
-                    <div className="holdItem-code">{item.code}</div>
+                    <div className="holdItem-event">{item.companyName}</div>
+                    <div className="holdItem-code">{item.stockCode}</div>
                 </div>
             </div>
             <div className="holdItem-content">
-                <div className="holdItem-percent">+{item.percent}%</div>
+                <div className="holdItem-percent">+{item.preparation_day_before_rate}%</div>
                 <div className="holdItem-price">{item.price}원</div>
-                <div className="holdItem-price">{item.value}스톡</div>
+                <div className="holdItem-price">{item.stockPrice}스톡</div>
                 <div className="holdItem-heart" onClick={() => handleToggleHeart(index)}>
                     {item.jim ? <RxHeartFilled color="#85D6D1" /> : <RxHeart color="#85D6D1" />}
                 </div>
@@ -154,7 +115,7 @@ export default function StockInterest() {
                                 </div>
                                 <div className="holdInfo-content">
                                     <div className="holdInfo-rate">
-                                        <div className="holdInfo-percent">수익률</div>
+                                        <div className="holdInfo-percent">등락률</div>
                                         <div className="holdInfo-price">주가</div>
                                     </div>
                                     <div className="stockValue">

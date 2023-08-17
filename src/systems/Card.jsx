@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 
 /* isVisible={true} && rank={1} #3EB7AF */
 
-export default function Card({isVisible, rank, img , company, code, rate, price, stock, rateStatus}) {
+export default function Card({isVisible, rank, img , company, code, rate, price, stock, rateStatus, isHold}) {
     const cardContainer = css`
     width: ${isVisible ? '20.125rem' : '19.5rem'};
     height: ${isVisible ? '12.6875rem' : '12.1875rem'};
@@ -110,8 +110,8 @@ export default function Card({isVisible, rank, img , company, code, rate, price,
                 </div>
                 <div className="info">
                     <div>
-                        <div className="type">수익률</div>
-                        <div className="percent">{rateStatus ? "+" : ""}{rate}%</div>
+                        <div className="type">{isHold? "수익률" : "등락률"}</div>
+                        <div className="percent">{rate}%</div>
                     </div>
                     <div>
                         <div className="type">주가</div>
