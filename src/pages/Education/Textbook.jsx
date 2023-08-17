@@ -49,10 +49,6 @@ export default function Textbook() {
                 <div className="tbContent">
                         <div className="tbTop">
                             <div className="tbTitle">교과서</div>
-                            <div className="tbSearch">
-                                <input type="text" />
-                                <div><Search /></div>
-                            </div>
                         </div>                        
                         <div className="tbInfo">
                             <div className="tbInfo-scrollable">
