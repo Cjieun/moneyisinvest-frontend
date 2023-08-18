@@ -65,7 +65,7 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
         })
         .then((res) => {
           console.log("필요 스톡 불러오기 성공", res.data);
-          setStockNeed(res.data);
+          setStockNeed(res.data.msg);
         })
         .catch((err) => {
           console.log("필요 스톡 불러오기 실패:", err);
