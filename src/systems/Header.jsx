@@ -8,7 +8,7 @@ import { ReactComponent as Coin } from "../assets/images/coin.svg";
 import { Link } from "react-router-dom";
 //import profileImage from "../assets/images/angma.jpg";
 
-export default function Header({ coinNum }) {
+export default function Header({ profileImg }) {
   const apiClient = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
   });
@@ -330,7 +330,7 @@ padding-top: 0; /* 수정을 추가합니다. */
         <Coin css={coinLogo} />
         <Link to="/mypage" style={{ textDecoration: "none" }} css={profile}>
           <div css={nickname}>{profileName}</div>
-          <img alt="profile" src={profileImage} css={headerprofile} />
+          <img alt="profile" src={profileImg} css={headerprofile} />
         </Link>
       </div>
     </div>
