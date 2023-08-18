@@ -214,14 +214,12 @@ export default function Company({ handleSetCompanyName }) {
           setIsHeartFilled(!newIsHeartFilled);
         });
     } else {
+      console.log(stockId);
       apiClient
-        .delete("/api/v1/favorite/remove", {},
+        .delete(`/api/v1/favorite/remove?stockId=${stockId}`,
          {
             headers: {
               "X-AUTH-TOKEN": token,
-            },
-            params: {
-              stockId: stockId,
             },
           }
         )
@@ -234,7 +232,7 @@ export default function Company({ handleSetCompanyName }) {
         });
     }
   };
-  
+
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [buttonState, setButtonState] = useState("");
 

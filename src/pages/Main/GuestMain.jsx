@@ -81,8 +81,8 @@ export default function GuestMain() {
       <div className="MainBox">
         <div className="MainContent">
           <div className="MainBannerImage">
-              <Text/>
-              <Computer/>
+              <Text className="MainBannerText"/>
+              <Computer className="MainBannerComputer" />
             </div>
           <div className="banner2">
             <div className="banner2-box">

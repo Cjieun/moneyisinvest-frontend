@@ -172,8 +172,8 @@ export default function UserMain() {
             <div className="MainBox">
                 <div className="MainContent">
                 <div className="MainBannerImage">
-                    <Text/>
-                    <Computer/>
+                    <Text className="MainBannerText"/>
+                    <Computer className="MainBannerComputer" />
                     </div>
                     <div className="mainStock">
                         <div className="mainStockContent">
