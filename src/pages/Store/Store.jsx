@@ -76,7 +76,6 @@ const Store = () => {
 
     if (token !== null) {
       apiClient.post('/api/v1/shop/buy/items/id',{
-          params: { id: 1 }, // id
           headers: {
             "X-Auth-Token": token,
           },
