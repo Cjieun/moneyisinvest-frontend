@@ -23,7 +23,14 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
-                gap: 4rem;
+                .MainBannerText {
+                    width: 37rem;
+                    height: 37rem;
+                }
+                .MainBannerComputer {
+                    width: 45rem;
+                    height: 45rem;
+                }
             }                                                                                                                                    
             .banner2 {
                 display: flex;

@@ -20,6 +20,14 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
+                .MainBannerText {
+                    width: 37rem;
+                    height: 37rem;
+                }
+                .MainBannerComputer {
+                    width: 45rem;
+                    height: 45rem;
+                }
             }                    
             .mainStock {
                 display: flex;
