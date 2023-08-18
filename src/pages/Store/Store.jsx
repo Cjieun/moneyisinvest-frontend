@@ -55,6 +55,7 @@ const Store = () => {
         });
         setProductsList(response.data);
         console.log("상점 상품 정보 load success");
+        console.log(response);
       } catch (error) {
         // 에러 처리
         console.error("API 요청 중 에러가 발생했습니다:", error);
@@ -76,7 +77,6 @@ const Store = () => {
 
     if (token !== null) {
       apiClient.post('/api/v1/shop/buy/items/id',{
-          params: { id: 1 }, // id
           headers: {
             "X-Auth-Token": token,
           },
@@ -165,8 +165,8 @@ const Store = () => {
                 <ul className="cart-list">
                   {cart.map((item, index) => (
                     <li key={index}>
-                      <img className='item-img' src={item.image} alt={item.name} />
-                      {item.name} - {item.price.toLocaleString()} 스톡
+                      <img className='item-img' src={item.imageUrl} alt={item.name} />
+                      {item.itemName} - {item.price.toLocaleString()} 스톡
                     </li>
                   ))}
                 </ul>
@@ -233,9 +233,9 @@ const Store = () => {
                 {filteredProducts.map((product) => (
                 <tr key={product.id} className="product-item">
                     <td>
-                    <img className='product-img' src={product.image} alt={product.name} />
+                    <img className='product-img' src={product.imageUrl} alt={product.name} />
                     </td>
-                    <td>{product.name}</td>
+                    <td>{product.itemName}</td>
                     <td>{product.price.toLocaleString()}스톡</td>
                     <td className='td-btn'>
                     <div onClick={() => addToCart(product)}><Button state="basket" >장바구니</Button></div>
