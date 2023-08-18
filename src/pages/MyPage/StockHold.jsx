@@ -41,8 +41,8 @@ export default function StockHold() {
   const handleToggleHeart = async (index) => {
     const updatedHoldStock = [...holdStock];
     updatedHoldStock[index].favorite_status = !updatedHoldStock[index].favorite_status;
-    setHoldStock(updatedHoldStock);
     console.log(holdStock);
+    console.log(updatedHoldStock);
   
     try {
       // 토큰 값이 있는 경우에는 백엔드에 토큰 포함하여 요청 보내기
@@ -55,7 +55,7 @@ export default function StockHold() {
         
       const response = await apiClient.post(requestPath, {}, {
           headers: {
-            "X-Auth-Token": token,
+            "X-AUTH-TOKEN": token,
           },
           params: {
             stockId: updatedHoldStock[index].stockCode,
@@ -64,6 +64,7 @@ export default function StockHold() {
   
       if (response.status === 200) {
         console.log("찜 상태 업데이트 성공");
+        setHoldStock(updatedHoldStock);
         alert("관심 주식 추가!");
       } else {
         console.error("찜 상태 업데이트 실패");

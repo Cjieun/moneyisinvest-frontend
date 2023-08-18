@@ -5,7 +5,7 @@ import Button from "components/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function StockMessage({stockId, state, onClick, stockPrice, setIsDeal}) {
+export default function StockMessage({stockId, state, onClick, stockPrice}) {
     const MessageContainer = css`
     width: 28.1875rem;
     height: 17.25rem;
@@ -46,8 +46,6 @@ export default function StockMessage({stockId, state, onClick, stockPrice, setIs
     const apiClient = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
     });
-
-    const navigate = useNavigate();
 
     // 보유 주식 상태 관리
     const [stock, setStock] = useState("");
@@ -93,7 +91,7 @@ export default function StockMessage({stockId, state, onClick, stockPrice, setIs
     useEffect(() => {
         const token = sessionStorage.getItem("token");
         apiClient
-        .get(`/api/v1/stock/get/users/stockQ`, {},
+        .get("/api/v1/stock/get/users/stockQ", {},
         {
           headers: {
             "X-AUTH-TOKEN": token,
@@ -113,7 +111,6 @@ export default function StockMessage({stockId, state, onClick, stockPrice, setIs
 
       const onClickDeal = () => {
         if(state === "buy") {
-          if (stock <= quantity) {
           apiClient.post("/api/v1/stock/buy", {
           conclusion_price: String(stockPrice),
           stockAmount: String(quantity),
@@ -124,12 +121,15 @@ export default function StockMessage({stockId, state, onClick, stockPrice, setIs
           }
         }).then((res)=> {
           console.log(res.data);
-          alert("거래가 완료되었습니다!");
+          if (res.data.success === true) {
+            alert("매수가 완료되었습니다!");
+          } else {
+            alert("매수를 완료하지 못했습니다!");
+          }
           window.location.reload(); // 페이지 다시 로드
-        })} else {
-          alert("거래가 취소되었습니다!");
-          window.location.reload();
-        }
+        }).catch((err) => {
+          console.log(err);
+        })
         } else {
           apiClient.post("/api/v1/stock/sell", {
             sell_price: String(stockPrice),
@@ -141,8 +141,11 @@ export default function StockMessage({stockId, state, onClick, stockPrice, setIs
             }
           }).then((res)=> {
             console.log(res.data);
-            alert("거래가 완료되었습니다!");
-            setIsDeal(true);
+            if (res.data.success === true) {
+              alert("매도가 완료되었습니다!");
+            } else {
+              alert("매도를 완료하지 못했습니다!");
+            }
             window.location.reload(); // 페이지 다시 로드
           })  
         }
