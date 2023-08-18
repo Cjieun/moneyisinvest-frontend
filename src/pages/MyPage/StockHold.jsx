@@ -41,35 +41,41 @@ export default function StockHold() {
   const handleToggleHeart = async (index) => {
     const updatedHoldStock = [...holdStock];
     updatedHoldStock[index].favorite_status = !updatedHoldStock[index].favorite_status;
-    setHoldStock(updatedHoldStock);
     console.log(holdStock);
-
+    console.log(updatedHoldStock);
+  
     try {
-        // 토큰 값이 있는 경우에는 백엔드에 토큰 포함하여 요청 보내기
-        const token = sessionStorage.getItem("token");
-
-        // 상태에 따른 요청 경로 변경
-        const requestPath = updatedHoldStock[index].favorite_status ? `/api/v1/favorite/add?stockId=${updatedHoldStock[index].stockCode}` : `/api/v1/favorite/remove?stockId=${updatedHoldStock[index].stockCode}`;
-
-        const response = await apiClient.post(requestPath, {
-            headers: {
-                'X-Auth-Token': token,
-            },
+      // 토큰 값이 있는 경우에는 백엔드에 토큰 포함하여 요청 보내기
+      const token = sessionStorage.getItem("token");
+  
+      // 상태에 따른 요청 경로 변경
+      const requestPath = updatedHoldStock[index].favorite_status
+        ? `/api/v1/favorite/add`
+        : `/api/v1/favorite/remove`;
+        
+      const response = await apiClient.post(requestPath, {}, {
+          headers: {
+            "X-AUTH-TOKEN": token,
+          },
+          params: {
+            stockId: updatedHoldStock[index].stockCode,
+          },
         });
-
-        if (response.status === 200) {
-            console.log('찜 상태 업데이트 성공');
-            window.location.reload(); // 페이지 다시 로드
-        } else {
-            console.error('찜 상태 업데이트 실패');
-            // 실패 처리 로직 추가
-        }
+  
+      if (response.status === 200) {
+        console.log("찜 상태 업데이트 성공");
+        setHoldStock(updatedHoldStock);
+        alert("관심 주식 추가!");
+      } else {
+        console.error("찜 상태 업데이트 실패");
+        // 실패 처리 로직 추가
+      }
     } catch (error) {
-        console.error('찜 상태 업데이트 에러:', error);
-        // 에러 처리 로직 추가
+      console.error("찜 상태 업데이트 에러:", error);
+      // 에러 처리 로직 추가
     }
-};
-
+  };
+  
 
   const holdItem = holdStock.map((item, index) => (
     <div className="holdItems" keys={index}>

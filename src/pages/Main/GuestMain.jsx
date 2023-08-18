@@ -19,7 +19,9 @@ export default function GuestMain() {
 
   useEffect(() => {
     // 주식 랭킹 웹소켓 열기
-        /*const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
+        const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
         stockRankSocket.onopen = () => {
             //console.log("Top 5 Connected");
         };
@@ -37,16 +39,16 @@ export default function GuestMain() {
         
         return () => {
         stockRankSocket.close();
-      };*/
+      };
+      /*
       const apiClient = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
       });
 
       apiClient.get("/api/v1/stock/get/stockRank").then((res) => {
-        const receivedData = JSON.parse(res.data);
-            dispatch(updateRanking(receivedData));
-            console.log(receivedData);
-      })
+            dispatch(updateRanking(res.data));
+            console.log(res.data);
+      })*/
   }, [dispatch]);
 
   const topItem = [];

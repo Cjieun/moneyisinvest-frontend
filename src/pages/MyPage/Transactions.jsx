@@ -29,6 +29,7 @@
             },*/
         ]);
     
+
     
         /*useEffect(() => {
             const token = sessionStorage.getItem("token");
@@ -40,6 +41,16 @@
             }
             try {
               const response = await axios.get(
+
+        
+        useEffect(() => {
+        const fetchStockHistory = async () => {
+            try {
+              // 토큰 값이 있는 경우에는 백엔드에 토큰 포함하여 요청 보내기
+              const token = sessionStorage.getItem("token");
+          
+              const response = await axios.post(
+
                 "api/v1/stock/get/users/stocks/history",
                 {},
                 {
@@ -59,6 +70,7 @@
               console.error("주식 내역 상태 업데이트 에러:", error);
               // 에러 처리 로직 추가
             }
+
           }; 
           
           fetchStockHistory();
@@ -130,7 +142,13 @@
                 });
             } 
           }, []); */
-        
+
+          };
+          
+          fetchStockHistory();
+        }, []); 
+  
+
     
         const transItem = transStock.map((item) => (
             <div className="transItems" keys={item.id}>

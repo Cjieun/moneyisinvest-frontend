@@ -94,15 +94,14 @@ export default function Company({ handleSetCompanyName }) {
         console.error("장 시간 조회 에러:", error);
       });
 
-      apiClient.get("/api/v1/favorite/get", {
+      apiClient.get(`/api/v1/favorite/get/status?stockCode=${stockId}`, {
         headers: {
             'X-Auth-Token': token,
-        }
+        },
       })
       .then((res) => {
-          console.log("관심 주식 렌더링 성공",res);
-          const favoriteStockIds = res.data.map((item) => item.stockId);
-          setIsHeartFilled(favoriteStockIds.includes(stockId));
+          console.log("관심 주식 렌더링 성공",res.data);
+          setIsHeartFilled(res.data);
       })
       .catch((err) => {
           if (err.response) {
@@ -189,11 +188,11 @@ export default function Company({ handleSetCompanyName }) {
 
   // 하트 클릭 시 상태를 변경하는 함수를 작성
   const handleHeartClick = () => {
-    setIsHeartFilled(!isHeartFilled);
-
     const token = sessionStorage.getItem("token");
-
-    if (!isHeartFilled) {
+    const newIsHeartFilled = !isHeartFilled;
+    setIsHeartFilled(newIsHeartFilled);
+  
+    if (newIsHeartFilled) {
       apiClient
         .post(
           "/api/v1/favorite/post",
@@ -212,27 +211,30 @@ export default function Company({ handleSetCompanyName }) {
         })
         .catch((err) => {
           console.log(err);
+          setIsHeartFilled(!newIsHeartFilled);
         });
     } else {
       apiClient
-        .delete("/api/v1/favorite/remove",{},
-        {
-          headers: {
-            "X-AUTH-TOKEN": token,
-          },
-          params: {
-            stockId: stockId,
-          },
-        })
+        .delete("/api/v1/favorite/remove", {},
+         {
+            headers: {
+              "X-AUTH-TOKEN": token,
+            },
+            params: {
+              stockId: stockId,
+            },
+          }
+        )
         .then((res) => {
           console.log("관심 주식 삭제", res.data);
         })
         .catch((err) => {
           console.log(err);
+          setIsHeartFilled(!newIsHeartFilled);
         });
     }
   };
-
+  
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [buttonState, setButtonState] = useState("");
 
@@ -263,8 +265,6 @@ export default function Company({ handleSetCompanyName }) {
   const stopPropagation = (e) => {
     e.stopPropagation();
   };
-
-  const [isDeal, setIsDeal] = useState(false);
 
   const newsItem = news.map((item) => (
     <div className="companynewsList">
@@ -356,9 +356,7 @@ export default function Company({ handleSetCompanyName }) {
             {isPopupVisible ? (
                <div className="overlay" onClick={handleOutsideClick}>
                 <div className="stockMessage" onClick={stopPropagation}>
-                  {isDeal ? (<Message setIsDeal={setIsDeal}/>) : (
-                    <StockMessage className="stockMessage" stockId={stockId} state={buttonState} stockPrice={stockPrice} setIsDeal={setIsDeal} onClick={stopPropagation}/>
-                  )}
+                    <StockMessage className="stockMessage" stockId={stockId} state={buttonState} stockPrice={stockPrice} onClick={stopPropagation}/>
                 </div>
                 </div>
             ):null}
@@ -380,7 +378,7 @@ export default function Company({ handleSetCompanyName }) {
             <div className="companyCommunityText">
               <div className="companyCommunityTitle">커뮤니티</div>
               <Link
-                to={`/community/${stockId}`}
+                to={`/Community/${stockId}`}
                 style={{ textDecoration: "none" }}
                 onClick={handleClick}
               >
