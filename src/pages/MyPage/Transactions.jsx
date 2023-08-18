@@ -1,13 +1,13 @@
-    import React, {useState} from "react";
+    import React, {useState, useEffect} from "react";
     import "./Transactions.scss";
-    //import axios from "axios";
+    import axios from "axios";
     import Header from "systems/Header";
     import Profile from "systems/Profile";
     import Footer from "components/Footer";
     
     export default function StockTransaction() {
         const [transStock, setTransStock] = useState([
-            {
+            /*{
                 image: "",
                 company: "삼",
                 code: "005930",
@@ -15,7 +15,7 @@
                 value: "5,000", //거래 스톡가
                 volume: "50", //거래 수량
                 date: "2023.12.11", //거래 일시
-                status: "매수", //매수/매도
+                status: true, //매수/매도
             },
             {
                 image: "",
@@ -26,91 +26,115 @@
                 volume: "50", //거래 수량
                 date: "2023.12.11", //거래 일시
                 status: "매수", //매수/매도
-            },
-    
-            {
-                image: "",
-                company: "삼성전",
-                code: "005930",
-                price: "500,000", //거래금
-                value: "5,000", //거래 스톡가
-                volume: "50", //거래 수량
-                date: "2023.12.11", //거래 일시
-                status: "매수", //매수/매도
-            },
-            {
-                image: "",
-                company: "삼성전자자",
-                code: "005930",
-                price: "500,000", //거래금
-                value: "5,000", //거래 스톡가
-                volume: "50", //거래 수량
-                date: "2023.12.11", //거래 일시
-                status: "매수", //매수/매도
-            },
-            {
-                image: "",
-                company: "삼성전자ㅋㅋ",
-                code: "005930",
-                price: "500,000", //거래금
-                value: "5,000", //거래 스톡가
-                volume: "50", //거래 수량
-                date: "2023.12.11", //거래 일시
-                status: "매수", //매수/매도
-            },
-            {
-                image: "",
-                company: "삼성전자!!",
-                code: "005930",
-                price: "500,000", //거래금
-                value: "5,000", //거래 스톡가
-                volume: "50", //거래 수량
-                date: "2023.12.11", //거래 일시
-                status: "매수", //매수/매도
-            },
-            {
-                image: "",
-                company: "삼성전자",
-                code: "005930",
-                price: "500,000", //거래금
-                value: "5,000", //거래 스톡가
-                volume: "50", //거래 수량
-                date: "2023.12.11", //거래 일시
-                status: "매수", //매수/매도
-            },
+            },*/
         ]);
     
-        
     
-            /* try {
-                // 토큰 값이 있는 경우에는 백엔드에 토큰 포함하여 요청 보내기
-                const token = sessionStorage.getItem("token");
-        
-                const response = await axios.post('/api/v1/favorite/add', {
-                    stockId: updatedHoldStock[index].id,
-                    jim: updatedHoldStock[index].jim,
-                }, {
-                    headers: {
-                        'X-Auth-Token': token,
-                    },
-                });
-        
-                if (response.status === 200) {
-                    console.log('찜 상태 업데이트 성공');
-                } else {
-                    console.error('찜 상태 업데이트 실패');
-                    // 실패 처리 로직 추가
+        /*useEffect(() => {
+            const token = sessionStorage.getItem("token");
+        const fetchStockHistory = async () => {
+            console.log("fetchData 호출"); 
+            if (!token || token.trim() === "") {
+                console.error("토큰이 누락되었습니다. 로그인 후 다시 시도해 주세요.");
+                return;
+            }
+            try {
+              const response = await axios.get(
+                "api/v1/stock/get/users/stocks/history",
+                {},
+                {
+                  headers: {
+                    "X-Auth-Token": token,
+                  },
                 }
+              );
+              setTransStock(response.data);
+              if (response.status === 200) {
+                console.log("주식 내역 상태 업데이트 성공");
+              } else {
+                console.error("주식 내역 상태 업데이트 실패");
+                // 실패 처리 로직 추가
+              }
             } catch (error) {
-                console.error('찜 상태 업데이트 에러:', error);
-                // 에러 처리 로직 추가
-            } */
+              console.error("주식 내역 상태 업데이트 에러:", error);
+              // 에러 처리 로직 추가
+            }
+          }; 
+          
+          fetchStockHistory();
+        }, []); */
+
+        useEffect(() => {
+            const token = sessionStorage.getItem("token");
+        
+            //주식 거래 내역
+            const fetchData = async () => {
+              console.log("fetchData 호출"); 
+              if (!token || token.trim() === "") {
+                console.error("토큰이 누락되었습니다. 로그인 후 다시 시도해 주세요.");
+                return;
+              }
+          
+              try {
+                const response = await axios.get("api/v1/stock/get/users/stocks/history", {
+                  headers: {
+                    "X-AUTH-TOKEN": token,
+                  },
+                });
+                setTransStock(response.data);
+                console.log("주식 거래 내역 load success");
+              } catch (error) {
+                // 에러 처리
+                console.error("API 요청 중 에러가 발생했습니다:", error);
+              }
+            };
+          
+            fetchData();
+          }, []); // 빈 배열을 넣어서 컴포넌트 마운트 시에만 실행되도록 합니다.
+
+          const apiClient = axios.create({
+            baseURL: process.env.REACT_APP_API_URL,
+          });
+
+          useEffect(() => {
+            const token = sessionStorage.getItem("token");
+            if (token !== null) {
+              apiClient
+                .get("api/v1/stock/get/users/stocks/history", {
+                  headers: {
+                    "X-AUTH-TOKEN": token,
+                  },
+                })
+                .then((res) => {
+                  console.log("주식 거래 내역 렌더링 완료: ", res.data);
+                  setTransStock(res.data);
+                })
+                .catch((err) => {
+                  if (err.response) {
+                    // 서버 응답이 온 경우 (에러 응답)
+                    console.log(
+                      "Error response:",
+                      err,
+                      err.response,
+                      err.response.status,
+                      err.response.data
+                    );
+                  } else if (err.request) {
+                    // 요청은 보내졌지만 응답이 없는 경우 (네트워크 오류)
+                    console.log("Request error:", err.request);
+                  } else {
+                    // 오류가 발생한 경우 (일반 오류)
+                    console.log("General error:", err.message);
+                  }
+                });
+            } 
+          }, []);
         
     
-        const transItem = transStock.map((item, index) => (
-            <div className="transItems" keys={index}>
+        const transItem = transStock.map((item) => (
+            <div className="transItems" keys={item.id}>
                <div className="transItem-title">
-                    <img alt="company" className="transItem-image"></img>
+                    <img alt="company" className="transItem-image" src={item.img}></img>
                     <div className="transItem-events">
                         <div className="transItem-event">{item.company}</div>
                         <div className="transItem-code">{item.code}</div>
