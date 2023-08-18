@@ -82,6 +82,7 @@
                   },
                 });
                 setTransStock(response.data);
+                console.log(response);
                 console.log("주식 거래 내역 load success");
               } catch (error) {
                 // 에러 처리
@@ -92,7 +93,7 @@
             fetchData();
           }, []); // 빈 배열을 넣어서 컴포넌트 마운트 시에만 실행되도록 합니다.
 
-          const apiClient = axios.create({
+          /*const apiClient = axios.create({
             baseURL: process.env.REACT_APP_API_URL,
           });
 
@@ -128,23 +129,23 @@
                   }
                 });
             } 
-          }, []);
+          }, []); */
         
     
         const transItem = transStock.map((item) => (
             <div className="transItems" keys={item.id}>
                <div className="transItem-title">
-                    <img alt="company" className="transItem-image" src={item.img}></img>
+                    <img alt="company" className="transItem-image" src={item.stockLogo}></img>
                     <div className="transItem-events">
-                        <div className="transItem-event">{item.company}</div>
-                        <div className="transItem-code">{item.code}</div>
+                        <div className="transItem-event">{item.stockName}</div>
+                        <div className="transItem-code">{item.stockCode}</div>
                     </div>
                 </div>
                 <div className="transItem-content">
-                    <div className="transItem-price">{item.price}원</div>
+                    <div className="transItem-price">{item.unitPrice}원</div>
                     <div className="transItem-value">{item.value}스톡</div>
-                    <div className="transItem-volume">{item.volume}주</div>
-                    <div className="transItem-date">{item.date}</div>
+                    <div className="transItem-volume">{item.quantity}주</div>
+                    <div className="transItem-date">{item.transactionDate}</div>
                     <div className="transItem-status">{item.status}</div>
                 </div>
             </div>

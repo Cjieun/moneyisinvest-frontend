@@ -6,14 +6,13 @@ import SignUp from "./pages/SignUp/SignUp";
 import MyPage from "pages/MyPage/MyPage";
 import AskPage from "pages/MyPage/AskPage";
 import AskWrite from "pages/MyPage/AskWrite";
+import StockTransaction from "pages/MyPage/Transactions"
 import News from "pages/News/News";
 import Store from "./pages/Store/Store";
 import AllNews from "pages/News/AllNews";
 import StockHold from "pages/MyPage/StockHold";
 import StockInterest from "pages/MyPage/StockInterest";
 import BuyList from "pages/MyPage/BuyList";
-import StockTransaction from "pages/MyPage/Transactions";
-
 import GuestMain from "pages/Main/GuestMain";
 import UserMain from "pages/Main/UserMain";
 import Textbook from "pages/Education/Textbook";
@@ -40,23 +39,6 @@ function App() {
   );
 
   return (
-
-    <BrowserRouter>
-      <Routes>
-        <Route path="/signIn" element={<SignIn />} />
-        <Route path="/signUp" element={<SignUp />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/askpage" element={<AskPage />} />
-        <Route path="/askwrite" element={<AskWrite />} />
-        <Route path="/news" element={<News />} />
-        <Route path="/allNews" element={<AllNews />} />
-        <Route path="/stockHold" element={<StockHold />} />
-        <Route path="/stockInterest" element={<StockInterest />} />
-        <Route path="/buyList" element={<BuyList />} />
-        <Route path="/transactions" element={<StockTransaction />}/>
-      </Routes>
-    </BrowserRouter>
-
     <Routes>
       <Route path="/" element={isLoggedIn ? <UserMain /> : <GuestMain />} />
       <Route
@@ -71,6 +53,7 @@ function App() {
       <Route path="/askpage" element={<AskPage />} />
       <Route path="/askwrite" element={<AskWrite />} />
       <Route path="/askpage/:supportId" element={<AskDetail />} />
+      <Route path="/transactions" element={<StockTransaction />} />
       <Route
         path="/news/:stockId"
         element={<News companyName={companyName} />}
@@ -89,14 +72,13 @@ function App() {
         path="/company/:stockId"
         element={<Company handleSetCompanyName={handleSetCompanyName} />}
       />
-      <Route path="/Community" element={<Community />} />
+      <Route path="/Community/:stockId" element={<Community />} />
       <Route path="/messagePage" element={<MessagePage />} />
       <Route path="/pay" element={<Payment />} />
       <Route path="/MessagePage" element={<MessagePage />} />
       <Route path="/myWallet" element={<MyWallet />} />
       <Route path="/pay" element={<Payment />} />
     </Routes>
-
   );
 }
 
