@@ -9,7 +9,9 @@ import {ReactComponent as CommentHeart} from "../../assets/images/commentHeart.s
 import {ReactComponent as Comment} from "../../assets/images/comment.svg";
 import axios from "axios";
 import {  RxHeart, RxChatBubble, RxDotsVertical } from "react-icons/rx";
+
 import { Link, useParams } from "react-router-dom";
+
 
 const Community = ({ stockName }) => {
   const { stockId } = useParams();  //URL로부터 supportId를 가져옵니다.
@@ -24,6 +26,12 @@ const Community = ({ stockName }) => {
   const [profileName, setProfileName] = useState('');
   const [profileImageUrl, setProfileImageUrl] = useState('');
   const [targetCommentId, setTargetCommentId] = useState(null);
+
+  const [replyOpen, setReplyOpen] = useState(false); // 대댓글 창 상태 관리
+
+  const name = sessionStorage.getItem('name');
+
+
 
   const handleLikeToggle = (index) => {
     const updatedComments = [...comments];
@@ -41,7 +49,7 @@ const Community = ({ stockName }) => {
 
   const handleInputChange = (event) => {
     setNewComment(event.target.value);
-  };
+  }; //댓글 작성하는 거 실시간으로 보임
 
   const handleReplyChange = (event) => {
     setNewReply(event.target.value);
@@ -128,6 +136,103 @@ const Community = ({ stockName }) => {
     setCurrentPage(pageNumber);
   };
 
+
+  //const { stockId } = useParams();  URL로부터 supportId를 가져옵니다.
+ //해당 주식의 커뮤니티 댓글 가져오기 - 가져와지는데 화면에 보이지는 않음
+ useEffect (() => {
+
+  const apiClient = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+  });
+
+  const stockId = '005930'; // 주식 종목 코드
+  const token = sessionStorage.getItem('token');
+
+    apiClient.get(`/api/v1/community/get?stockId=${stockId}`, {
+      headers: {
+          "X-AUTH-TOKEN": token,
+      }
+  })
+    .then(response => {
+      console.log('커뮤니티 응답 데이터:', response);
+      setCommunity(response.data);
+    })
+    .catch(error => {
+      console.error('커뮤니티 에러 발생:', error);
+    });
+}, [community]);
+
+/*useEffect(() => {
+const token = sessionStorage.getItem("token");
+
+//상점에 등록된 모든 상품 조회
+const fetchData = async () => {
+  console.log("fetchData 호출"); 
+  if (!token || token.trim() === "") {
+    console.error("토큰이 누락되었습니다. 로그인 후 다시 시도해 주세요.");
+    return;
+  }
+
+  try {
+    const response = await axios.get("/api/v1/shop/get/items", {
+      headers: {
+        "X-AUTH-TOKEN": token,
+      },
+      params: {
+        size: 5,
+        page: 0,
+      },
+    });
+    setProductsList(response.data);
+    console.log("상점 상품 정보 load success");
+  } catch (error) {
+    // 에러 처리
+    console.error("API 요청 중 에러가 발생했습니다:", error);
+  }
+};
+
+fetchData();
+}, []); // 빈 배열을 넣어서 컴포넌트 마운트 시에만 실행되도록 합니다. */
+
+//프로필이미지, 이름 가져오기
+useEffect(() => {
+const apiClient = axios.create({
+  baseURL: process.env.REACT_APP_API_URL,
+});
+
+async function fetchData() {
+  const token = sessionStorage.getItem('token');
+
+  if (!token || token.trim() === '') {
+    console.error('토큰이 누락되었습니다. 로그인 후 다시 시도해 주세요.');
+    return;
+  }
+
+  try {
+    const response = await apiClient.get(`/api/v1/profile/get`, {
+      headers: {
+        'X-AUTH-TOKEN': token,
+      },
+    });
+
+    const profileData = response.data;
+    console.log(response);
+    setProfileName(profileData.name);
+  } catch (error) {
+    console.error('프로필 정보를 불러오는데 실패했습니다.', error);
+    console.error('오류 메시지:', error.message); // 추가적인 오류 메시지 출력
+    console.error('오류 객체:', error.response); // 응답 객체 출력 (응답 코드, 응답 데이터 등)
+  }
+}
+
+fetchData();
+}, []); // 상태 변수를 위해 적절한 의존성 배열을 사용하거나 빈 배열로 남겨두십시오.
+
+  //커뮤니티 댓글 달기 - 성공
+  const postComment = () => {
+     // POST 요청할 API 주소입니다.
+     const url = "/api/v1/community/post";
+
   const apiClient = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
   });
@@ -153,6 +258,7 @@ const Community = ({ stockName }) => {
   const postComment = () => {
      // POST 요청할 API 주소입니다.
      const url = `/api/v1/community/post`;
+
 
      // header에 담을 정보를 설정합니다.
      const headers = {
@@ -266,6 +372,45 @@ const Community = ({ stockName }) => {
   }
 };*/
 
+
+ // 대댓글을 등록하는 함수입니다.
+const postReply = async () => {
+  const url = "/api/v1/community/reply";
+
+  const token = sessionStorage.getItem("token");
+  if (!token || token.trim() === "") {
+    console.error("토큰이 누락되었습니다. 로그인 후 다시 시도해주세요.");
+    return;
+  }
+
+  const headers = {
+    "Content-Type": "application/json",
+    "X-AUTH-TOKEN": token,
+  };
+
+  const data = {
+    targetCommentId: 0,
+    comment: newReply,
+  };
+
+  try {
+    const response = await axios.post(url, data, { headers });
+    const { success, msg } = response.data;
+    console.log("응답 성공:", success, msg);
+
+    // 성공적으로 생성된 대댓글에 대한 후속 처리를 여기에 작성하세요.
+    // 예: 댓글 목록 새로 고침, 입력 창 초기화 등
+
+  } catch (error) {
+    console.error("요청 실패:", error);
+    console.error("오류 메시지:", error.message);
+    console.error("오류 객체:", error.response);
+  }
+};
+
+  
+
+
  
  //해당 주식의 커뮤니티 댓글 가져오기
   useEffect (() => {
@@ -290,6 +435,7 @@ const Community = ({ stockName }) => {
         console.error('커뮤니티 에러 발생:', error);
       });
 }, []);
+
 
 //프로필이미지, 이름 가져오기
 useEffect(() => {
@@ -457,6 +603,32 @@ const deleteComment = async (id) => {
 };
 
 
+
+
+const communityItem = community.map((item) => (
+  <div className="communityList">
+    <div className="companycommunityList" key={item.id}>
+      <div className="companycommunityProfile">
+        <Profile className="companycommunityProfileImg" />
+        <div className="companycommunityName">{item.name}</div>
+    </div>
+    <div className="companycommunityComment">{item.comment}</div>
+    <div className="companycommunityReply">
+      <div className="companycommunityIcons">
+          <CommentHeart className="companycommunityIcon" />
+          <div>0</div>
+      </div>
+        <div className="companycommunityIcons">
+          <Comment className="companycommunityIcon" />
+          <div>{item.replyCount}</div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+));
+
+
 const communityItem = community.map((item) => (
   <div className="companycommunityList" key={item.id}>
       <div className="companycommunityProfile">
@@ -491,10 +663,18 @@ const communityItem = community.map((item) => (
 
             <div className="commentList">
                 {/* 댓글 목록 */}
+
+                {communityItem}                
+                {/*{ comments && comments.map((comment, index) => (
+                    <div key={index.id} className="writeComment">
+                        <div className="user"><img className="profileImg" src={profileImageUrl} alt="프로필 이미지" />{profileName}
+                        <div className="userName">{comment.name}{comment.profileName}{index.name}</div> </div>
+
                 {currentComments.map((comment, index) => (
                     <div key={index} className="writeComment">
                       
                         <div className="user"><img className="profileImg" src={profileImageUrl} alt="프로필 이미지" />{profileName}<div className="userName">{comment.name}{comment.profileName}</div> </div>
+
                         {editIndex === index ? (
                         <form className="formComment" onSubmit={handleSubmit}>
                             <textarea
@@ -511,7 +691,11 @@ const communityItem = community.map((item) => (
                             <div className="group">
                             {/*<div className="companyCommunityList">
                             {comment.text}
+
+                            </div>
+
                             </div>*/}
+
                             <div className="commentText">{comment.text}</div>
                             <span className={`likeCount${comment.isLiked ? " liked" : ""}`}
                             onClick={() => handleLikeToggle(index)}><RxHeart/><span > {comment.likeCount}</span></span>
@@ -532,19 +716,23 @@ const communityItem = community.map((item) => (
                                 </div>
                             </div>
                             <div className="repliesContainer">
-                           {/* 대댓글 목록 */}
+                           {/* 대댓글 목록 *
                            {comment.replies.map((reply, replyIndex) => (
-                                <div className="reply" key={replyIndex}>
+                                <div className="reply" key={replyIndex.id}>
                                   <div className="replyUser"><ProfileImage /></div>
                                   <div className="replyUserName">{reply.name}</div>
+
+                                <div className="replyText">{reply.comment}</div>
+
                                 <div className="replyText">{reply}</div>
+
                                 <div onClick={() => handleDeleteReply(index, replyIndex)}>
                                     <Button state="delete">삭제</Button>
                                 </div>
                                 </div>
                             ))}
 
-                            {/* 대댓글 작성창 */}
+                            {/* 대댓글 작성창 *
                             {replyIndex === index && (
                                 <form onSubmit={(event) => handleReplySubmit(event, index)} className="inputReplyForm">
                                 <div><img className="profileImg" src={profileImageUrl} alt="프로필 이미지" />{profileName}</div>
@@ -566,7 +754,11 @@ const communityItem = community.map((item) => (
                         </>
                         )}
                     </div>
+
+                    ))} */}
+
                     ))}
+
             </div>
                   {/* 페이지네이션 */}
                 <div className="pagination">
@@ -582,8 +774,13 @@ const communityItem = community.map((item) => (
                 <form 
                 className="postComment"
                 onSubmit={handleSubmit}>
+
+                    <div><Profile className="companycommunityProfileImg" /></div>
+                    <div className="postUserName">{name}</div>
+
                     <div><img className="profileImg" src={profileImageUrl} alt="프로필 이미지" />{profileName}</div>
                     <div className="postUserName">{profileName}</div>
+
                     <textarea
                     className="inputComment"
                     value={editIndex === -1 ? newComment : ''} 
