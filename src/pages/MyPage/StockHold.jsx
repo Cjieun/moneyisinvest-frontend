@@ -50,15 +50,12 @@ export default function StockHold() {
   
       // 상태에 따른 요청 경로 변경
       const requestPath = updatedHoldStock[index].favorite_status
-        ? `/api/v1/favorite/add`
-        : `/api/v1/favorite/remove`;
+        ? `/api/v1/favorite/add?stockId=${updatedHoldStock[index].stockCode}`
+        : `/api/v1/favorite/remove?stockId=${updatedHoldStock[index].stockCode}`;
         
-      const response = await apiClient.post(requestPath, {}, {
+      const response = await apiClient.post(requestPath, {
           headers: {
             "X-AUTH-TOKEN": token,
-          },
-          params: {
-            stockId: updatedHoldStock[index].stockCode,
           },
         });
   

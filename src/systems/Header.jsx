@@ -152,7 +152,7 @@ position: absolute;
 top: 100%;
 width: 76%;
 min-height: auto;
-max-height: 25rem;
+max-height: 15rem;
 overflow: scroll;
 background-color: #fff;
 border-radius: 0 0 0.625rem 0.625rem;
