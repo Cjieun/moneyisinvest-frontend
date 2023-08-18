@@ -24,6 +24,7 @@ const TopCard = ({ ranking, startIdx, endIdx }) => {
         stock={item.coinPrice}
         rank={item.rank}
         img={item.stockUrl}
+        isHold={false}
       />
     </div>
   ));

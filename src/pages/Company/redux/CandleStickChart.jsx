@@ -1,130 +1,138 @@
-// CandlestickChart.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 
-export const CandlestickChart = ({ chartData }) => {
-  const [annotations, setAnnotations] = useState([]);
+const getLatestArray = (data) => {
+  if (data.length === 0) {
+    return [];
+  }
 
-  const colors = chartData.map((data) => data.fillColor);
-  const weightedAvgStockPrice = chartData[chartData.length - 1].weighted_average_stock_price;
+  const latestDataIndex = data.length - 1;
+  return data[latestDataIndex];
+};
 
-  const chartOptions = {
+const processData = (data, realTimeData) => {
+  if (!data || data.length === 0) {
+    return [];
+  }
+
+  const realTimeDataByDate = realTimeData && realTimeData.length > 0 ? realTimeData.reduce((dataMap, item) => {
+    if (item.hasOwnProperty('current_time')) {
+      const dateStr = new Date(item.current_time).toDateString();
+      dataMap[dateStr] = item;
+    } else {
+      //console.error('realTimeData 항목에 current_time 프로퍼티가 없습니다.', item);
+    }
+    return dataMap;
+  }, {}) : {};
+
+  const result = data.map((item) => {
+    const date = new Date(item.current_date.slice(0,4), item.current_date.slice(4,6)-1, item.current_date.slice(6,8));
+    const dateStr = date.toDateString();
+    const realTimeDataForDate = realTimeDataByDate[dateStr];
+
+    if (realTimeDataForDate && realTimeDataForDate.hasOwnProperty('stock_price')) {
+      return {
+        x: date,
+        y: [
+          Number(item.start_Price),
+          Number(item.high_Price),
+          Number(item.low_Price),
+          Number(realTimeDataForDate.stock_price),
+        ],
+      };
+    } else {
+      return {
+        x: date,
+        y: [
+          Number(item.start_Price),
+          Number(item.high_Price),
+          Number(item.low_Price),
+          Number(item.end_Price),
+        ],
+      };
+    }
+  });
+
+  const latestDate = result[result.length - 1].x;
+  const latestRealTimeData = realTimeData[realTimeData.length - 1];
+  if (latestRealTimeData && latestRealTimeData.hasOwnProperty('current_time')) {
+    const latestRealTimeDate = new Date(latestRealTimeData.current_time).toDateString();
+
+    if (latestDate.toDateString() !== latestRealTimeDate.toDateString()) {
+      result.push({
+        x: new Date(latestRealTimeData.current_time),
+        y: [
+          Number(latestRealTimeData.stock_open_price),
+          Number(latestRealTimeData.stock_high_price),
+          Number(latestRealTimeData.stock_low_price),
+          Number(latestRealTimeData.stock_price),
+        ],
+      });
+    }
+  }
+
+  return result;
+};
+
+const CandleStickChart = ({ chartData, realTimeData = []}) => {
+  const [processedData, setProcessedData] = useState(
+    processData(getLatestArray(chartData), realTimeData)
+  );
+
+  const chartWidth = 930;
+  const chartHeight = 430;
+
+  const options = {
     chart: {
       type: 'candlestick',
-      zoom: {enabled: true},
-      toolbar: { show: false },
-      events: {
-        click: function (event, chartContext, config) {
-          const { dataPointIndex } = config;
-          if (dataPointIndex === chartData.length - 1) {
-            setAnnotations([
-              {
-                x: chartData[dataPointIndex].x,
-                strokeDashArray: 0,
-                borderColor: 'red',
-                label: {
-                  borderColor: 'red',
-                  style: {
-                    color: '#fff',
-                    background: 'red',
-                  },
-                  text: 'Viewing Live',
-                },
-              },
-            ]);
-          } else {
-            setAnnotations([]);
-          }
+      toolbar: {
+        show: false,
+      },
+    },
+    plotOptions: {
+      candlestick: {
+        colors: {
+          upward: '#FF1C1C',
+          downward: '#1C77FF',
         },
       },
     },
     xaxis: {
       type: 'datetime',
+      labels: {
+        show: true,
+      },
     },
     yaxis: {
       tooltip: {
         enabled: true,
       },
-    },
-    annotations: {
-      yaxis: [
-        {
-          y: weightedAvgStockPrice,
-          borderColor: '#999',
-          label: {
-            show: true,
-            text: 'Weighted Avg. Stock Price',
-            position: 'right',
-          },
-        },
-      ],
-      points: annotations,
-    },
-    plotOptions: {
-      candlestick: {
-        colors: {
-          upward: 'green',
-          downward: 'red',
-        },
-      },
-    },
-    fill: {
-      type: "gradient",
-      gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [0, 100],
-        colorStops: colors.map((color, index) => ({
-          offset: (index / chartData.length) * 100,
-          color,
-          opacity: 1,
-        })),
-      },
-    },
-    grid: {
+      labels: {
         show: true,
-        borderColor: '#90A4AE',
-        strokeDashArray: 0,
-        position: 'back',
-        xaxis: {
-          lines: {
-            show: false,
-          },
-        },
-        yaxis: {
-          lines: {
-            show: false,
-          },
-        },
-        row: {
-          colors: undefined,
-          opacity: 0.5,
-        },
-        column: {
-          colors: undefined,
-          opacity: 0.5,
-        },
-        padding: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
-        },
       },
+    },
+  };
 
-    };
-
-  const chartSeries = [
+  const series = [
     {
-      data: chartData,
-      name: 'stock price',
+      name: 'candle',
+      data: processedData,
     },
   ];
 
+  useEffect(() => {
+    setProcessedData(processData(getLatestArray(chartData), realTimeData));
+  }, [chartData, realTimeData]);
+
   return (
-    <div id="chart" style={{ height: '100%', marginTop: 0 }}>
-      <Chart options={chartOptions} series={chartSeries} type="candlestick" height="100%"/>
-    </div>
+    <Chart
+      options={options}
+      series={series}
+      type="candlestick"
+      width={chartWidth}
+      height={chartHeight}
+    />
   );
 };
+
+export default CandleStickChart;

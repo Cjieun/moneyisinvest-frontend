@@ -12,17 +12,14 @@
                 margin: auto;
                 display: flex;
                 flex-direction: row;
-                justify-content: space-between;
                 margin-top: 3.25rem;
-                margin: 2.69rem auto 1.37rem auto;
-                //gap: 17.75rem;
+                margin: 2.69rem 0 1.37rem 0; 
             }
             .communityTitle {
                 color: #000;
                 font-size: 1.5rem;
                 font-weight: 700;
             }
-
             .commentList {
                 display: flex;
                 flex-direction: column;
@@ -94,6 +91,11 @@
                 .writeComment {
                     display: flex;
                     flex-direction: column;
+                    .formComment {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                    }
                     .user {
                         display: flex;
                         .userName{
@@ -194,7 +196,13 @@
             }
         }
     }
+
   
+
+}
+
+
+
 
 .inputComment {
     width: 37.25rem;
@@ -240,4 +248,11 @@
           color: #333;
         }
     }
+}
+
+.profileImg {
+    width: 2.25rem;
+    height: 2.25rem;
+    margin: auto 0.75rem auto 0;
+    border-radius: 50%;
 }

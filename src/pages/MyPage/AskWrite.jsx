@@ -8,6 +8,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function AskWrite() {
+
+    const apiClient = axios.create({
+        baseURL: process.env.REACT_APP_API_URL,
+      });
+    
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
@@ -25,8 +30,7 @@ export default function AskWrite() {
         const token = sessionStorage.getItem("token");
 
         if (token !== null) {
-            axios.post('/api/v1/support/post', {
-                    uid: sessionStorage.getItem("id"),
+            apiClient.post('/api/v1/support/post', {
                     title: title,
                     contents: content
                 }, {

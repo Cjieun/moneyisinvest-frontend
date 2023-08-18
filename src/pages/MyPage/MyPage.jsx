@@ -7,7 +7,11 @@ import Profile from "../../systems/Profile";
 import MyButton from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
-export default function MyPage() {
+export default function MyPage({setIsLoggedIn}) {
+    const apiClient = axios.create({
+        baseURL: process.env.REACT_APP_API_URL,
+    });
+
     const [isNameEditing, setNameEditing] = useState(false);
     const [name, setName] = useState("");
     const [profile, setProfile] = useState("");
@@ -42,7 +46,7 @@ export default function MyPage() {
     useEffect (() => {
         const token = sessionStorage.getItem("token");
         if (token !== null) {
-            axios.get("/api/v1/user/detail", {
+            apiClient.get("/api/v1/profile/user/detail", {
                 headers: {
                     'X-Auth-Token': token,
                 }
@@ -77,13 +81,13 @@ export default function MyPage() {
             console.log(file);
             const formData = new FormData();
             formData.append("file", file);
-            axios.post("/api/v1/profile/upload", formData, {
+            apiClient.post("/api/v1/profile/upload", formData, {
                 headers: {
                     'X-AUTH-TOKEN' : token,
                 }
             }).then(res => {
                 console.log("프로필 업로드 성공!!", res.data);
-                axios.get("/api/v1/profile/get", {
+                apiClient.get("/api/v1/profile/get", {
                     headers: {
                         'X-Auth-Token': token,
                     }
@@ -103,16 +107,17 @@ export default function MyPage() {
 
     const onClickLogout = () => {
         sessionStorage.clear();
+        setIsLoggedIn(false);
         navigate("/", {replace: true});
     }
 
     return (
         <div className="myPageContainer">
-            <Header />
+            <Header profileImg={profile}/>
             <div className="myPageBox">
                 <div className="myPageContent">
                     <div className="profile">
-                        <Profile/>
+                        <Profile img={profile}/>
                     </div>
                     <div className="myPageProfile">
                         <div className="myPageTitle">마이페이지</div>
