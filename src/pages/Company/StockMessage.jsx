@@ -88,10 +88,10 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
       }
     };
 
+    const token = sessionStorage.getItem("token");
     useEffect(() => {
-        const token = sessionStorage.getItem("token");
         apiClient
-        .get("/api/v1/stock/get/users/stockQ", {},
+        .get("/api/v1/stock/get/users/stockquantity",
         {
           headers: {
             "X-AUTH-TOKEN": token,
@@ -102,7 +102,7 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
         })
         .then((res) => {
           console.log("보유 스톡 불러오기 성공", res);
-          setStock(res.data);
+          setStock(res.data.msg);
         })
         .catch((err) => {
           console.log("보유 스톡 불러오기 실패:", err);
@@ -164,7 +164,7 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
                 </div>
             </div>
             <div css={MessageInfo}>
-                <div>현재 {stock === "" ? "0" : stock}주 보유하고 있어요</div>
+                <div>현재 {stock === "null" ? "0" : stock}주 보유하고 있어요</div>
                 {(state === "buy") && (<div>{stockNeed}스톡이 필요해요</div>)}
             </div>
             <div onClick={onClickDeal}>
