@@ -91,7 +91,7 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
     useEffect(() => {
         const token = sessionStorage.getItem("token");
         apiClient
-        .get(`/api/v1/stock/get/users/stockQ`, {},
+        .get("/api/v1/stock/get/users/stockQ", {},
         {
           headers: {
             "X-AUTH-TOKEN": token,
