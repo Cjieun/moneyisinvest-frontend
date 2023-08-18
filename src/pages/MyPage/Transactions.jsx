@@ -141,12 +141,12 @@
                   }
                 });
             } 
-          }, []); */
+          }, []); 
 
           };
           
           fetchStockHistory();
-        }, []); 
+        }, []); */
   
 
     
@@ -161,7 +161,7 @@
                 </div>
                 <div className="transItem-content">
                     <div className="transItem-price">{item.unitPrice}원</div>
-                    <div className="transItem-value">{item.value}스톡</div>
+                    <div className="transItem-value">{item.stockPrice}스톡</div>
                     <div className="transItem-volume">{item.quantity}주</div>
                     <div className="transItem-date">{item.transactionDate}</div>
                     <div className="transItem-status">{item.status}</div>
