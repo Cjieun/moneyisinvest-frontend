@@ -16,11 +16,11 @@ const processData = (data, realTimeData) => {
   }
 
   const realTimeDataByDate = realTimeData && realTimeData.length > 0 ? realTimeData.reduce((dataMap, item) => {
-    if (item.hasOwnProperty('currnet_time')) {
-      const dateStr = new Date(item.currnet_time).toDateString();
+    if (item.hasOwnProperty('current_time')) {
+      const dateStr = new Date(item.current_time).toDateString();
       dataMap[dateStr] = item;
     } else {
-      //console.error('realTimeData 항목에 currnet_time 프로퍼티가 없습니다.', item);
+      //console.error('realTimeData 항목에 current_time 프로퍼티가 없습니다.', item);
     }
     return dataMap;
   }, {}) : {};
@@ -55,12 +55,12 @@ const processData = (data, realTimeData) => {
 
   const latestDate = result[result.length - 1].x;
   const latestRealTimeData = realTimeData[realTimeData.length - 1];
-  if (latestRealTimeData && latestRealTimeData.hasOwnProperty('currnet_time')) {
-    const latestRealTimeDate = new Date(latestRealTimeData.currnet_time).toDateString();
+  if (latestRealTimeData && latestRealTimeData.hasOwnProperty('current_time')) {
+    const latestRealTimeDate = new Date(latestRealTimeData.current_time).toDateString();
 
     if (latestDate.toDateString() !== latestRealTimeDate) {
       result.push({
-        x: new Date(latestRealTimeData.currnet_time),
+        x: new Date(latestRealTimeData.current_time),
         y: [
           Number(latestRealTimeData.stock_open_price),
           Number(latestRealTimeData.stock_high_price),

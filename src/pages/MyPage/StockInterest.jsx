@@ -80,7 +80,8 @@ export default function StockInterest() {
                 </div>
             </div>
             <div className="holdItem-content">
-                <div className="holdItem-percent">+{item.rate}%</div>
+                <div className="holdItem-percent">{item.rate > 0 ? "+" : ""}
+                    {item.rate}%</div>
                 <div className="holdItem-price">{item.real_per_price}원</div>
                 <div className="holdItem-price">{item.real_per_coin}스톡</div>
                 <div className="holdItem-heart" onClick={() => handleToggleHeart(index)}>
