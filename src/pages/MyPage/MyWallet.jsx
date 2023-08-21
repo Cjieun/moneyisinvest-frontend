@@ -44,13 +44,13 @@ export default function MyWallet() {
 
         apiClient.get("/api/v1/coin/get/history", {
             headers: {
-                'X-AUTH-TOKEN': token
+                "X-AUTH-TOKEN": token,
             }
         }).then((res) => {
             console.log("지갑 거래 내역 조회",res.data);
             setWallet(res.data);
         }).catch((err)=> {
-            console.log(err);
+            console.log("지갑 거래 내역 조회 실패",err);
         })
     },[])
 

@@ -374,7 +374,7 @@ fetchData();
 
 
  // 대댓글을 등록하는 함수입니다.
-const postReply = async () => {
+/*const postReply = async () => {
   const url = "/api/v1/community/reply";
 
   const token = sessionStorage.getItem("token");
@@ -406,14 +406,14 @@ const postReply = async () => {
     console.error("오류 메시지:", error.message);
     console.error("오류 객체:", error.response);
   }
-};
+};*/
 
   
 
 
  
  //해당 주식의 커뮤니티 댓글 가져오기
-  useEffect (() => {
+  /*useEffect (() => {
 
     const apiClient = axios.create({
       baseURL: process.env.REACT_APP_API_URL,
@@ -470,7 +470,7 @@ useEffect(() => {
 
   fetchData();
 }, []); // 상태 변수를 위해 적절한 의존성 배열을 사용하거나 빈 배열로 남겨두십시오.
-
+*/
 
 //해당 주식의 커뮤니티 댓글(대댓글 정보 포함) 가져오기
 
@@ -629,7 +629,7 @@ const communityItem = community.map((item) => (
 ));
 
 
-const communityItem = community.map((item) => (
+/*const communityItem = community.map((item) => (
   <div className="companycommunityList" key={item.id}>
       <div className="companycommunityProfile">
           <Profile className="companycommunityProfileImg" />
@@ -647,7 +647,7 @@ const communityItem = community.map((item) => (
           </div>
       </div>
   </div>
-))
+))*/
 
   
   return (
@@ -694,7 +694,7 @@ const communityItem = community.map((item) => (
 
                             </div>
 
-                            </div>*/}
+                            </div>
 
                             <div className="commentText">{comment.text}</div>
                             <span className={`likeCount${comment.isLiked ? " liked" : ""}`}
@@ -757,8 +757,6 @@ const communityItem = community.map((item) => (
 
                     ))} */}
 
-                    ))}
-
             </div>
                   {/* 페이지네이션 */}
                 <div className="pagination">
@@ -796,6 +794,7 @@ const communityItem = community.map((item) => (
     <Footer/>
     </div>
   );
-};
+}
+}
 
 export default Community;

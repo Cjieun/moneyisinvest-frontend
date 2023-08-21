@@ -5,7 +5,7 @@ import axios from "axios";
 import { ReactComponent as Coin } from "../assets/images/coin.svg";
 import { Link, useLocation } from "react-router-dom";
 
-export default function Profile(props) {
+export default function Profile() {
   const apiClient = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
   });

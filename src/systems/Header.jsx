@@ -8,7 +8,7 @@ import { ReactComponent as Coin } from "../assets/images/coin.svg";
 import { Link } from "react-router-dom";
 //import profileImage from "../assets/images/angma.jpg";
 
-export default function Header({ coinNum }) {
+export default function Header() {
   const apiClient = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
   });
@@ -119,7 +119,7 @@ export default function Header({ coinNum }) {
     background: #f1f1f1;
     margin-top: auto;
     margin-bottom: auto;
-    margin-right: ${isLogin ? "1.12rem" : "2rem"};
+    margin-right: ${isLogin ? "1.69rem" : "2rem"};
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -144,33 +144,34 @@ export default function Header({ coinNum }) {
     flex-shrink: 0;
     margin: auto 0.94rem auto 0;
   `;
-const searchResultsContainer = css`
-display: flex;
-flex-direction: column;
-align-items: center;
-position: absolute;
-top: 100%;
-width: 76%;
-min-height: auto;
-max-height: 15rem;
-overflow: scroll;
-background-color: #fff;
-border-radius: 0 0 0.625rem 0.625rem;
-z-index: -1;
-margin: auto 1.25rem;
-overflow-y: scroll;
-overflow-x: hidden;
-align-items: center;
-justify-content: center;
-padding-top: 0; /* 수정을 추가합니다. */
-&::-webkit-scrollbar {
-  width: 0;
-}
-& > div:not(:last-child) {
-  width: 100%;
-  border-bottom: 1px solid #d1efee;
-}
-`;  const searchResultsItem = css`
+  const searchResultsContainer = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 100%;
+  width: 76%;
+  min-height: auto;
+  max-height: 15rem;
+  overflow: scroll;
+  background-color: #fff;
+  border-radius: 0 0 0.625rem 0.625rem;
+  z-index: -1;
+  margin: auto 1.25rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+  & > div:not(:last-child) {
+    width: 100%;
+    border-bottom: 1px solid #d1efee;
+  }
+  `;  
+  const searchResultsItem = css`
     height: 2.5rem;
     width: 100%;
     padding: 0.81rem 0 0.81rem 1.06rem;
@@ -191,14 +192,13 @@ padding-top: 0; /* 수정을 추가합니다. */
     color: #3eb7af;
     font-size: 0.8125rem;
     font-weight: 600;
-    margin: auto 0.21rem auto 0;
+    margin: auto 0.4rem auto 0;
   `;
   const coinLogo = css`
     display: ${isLogin ? "block" : "none"};
     width: 1.838rem;
     height: 1.89344rem;
-    flex-shrink: 0s;
-    margin: auto 0.95rem auto 0;
+    margin: auto 0.89rem auto 0;
   `;
   const profile = css`
     display: flex;
