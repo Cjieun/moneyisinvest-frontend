@@ -3,7 +3,6 @@ import "./Community.scss";
 import Header from 'systems/Header';
 import Button from "components/Button";
 import Footer from "components/Footer";
-import {ReactComponent as ProfileImage} from "../../assets/images/profile.svg";
 import {ReactComponent as Profile} from "../../assets/images/profile.svg";
 import {ReactComponent as CommentHeart} from "../../assets/images/commentHeart.svg";
 import {ReactComponent as Comment} from "../../assets/images/comment.svg";
@@ -125,20 +124,10 @@ const Community = ({ stockName }) => {
     setComments(updatedComments);
   };
 
-  const commentsPerPage = 7; // 한 페이지에 보여줄 댓글 수
-  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호
-
-  const indexOfLastComment = currentPage * commentsPerPage;
-  const indexOfFirstComment = indexOfLastComment - commentsPerPage;
-  const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
+ 
 
   //const { stockId } = useParams();  URL로부터 supportId를 가져옵니다.
- //해당 주식의 커뮤니티 댓글 가져오기 - 가져와지는데 화면에 보이지는 않음
+ //해당 주식의 커뮤니티 댓글 가져오기
  useEffect (() => {
 
   const apiClient = axios.create({
@@ -154,7 +143,7 @@ const Community = ({ stockName }) => {
       }
   })
     .then(response => {
-      console.log('커뮤니티 응답 데이터:', response);
+      console.log('커뮤니티 댓글 가져오기 성공:', response);
       setCommunity(response.data);
     })
     .catch(error => {
@@ -162,99 +151,7 @@ const Community = ({ stockName }) => {
     });
 }, [community]);
 
-/*useEffect(() => {
-const token = sessionStorage.getItem("token");
-
-//상점에 등록된 모든 상품 조회
-const fetchData = async () => {
-  console.log("fetchData 호출"); 
-  if (!token || token.trim() === "") {
-    console.error("토큰이 누락되었습니다. 로그인 후 다시 시도해 주세요.");
-    return;
-  }
-
-  try {
-    const response = await axios.get("/api/v1/shop/get/items", {
-      headers: {
-        "X-AUTH-TOKEN": token,
-      },
-      params: {
-        size: 5,
-        page: 0,
-      },
-    });
-    setProductsList(response.data);
-    console.log("상점 상품 정보 load success");
-  } catch (error) {
-    // 에러 처리
-    console.error("API 요청 중 에러가 발생했습니다:", error);
-  }
-};
-
-fetchData();
-}, []); // 빈 배열을 넣어서 컴포넌트 마운트 시에만 실행되도록 합니다. */
-
-//프로필이미지, 이름 가져오기
-useEffect(() => {
-const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-});
-
-async function fetchData() {
-  const token = sessionStorage.getItem('token');
-
-  if (!token || token.trim() === '') {
-    console.error('토큰이 누락되었습니다. 로그인 후 다시 시도해 주세요.');
-    return;
-  }
-
-  try {
-    const response = await apiClient.get(`/api/v1/profile/get`, {
-      headers: {
-        'X-AUTH-TOKEN': token,
-      },
-    });
-
-    const profileData = response.data;
-    console.log(response);
-    setProfileName(profileData.name);
-  } catch (error) {
-    console.error('프로필 정보를 불러오는데 실패했습니다.', error);
-    console.error('오류 메시지:', error.message); // 추가적인 오류 메시지 출력
-    console.error('오류 객체:', error.response); // 응답 객체 출력 (응답 코드, 응답 데이터 등)
-  }
-}
-
-fetchData();
-}, []); // 상태 변수를 위해 적절한 의존성 배열을 사용하거나 빈 배열로 남겨두십시오.
-
-  //커뮤니티 댓글 달기 - 성공
-  const postComment = () => {
-     // POST 요청할 API 주소입니다.
-     const url = "/api/v1/community/post";
-
-  const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
-  
-  const token = sessionStorage.getItem("token");
-  
-  const postComment = () => {
-    apiClient.post("/api/v1/community/post", {
-      comment: newComment,
-      stockId: stockId,
-    }, {
-      headers: {
-        "X-AUTH-TOKEN": token,
-      }
-    }).then((res)=> {
-      console.log(res.data);
-    }).catch((err) => {
-      console.log(err);
-    })
-  }
-
-  /*//커뮤니티 댓글 달기
+  //커뮤니티 댓글 달기
   const postComment = () => {
      // POST 요청할 API 주소입니다.
      const url = `/api/v1/community/post`;
@@ -285,7 +182,7 @@ fetchData();
          console.error('오류 객체:', error.response); // 응답 객체 출력 (응답 코드, 응답 데이터 등)
        });
 
-  };*/
+  };
 
 
   /*커뮤니티 대댓글 달기
@@ -321,7 +218,7 @@ fetchData();
  }; */
 
 
-
+/*
  const postReply = () => {
   apiClient.post("/api/v1/community/reply", {
     targetCommentId: targetCommentId,
@@ -335,46 +232,10 @@ fetchData();
   }).catch((err) => {
     console.log(err);
   })
- }
+ }*/
 
  // 대댓글을 등록하는 함수입니다.
-/*const postReply = async () => {
-  const url = "/api/v1/community/reply";
-
-  const token = sessionStorage.getItem("token");
-  if (!token || token.trim() === "") {
-    console.error("토큰이 누락되었습니다. 로그인 후 다시 시도해주세요.");
-    return;
-  }
-
-  const headers = {
-    "Content-Type": "application/json",
-    "X-AUTH-TOKEN": token,
-  };
-
-  const data = {
-    targetCommentId: targetCommentId,
-    comment: newReply,
-  };
-
-  try {
-    const response = await axios.post(url, data, { headers });
-    const { success, msg } = response.data;
-    console.log("응답 성공:", success, msg);*/
-
-    // 성공적으로 생성된 대댓글에 대한 후속 처리를 여기에 작성하세요.
-    // 예: 댓글 목록 새로 고침, 입력 창 초기화 등
-
-  /*} catch (error) {
-    console.error("요청 실패:", error);
-    console.error("오류 메시지:", error.message);
-    console.error("오류 객체:", error.response);
-  }
-};*/
-
-
- // 대댓글을 등록하는 함수입니다.
-/*const postReply = async () => {
+const postReply = async () => {
   const url = "/api/v1/community/reply";
 
   const token = sessionStorage.getItem("token");
@@ -406,71 +267,8 @@ fetchData();
     console.error("오류 메시지:", error.message);
     console.error("오류 객체:", error.response);
   }
-};*/
+};
 
-  
-
-
- 
- //해당 주식의 커뮤니티 댓글 가져오기
-  /*useEffect (() => {
-
-    const apiClient = axios.create({
-      baseURL: process.env.REACT_APP_API_URL,
-    });
-
-    //const stockId = '005930'; // 주식 종목 코드
-    const token = sessionStorage.getItem('token');
-
-      apiClient.get(`/api/v1/community/get?stockId=${stockId}`, {
-        headers: {
-            "X-AUTH-TOKEN": token,
-        }
-    })
-      .then(response => {
-        console.log('커뮤니티 응답 데이터:', response);
-        setCommunity(response.data.slice(0, 3));
-      })
-      .catch(error => {
-        console.error('커뮤니티 에러 발생:', error);
-      });
-}, []);
-
-
-//프로필이미지, 이름 가져오기
-useEffect(() => {
-  const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
-
-  async function fetchData() {
-    const token = sessionStorage.getItem('token');
-
-    if (!token || token.trim() === '') {
-      console.error('토큰이 누락되었습니다. 로그인 후 다시 시도해 주세요.');
-      return;
-    }
-
-    try {
-      const response = await apiClient.get(`/api/v1/profile/get`, {
-        headers: {
-          'X-AUTH-TOKEN': token,
-        },
-      });
-
-      const profileData = response.data;
-      setProfileName(profileData.name);
-      setProfileImageUrl(profileData.profileImageUrl); // 응답 JSON에서 프로필 이미지 URL을 추출합니다. 필요한 경우 키 이름을 바꾸어 사용하세요.
-    } catch (error) {
-      console.error('프로필 정보를 불러오는데 실패했습니다.', error);
-      console.error('오류 메시지:', error.message); // 추가적인 오류 메시지 출력
-      console.error('오류 객체:', error.response); // 응답 객체 출력 (응답 코드, 응답 데이터 등)
-    }
-  }
-
-  fetchData();
-}, []); // 상태 변수를 위해 적절한 의존성 배열을 사용하거나 빈 배열로 남겨두십시오.
-*/
 
 //해당 주식의 커뮤니티 댓글(대댓글 정보 포함) 가져오기
 
@@ -622,6 +420,20 @@ const communityItem = community.map((item) => (
           <Comment className="companycommunityIcon" />
           <div>{item.replyCount}</div>
         </div>
+        {/*<span onClick={() => setShowActions(!showActions)} className="edit-icon"><RxDotsVertical/></span>
+                            {showActions && (
+                              <div className="actions">
+                                <div onClick={() => handleEdit(item)}>
+                                <Button state="edit">수정</Button>
+                                </div>
+                                <div onClick={() => deleteComment(item.id, item)} >
+                                <Button state="delete">삭제</Button>
+                                </div>
+                              </div>
+                            )}
+        <div onClick={postReply} type="submit" className="replybtn">
+          <Button state="reply">대댓글 작성</Button>
+                            </div>*/}
       </div>
     
     </div>
@@ -629,27 +441,7 @@ const communityItem = community.map((item) => (
 ));
 
 
-/*const communityItem = community.map((item) => (
-  <div className="companycommunityList" key={item.id}>
-      <div className="companycommunityProfile">
-          <Profile className="companycommunityProfileImg" />
-          <div className="companycommunityName">{item.name}</div>
-      </div>
-      <div className="companycommunityComment">{item.comment}</div>
-      <div className="companycommunityReply">
-          <div className="companycommunityIcons">
-              <CommentHeart className="companycommunityIcon"/>
-              <div>0</div>
-          </div>
-          <div className="companycommunityIcons">
-              <Comment className="companycommunityIcon"/>
-              <div>{item.replyCount}</div>
-          </div>
-      </div>
-  </div>
-))*/
 
-  
   return (
     <div className="communityContainer">
     <Header/>
@@ -755,17 +547,11 @@ const communityItem = community.map((item) => (
                         )}
                     </div>
 
-                    ))} */}
+                    ))} 
 
+                    ))}*/}
             </div>
-                  {/* 페이지네이션 */}
-                <div className="pagination">
-                    {Array.from({ length: Math.ceil(comments.length / commentsPerPage) }).map((_, index) => (
-                    <button key={index} onClick={() => handlePageChange(index + 1)}>
-                        {index + 1}
-                    </button>
-                    ))}
-                </div>
+                  
 
             <div className="newComment">
                 {/* 새로 작성하는 댓글 입력창 */}
@@ -775,10 +561,6 @@ const communityItem = community.map((item) => (
 
                     <div><Profile className="companycommunityProfileImg" /></div>
                     <div className="postUserName">{name}</div>
-
-                    <div><img className="profileImg" src={profileImageUrl} alt="프로필 이미지" />{profileName}</div>
-                    <div className="postUserName">{profileName}</div>
-
                     <textarea
                     className="inputComment"
                     value={editIndex === -1 ? newComment : ''} 
@@ -794,7 +576,6 @@ const communityItem = community.map((item) => (
     <Footer/>
     </div>
   );
-}
-}
+};
 
 export default Community;
