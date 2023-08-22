@@ -13,6 +13,8 @@ export default function Header() {
     baseURL: process.env.REACT_APP_API_URL,
   });
 
+  console.log('API URL:', process.env.REACT_APP_API_URL);
+
   const [isLogin, setIsLogin] = useState(false);
   const [profileName, setProfileName] = useState("");
   const [profileImage, setProfileImage] = useState("");
