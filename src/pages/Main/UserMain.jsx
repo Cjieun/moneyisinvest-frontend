@@ -77,12 +77,7 @@ export default function UserMain() {
             })
             .then((res) => {
                 console.log("Favorite Stock Success",res);
-                if (Array.isArray(res.data)) { 
-                    setInterestStock(res.data);
-                  } else { 
-                    console.error('API response data is not an array:', res.data); 
-                    setInterestStock([]); // Set to empty array in case of invalid data.
-                 }
+                setInterestStock(res.data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -107,12 +102,7 @@ export default function UserMain() {
             })
             .then((res) => {
                 console.log("My Stock Success",res);
-                if (Array.isArray(res.data)) { 
-                    setHoldStock(res.data);
-                  } else { 
-                    console.error('API response data is not an array:', res.data); 
-                    setHoldStock([]); // Set to empty array in case of invalid data.
-                 }
+                setHoldStock(res.data)
             })
             .catch((err) => {
                 if (err.response) {
