@@ -9,9 +9,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function MyPage({setIsLoggedIn}) {
     const apiClient = axios.create({
-        baseURL: process.env.REACT_APP_API_URL,
-    });
-
+        baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+    });  
+    
     const [isNameEditing, setNameEditing] = useState(false);
     const [name, setName] = useState("");
     const [profile, setProfile] = useState("");
@@ -21,12 +21,12 @@ export default function MyPage({setIsLoggedIn}) {
 
     const navigate = useNavigate();
 
-    const handleNameEdit = () => {
+    /*const handleNameEdit = () => {
         setNameEditing(true);
         if (nameRef.current) {
             nameRef.current.focus();
         }
-    };
+    };*/
 
     const handleNameSave = () => {
         setNameEditing(false);
@@ -52,7 +52,7 @@ export default function MyPage({setIsLoggedIn}) {
                 }
             })
             .then((res) => {
-                console.log(res.data);
+                console.log("Mypage success",res.data);
                 setName(res.data.name);
                 setProfile(res.data.profileUrl);
                 setId(res.data.uid);
@@ -86,8 +86,8 @@ export default function MyPage({setIsLoggedIn}) {
                     'X-AUTH-TOKEN' : token,
                 }
             }).then(res => {
-                console.log("프로필 업로드 성공!!", res.data);
-                apiClient.get("/api/v1/profile/get", {
+                console.log("profile upload success!!", res.data);
+                /*apiClient.get("/api/v1/profile/get", {
                     headers: {
                         'X-Auth-Token': token,
                     }
@@ -97,10 +97,9 @@ export default function MyPage({setIsLoggedIn}) {
                     setProfile(res.data.url);
                 }).catch((res) => {
                     console.log("프로필 불러오지 못함", res);
-                    console.log("프로필 불러오지 못함", res);
-                })                    
+                })*/                    
             }).catch((err) => {
-                console.log("프로필 업로드 오류", err);
+                console.log("profile upload fail", err);
             });
         }  
     };

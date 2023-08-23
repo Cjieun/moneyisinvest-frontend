@@ -9,8 +9,8 @@ import Message from "components/Message";
 
 export default function SignIn({ setIsLoggedIn }) {
   const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
 
   const [inputId, setInputId] = useState("");
   const [inputPw, setInputPw] = useState("");

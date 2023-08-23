@@ -1,19 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import axios from "axios";
 import { ReactComponent as Logo } from "../assets/images/logo.svg";
 import { ReactComponent as Search } from "../assets/images/search.svg";
 import { ReactComponent as Coin } from "../assets/images/coin.svg";
 import { Link } from "react-router-dom";
+import axios from "axios";
 //import profileImage from "../assets/images/angma.jpg";
 
 export default function Header() {
   const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
-
-  console.log('API URL:', process.env.REACT_APP_API_URL);
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
 
   const [isLogin, setIsLogin] = useState(false);
   const [profileName, setProfileName] = useState("");
@@ -35,11 +33,11 @@ export default function Header() {
           },
         })
         .then((res) => {
-          console.log("헤더 프로필 불러오기 성공", res.data);
+          console.log("header profile success", res.data);
           setProfileImage(res.data.url);
         })
         .catch((res) => {
-          console.log("헤더 프로필 불러오기 실패", res.status);
+          console.log("header profile fail", res.status);
           /*if (res.response.status === 401) {
             setIsLogin(false);
             sessionStorage.removeItem("token");
@@ -48,24 +46,77 @@ export default function Header() {
             window.location.href = "/signIn";
           }*/
         });
-      apiClient
+        apiClient
         .get("/api/v1/coin/get/balance", {
           headers: {
             "X-AUTH-TOKEN": token,
           },
         })
         .then((res) => {
-          console.log("지갑 잔액 조회 성공", res.data);
+          console.log("header stock success", res.data);
           setStock(res.data);
         })
         .catch((res) => {
-          console.log("지갑 잔액 조회 실패", res);
+          console.log("header stock fail", res);
         });
     } else {
       // sessionStorage 에 token 라는 key 값으로 저장된 값이 없다면
       setIsLogin(false);
     }
   }, [profileImage, profileName]);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const searchResultRef = useRef();
+
+  useEffect(() => {
+    //검색어가 없으면 결과를 비움
+    if (!searchTerm) {
+      setSearchResults([]);
+      return;
+    }
+    const fetchData = async () => {
+      try {
+        // API 호출을 통해 검색 결과를 가져옵니다.
+        const response = await apiClient.get("/api/v1/stock/search", {
+          params: { keyword: searchTerm }, // keyword 파라미터로 수정했습니다.
+        });
+        console.log(response.data);
+        setSearchResults(response.data); // 결과를 state에 저장합니다.
+      } catch (error) {
+        console.error("검색 중 오류가 발생했습니다.", error);
+      }
+    };
+
+    // debounce 처리를 통해 API 호출을 제한합니다.
+    const timeoutId = setTimeout(() => {
+      fetchData();
+    }, 500);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [searchTerm]);
+
+  const handleClickOutside = (event) => {
+    if (
+      searchResultRef.current &&
+      !searchResultRef.current.contains(event.target)
+    ) {
+      setSearchResults([]);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mosedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   const headerContainer = css`
     position: sticky;
@@ -220,63 +271,6 @@ export default function Header() {
     margin: auto 0;
     border-radius: 50%;
   `;
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const searchResultRef = useRef();
-
-  useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    //검색어가 없으면 결과를 비움
-    if (!searchTerm) {
-      setSearchResults([]);
-      return;
-    }
-    const fetchData = async () => {
-      try {
-        // API 호출을 통해 검색 결과를 가져옵니다.
-        const response = await apiClient.get("/api/v1/stock/search", {
-          params: { keyword: searchTerm }, // keyword 파라미터로 수정했습니다.
-          headers: {
-            "X-Auth-Token": token,
-          },
-        });
-        console.log(response.data);
-        setSearchResults(response.data); // 결과를 state에 저장합니다.
-      } catch (error) {
-        console.error("검색 중 오류가 발생했습니다.", error);
-      }
-    };
-
-    // debounce 처리를 통해 API 호출을 제한합니다.
-    const timeoutId = setTimeout(() => {
-      fetchData();
-    }, 500);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [searchTerm]);
-
-  const handleClickOutside = (event) => {
-    if (
-      searchResultRef.current &&
-      !searchResultRef.current.contains(event.target)
-    ) {
-      setSearchResults([]);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mosedown", handleClickOutside);
-    };
-  }, []);
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
 
   return (
     <div css={headerContainer}>
