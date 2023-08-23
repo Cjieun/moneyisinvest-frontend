@@ -2,6 +2,7 @@
 import React from 'react';
 import Card from 'systems/Card';
 import { useScrollFadeIn } from "../../../hooks/useScrollFadeIn";
+import { Link } from 'react-router-dom';
 
 const TopCard = ({ ranking, startIdx, endIdx }) => {
   if (!ranking) {
@@ -14,6 +15,10 @@ const TopCard = ({ ranking, startIdx, endIdx }) => {
 
   const topCards = ranking.slice(startIdx, endIdx).map((item, index) => (
     <div className="animated-card" key={index} {...useScrollFadeIn('left', 1, 0.5)}>
+      <Link
+        to={`/company/${item.stockCode}`}
+        style={{ textDecoration: "none", color: "#797979" }}
+        >
       <Card
         isVisible={true}
         company={item.stockName}
@@ -26,6 +31,7 @@ const TopCard = ({ ranking, startIdx, endIdx }) => {
         img={item.stockUrl}
         isHold={false}
       />
+      </Link>
     </div>
   ));
 

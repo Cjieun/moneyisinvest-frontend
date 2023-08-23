@@ -87,17 +87,17 @@ export default function MyPage({setIsLoggedIn}) {
                 }
             }).then(res => {
                 console.log("profile upload success!!", res.data);
-                /*apiClient.get("/api/v1/profile/get", {
+                apiClient.get("/api/v1/profile/get", {
                     headers: {
-                        'X-Auth-Token': token,
+                        'X-AUTH-TOKEN': token,
                     }
                 })
                 .then((res) => {
-                    console.log("프로필 불러오기 성공", res.data);
+                    console.log(res.data);
                     setProfile(res.data.url);
                 }).catch((res) => {
-                    console.log("프로필 불러오지 못함", res);
-                })*/                    
+                    console.log(res);
+                })                    
             }).catch((err) => {
                 console.log("profile upload fail", err);
             });

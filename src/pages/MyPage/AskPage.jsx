@@ -9,8 +9,8 @@ import axios from "axios";
 
 export default function AskPage() {
   const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
 
   const [askList, setAskList] = useState([]);
 
@@ -30,7 +30,6 @@ export default function AskPage() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    const id = sessionStorage.getItem("id");
     if (token !== null) {
       apiClient
         .get("/api/v1/support/getAll", {
@@ -39,7 +38,7 @@ export default function AskPage() {
           },
         })
         .then((res) => {
-          console.log("문의사항 리스트 렌더링 완료: ", res);
+          console.log("Supportpage success: ", res);
           setAskList(res.data);
         })
         .catch((err) => {
@@ -102,7 +101,6 @@ export default function AskPage() {
 
   const onClickDelete = (supportId) => {
     const token = sessionStorage.getItem("token");
-    const id = sessionStorage.getItem("id");
     if (token !== null) {
       apiClient
         .delete("/api/v1/support/remove", {
@@ -115,7 +113,7 @@ export default function AskPage() {
         })
         .then((response) => {
           alert("문의사항이 삭제되었습니다!");
-          console.log("문의사항 삭제 완료", response.data);
+          console.log("delete Success", response.data);
           navigate("/askPage"); // 페이지 다시 로드
         })
         .catch((err) => {

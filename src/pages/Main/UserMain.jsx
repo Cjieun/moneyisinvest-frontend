@@ -17,9 +17,9 @@ import { ReactComponent as Text } from "../../assets/images/메인 배너(타이
 export default function UserMain() {
 
     const apiClient = axios.create({
-        baseURL: process.env.REACT_APP_API_URL,
-    });
-
+        baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+    });  
+    
     const [holdStock, setHoldStock] = useState([]);
     const [interestStock, setInterestStock] = useState([]);
     
@@ -29,12 +29,12 @@ export default function UserMain() {
     const kosdaqData = useSelector(state => state.kosdaqData);
 
     useEffect(() => {
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
+        /*const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;*/
         
         apiClient.get("/api/v1/stock/get/kospi")
         .then((res) => {
-            console.log(res.data);
+            console.log("KOSPI DATA: ",res.data);
             dispatch(updateKOSPIData(res.data));
         })
         .catch((err) => {
@@ -52,7 +52,7 @@ export default function UserMain() {
 
         apiClient.get("/api/v1/stock/get/kosdaq")
         .then((res) => {
-            console.log(res.data);
+            console.log("KOSDAQ DATA",res.data);
             dispatch(updateKOSDAQData(res.data));
         })
         .catch((err) => {
@@ -76,7 +76,7 @@ export default function UserMain() {
                 }
             })
             .then((res) => {
-                console.log("관심 주식 렌더링 성공",res);
+                console.log("Favorite Stock Success",res);
                 setInterestStock(res.data);
             })
             .catch((err) => {
@@ -101,7 +101,7 @@ export default function UserMain() {
                 }
             })
             .then((res) => {
-                console.log("보유 주식 렌더링 성공",res);
+                console.log("My Stock Success",res);
                 setHoldStock(res.data)
             })
             .catch((err) => {
@@ -124,21 +124,23 @@ export default function UserMain() {
             console.log(res.data);
         })*/
 
+        const stockRankWebSocketUrl = `${process.env.REACT_APP_WEBSOCKET_URL}/stockRank`;
+
         // 주식 랭킹 웹소켓 열기
         const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
         stockRankSocket.onopen = () => {
-            //console.log("Top 5 Connected");
+            console.log("Top 5 Connected");
         };
         stockRankSocket.onmessage = (event) => {
+            console.log(event.data);
             const receivedData = JSON.parse(event.data);
             dispatch(updateRanking(receivedData));
-            console.log(receivedData);
         };
         stockRankSocket.onclose = () => {
-            //console.log("Top5 DisConnnected");
+            console.log("Top5 DisConnnected");
         };
         stockRankSocket.onerror = (event) => {
-            //console.log(event);
+            console.log(event);
         };
         
         return () => {

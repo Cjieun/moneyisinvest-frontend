@@ -10,14 +10,13 @@ import { useNavigate } from 'react-router-dom';
 export default function AskWrite() {
 
     const apiClient = axios.create({
-        baseURL: process.env.REACT_APP_API_URL,
-      });
-    
+        baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+    });  
+
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
     const navigate = useNavigate();
-
 
     const handleInputTitle = (e) => {
         setTitle(e.target.value);
@@ -39,8 +38,8 @@ export default function AskWrite() {
                     }
                 })
                 .then((res) => {
-                    console.log("문의사항 작성 완료",res.data);
-                    navigate("/askpage", {replace: true})
+                    console.log("Support upload Success",res.data);
+                    navigate("/askpage", {replace: true});
                 })
                 .catch((err) => {
                     if (err.response) {

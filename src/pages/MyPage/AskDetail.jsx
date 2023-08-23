@@ -5,12 +5,12 @@ import Profile from "systems/Profile";
 import Footer from "components/Footer";
 import Button from "components/Button";
 import axios from "axios";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function AskDetail() {
   const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
 
   const navigate = useNavigate();
   const { supportId } = useParams(); // URL로부터 supportId를 가져옵니다.
@@ -32,12 +32,12 @@ export default function AskDetail() {
       });
 
       const data = response.data;
-      console.log("문의사항 상세보기 성공", response);
+      console.log("supportDetail Success", response);
       setTitle(data.title);
       setContent(data.contents);
       setCreatedAt(data.createdAt);
     } catch (error) {
-      console.log("문의사항 상세보기 실패:", error);
+      console.log("supportDetail Fail", error);
     }
   };
 
@@ -52,7 +52,6 @@ export default function AskDetail() {
 
   const onClickDelete = () => {
     const token = sessionStorage.getItem("token");
-    const id = sessionStorage.getItem("id");
     if (token !== null) {
       apiClient
         .delete("/api/v1/support/remove", {
@@ -65,8 +64,8 @@ export default function AskDetail() {
         })
         .then((response) => {
           alert("문의사항이 삭제되었습니다!");
-          console.log("문의사항 삭제 완료", response.data);
-          window.location.href = "/askPage";
+          console.log("delete Succeess", response.data);
+          navigate("/askpage", {replace: true});
         })
         .catch((err) => {
           if (err.response) {

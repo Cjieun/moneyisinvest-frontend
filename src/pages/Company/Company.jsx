@@ -18,9 +18,8 @@ import { ReactComponent as CommentHeart } from "../../assets/images/commentHeart
 import { ReactComponent as Comment } from "../../assets/images/comment.svg";
 import { ReactComponent as Education } from "../../assets/images/더보기 화면.svg";
 import StockMessage from "./StockMessage";
-import Message from "./Message";
 
-export default function Company({ handleSetCompanyName }) {
+export default function Company() {
   const apiClient = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
   });
@@ -39,10 +38,6 @@ export default function Company({ handleSetCompanyName }) {
   const { stockId } = useParams(); // URL로부터 supportId를 가져옵니다.
 
   const companyName = stockName;
-
-  const handleClick = () => {
-    handleSetCompanyName(companyName);
-  };
 
   const dispatch = useDispatch();
   const stock = useSelector((state) => state.stock);
@@ -365,7 +360,6 @@ export default function Company({ handleSetCompanyName }) {
               <Link
                 to={`/news/${stockId}`}
                 style={{ textDecoration: "none" }}
-                onClick={handleClick}
               >
                 <div className="companyNewsSubtitle">더보기</div>
               </Link>
@@ -378,7 +372,6 @@ export default function Company({ handleSetCompanyName }) {
               <Link
                 to={`/Community/${stockId}`}
                 style={{ textDecoration: "none" }}
-                onClick={handleClick}
               >
                 <div className="companyCommunitySubtitle">더보기</div>
               </Link>

@@ -3,20 +3,16 @@ import axios from "axios";
 import "./News.scss";
 import Header from "systems/Header";
 import Footer from "components/Footer";
-import { ReactComponent as Search } from "../../assets/images/search.svg";
 import { useParams, useLocation } from "react-router-dom";
 
-export default function News({ companyName }) {
+export default function News() {
   const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
 
   const { stockId } = useParams(); // URL로부터 supportId를 가져옵니다.
 
-  const location = useLocation();
-
-  console.log(location);
-
+  const [companyName, setCompanyName] = useState("");
   const [news, setNews] = useState([]);
 
   useEffect(() => {
@@ -24,13 +20,23 @@ export default function News({ companyName }) {
     const apiUrl = `/api/v1/stock/get/news?stockId=${stockId}`;
 
     apiClient
+      .get(`/api/v1/stock/get/name?stockId=${stockId}`)
+      .then((response) => {
+        console.log("News name:", response.data);
+        setCompanyName(response.data);
+      })
+      .catch((error) => {
+        console.error("News name error: ", error);
+      });
+
+    apiClient
       .get(apiUrl)
       .then((response) => {
-        console.log("응답 데이터:", response.data);
+        console.log("News Data:", response.data);
         setNews(response.data);
       })
       .catch((error) => {
-        console.error("에러 발생:", error);
+        console.error("News Error:", error);
       });
   }, [stockId]);
 
