@@ -84,7 +84,7 @@ export default function Card({isVisible, rank, img , company, code, rate, price,
                 font-weight: 500;
             }
             .percent {
-                color: ${!rate.includes('-') ? "#FF1C1C" : "#1C77FF"};
+                color: ${!String(rate).includes('-') ? "#FF1C1C" : "#1C77FF"};
                 text-align: center;
                 font-size: 0.875rem;
                 font-weight: 500;
