@@ -29,7 +29,8 @@ export default function UserMain() {
     const kosdaqData = useSelector(state => state.kosdaqData);
 
     useEffect(() => {
-        const stockRankWebSocketUrl = `ws://${window.location.hostname}:8080/stockRank`;
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
         
         apiClient.get("/api/v1/stock/get/kospi")
         .then((res) => {
