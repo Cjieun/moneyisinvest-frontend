@@ -18,7 +18,10 @@ export default function GuestMain() {
 
   useEffect(() => {
     // 주식 랭킹 웹소켓 열기
-    const stockRankWebSocketUrl = `ws://${window.location.hostname}:8080/stockRank`;
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
+    console.log('WebSocket URL:', process.env.REACT_APP_WEBSOCKET_URL);
+   // const stockRankWebSocketUrl = `${process.env.REACT_APP_WEBSOCKET_URL}/stockRank`;
         const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
         stockRankSocket.onopen = () => {
             console.log("Top 5 Connected");
