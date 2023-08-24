@@ -25,6 +25,7 @@ jobs:
       run: |
         rm -f package-lock.json
         rm -rf node_modules
+
     - name: Install dependencies
       run: npm install
 
@@ -36,6 +37,7 @@ jobs:
           docker login -u ${{ secrets.DOCKER_REPO }} -p ${{ secrets.DOCKER_KEY }}
           docker build -t ${{ secrets.DOCKER_REPO }}/moneyisinvest-frontend:latest .
           docker push ${{ secrets.DOCKER_REPO }}/moneyisinvest-frontend
+
     - name: Deploy to Ubuntu Server
       uses: appleboy/ssh-action@master
       with:
@@ -46,4 +48,4 @@ jobs:
           docker stop frontend
           docker rm frontend
           docker pull ${{ secrets.DOCKER_REPO }}/moneyisinvest-frontend:latest
-          docker run -d -p 80:80 --net moneyisinvest --name frontend ${{ secrets.DOCKER_REPO }}/moneyisinvest-frontend:latest
+          docker run -d -p 80:80 -p 443:443 --net moneyisinvest -v /etc/letsencrypt:/etc/letsencrypt --name frontend ${{ secrets.DOCKER_REPO }}/moneyisinvest-frontend:latest
