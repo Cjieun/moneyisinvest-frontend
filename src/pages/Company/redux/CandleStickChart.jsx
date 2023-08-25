@@ -37,7 +37,7 @@ const processData = (data, realTimeData) => {
           Number(item.start_Price),
           Number(item.high_Price),
           Number(item.low_Price),
-          Number(realTimeDataForDate.stock_price),
+          Number(realTimeDataForDate.stock_price.replace(/,/g, '')), // 쉼표 제거 후 숫자로 변환
         ],
       };
     } else {
