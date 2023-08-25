@@ -65,7 +65,7 @@ const processData = (data, realTimeData) => {
           Number(latestRealTimeData.stock_open_price),
           Number(latestRealTimeData.stock_high_price),
           Number(latestRealTimeData.stock_low_price),
-          Number(latestRealTimeData.stock_price),
+          Number(latestRealTimeData.stock_price.replace(/,/g,'')),
         ],
       });
     }
