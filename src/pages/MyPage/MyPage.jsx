@@ -69,6 +69,8 @@ export default function MyPage({setIsLoggedIn}) {
                     console.log("General error:", err.message);
                 }});
         } else {
+            alert("로그인 해주세요!");
+            navigate("/signIn", { replace: true });
             console.log("Token is null. Unable to send request.");
         }
     },[]);

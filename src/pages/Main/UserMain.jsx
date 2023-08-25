@@ -28,10 +28,7 @@ export default function UserMain() {
     const kospiData = useSelector(state => state.kospiData);
     const kosdaqData = useSelector(state => state.kosdaqData);
 
-    useEffect(() => {
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
-        
+    useEffect(() => {        
         apiClient.get("/api/v1/stock/get/kospi")
         .then((res) => {
             console.log("KOSPI DATA: ",res.data);
@@ -125,6 +122,9 @@ export default function UserMain() {
         })*/
 
         //const stockRankWebSocketUrl = `${process.env.REACT_APP_WEBSOCKET_URL}/stockRank`;
+
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
 
         // 주식 랭킹 웹소켓 열기
         const stockRankSocket = new WebSocket(stockRankWebSocketUrl);

@@ -6,11 +6,14 @@ import Profile from "systems/Profile";
 import Footer from "components/Footer";
 import { RxHeartFilled, RxHeart } from "react-icons/rx";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function StockHold() {
   const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
+
+  const navigate = useNavigate();
 
   const [holdStock, setHoldStock] = useState([]);
 
@@ -24,7 +27,7 @@ export default function StockHold() {
           },
         })
         .then((res) => {
-          console.log("보유 주식 렌더링 성공", res);
+          console.log("myStock Success", res);
           
           // Check if the response data is an array before setting the state.
           if (Array.isArray(res.data)) { 
@@ -34,7 +37,11 @@ export default function StockHold() {
             setHoldStock([]); // Set to empty array in case of invalid data.
          }
        })
-       .catch((err) => {/* Error handling code */});
+       .catch(() => {
+        alert("로그인 해주세요!");
+        navigate("/signIn", { replace: true });
+        console.log("Token is null. Unable to send request.");  
+       });
   } else {/* Token handling code */}
   }, []);
 
