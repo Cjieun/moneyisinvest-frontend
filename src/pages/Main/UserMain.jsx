@@ -127,7 +127,6 @@ export default function UserMain() {
         //const stockRankWebSocketUrl = `${process.env.REACT_APP_WEBSOCKET_URL}/stockRank`;
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
-        console.log('WebSocket URL:', `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`);
 
         // 주식 랭킹 웹소켓 열기
         const stockRankSocket = new WebSocket(stockRankWebSocketUrl);

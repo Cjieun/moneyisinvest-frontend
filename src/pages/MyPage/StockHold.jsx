@@ -43,7 +43,7 @@ export default function StockHold() {
         console.log("Token is null. Unable to send request.");  
        });
   } else {/* Token handling code */}
-  }, []);
+  }, [navigate]);
 
   const handleToggleHeart = async (index) => {
     const updatedHoldStock = [...holdStock];
