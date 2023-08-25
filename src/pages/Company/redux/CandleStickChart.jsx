@@ -17,7 +17,7 @@ const processData = (data, realTimeData) => {
 
   const realTimeDataByDate = realTimeData && realTimeData.length > 0 ? realTimeData.reduce((dataMap, item) => {
     if (item.hasOwnProperty('current_time')) {
-      const dateStr = new Date(item.current_time).toDateString();
+      const dateStr = item.current_time.split('T')[0]; // 시간 부분 제거
       dataMap[dateStr] = item;
     } else {
       //console.error('realTimeData 항목에 current_time 프로퍼티가 없습니다.', item);
