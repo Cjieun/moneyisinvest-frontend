@@ -19,6 +19,8 @@ export default function UserMain() {
     const apiClient = axios.create({
         baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
     });  
+
+    console.log("API URL: ", process.env.REACT_APP_API_URL);
     
     const [holdStock, setHoldStock] = useState([]);
     const [interestStock, setInterestStock] = useState([]);
