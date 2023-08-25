@@ -156,7 +156,7 @@ export default function Company() {
       dispatch(updateStock(receivedData));
       setStockCoin(receivedData.stock_coin);
       setStockPrice(receivedData.stock_price);
-      //console.log(receivedData); // 수정된 데이터를 출력
+      console.log(receivedData); // 수정된 데이터를 출력
     };
     stockSocket.onclose = () => {
       console.log("Stock DisConnnected");

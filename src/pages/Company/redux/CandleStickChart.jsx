@@ -56,9 +56,9 @@ const processData = (data, realTimeData) => {
   const latestDate = result[result.length - 1].x;
   const latestRealTimeData = realTimeData[realTimeData.length - 1];
   if (latestRealTimeData && latestRealTimeData.hasOwnProperty('current_time')) {
-    const latestRealTimeDate = new Date(latestRealTimeData.current_time).toDateString();
+    const latestRealTimeDate = new Date(latestRealTimeData.current_time);
 
-    if (latestDate && latestRealTimeDate && latestDate.toDateString() !== latestRealTimeDate.toDateString()) {
+    if (latestDate && latestRealTimeDate && latestDate.toDateString() !== new Date(latestRealTimeDate).toDateString()) {
       result.push({
         x: new Date(latestRealTimeData.current_time),
         y: [
