@@ -128,10 +128,15 @@
                                 margin: auto 2.5rem;
                                 .holdItem-percent {
                                     width: 3.1875rem;
-                                    color: #FF1C1C;
                                     text-align: center;
                                     font-size: 0.875rem;
                                     font-weight: 500;
+                                    &.negative {
+                                        color: #1C77FF;
+                                    }
+                                    &.positive {
+                                        color: #FF1C1C;
+                                    }
                                 }
                                 .holdItem-price {
                                     width: 4.1875rem;
