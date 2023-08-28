@@ -75,7 +75,7 @@ export default function StockHold() {
           }
         )
         .then((res) => {
-          console.log("관심 주식 추가", res.data);
+          console.log("InterestStock Add", res.data);
         })
         .catch((err) => {
           console.log(err);
@@ -91,7 +91,7 @@ export default function StockHold() {
           }
         )
         .then((res) => {
-          console.log("관심 주식 삭제", res.data);
+          console.log("InterestStock Delete", res.data);
         })
         .catch((err) => {
           console.log(err);

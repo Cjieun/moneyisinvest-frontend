@@ -26,7 +26,7 @@ export default function StockInterest() {
                 }
             })
             .then((res) => {
-                console.log("관심 주식 렌더링 성공",res);
+                console.log("InterestStock Success",res);
                 setInterestStock(res.data);
                 const newFavoriteStatuses = {};
                 for (let item of res.data) {
@@ -75,7 +75,7 @@ export default function StockInterest() {
               }
             )
             .then((res) => {
-              console.log("관심 주식 추가", res.data);
+              console.log("InterestStock Add", res.data);
             })
             .catch((err) => {
               console.log(err);
@@ -91,7 +91,7 @@ export default function StockInterest() {
               }
             )
             .then((res) => {
-              console.log("관심 주식 삭제", res.data);
+              console.log("InterestStock Delete", res.data);
               setInterestStock(interestStock.filter(item => item.stockCode !== stockId));
             })
             .catch((err) => {
