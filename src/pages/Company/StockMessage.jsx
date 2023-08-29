@@ -123,13 +123,10 @@ export default function StockMessage({stockId, state, onClick, setIsDealDone, se
           console.log(res.data);
           setIsDealDone(true);
           if (res.data.success === true) {
-            alert("매수가 완료되었습니다!");
             setIsDealSuccess(true);
           } else {
-            alert("매수를 완료하지 못했습니다!");
             setIsDealSuccess(false);
           }
-          window.location.reload(); // 페이지 다시 로드
         }).catch((err) => {
           console.log(err);
         })
@@ -146,13 +143,10 @@ export default function StockMessage({stockId, state, onClick, setIsDealDone, se
             console.log(res.data);
             setIsDealDone(true);
             if (res.data.success === true) {
-              alert("매도가 완료되었습니다!");
               setIsDealSuccess(true);
             } else {
-              alert("매도를 완료하지 못했습니다!");
               setIsDealSuccess(false);
             }
-            window.location.reload(); // 페이지 다시 로드
           })  
         }
       }
