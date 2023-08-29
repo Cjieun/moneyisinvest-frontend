@@ -18,6 +18,7 @@ import { ReactComponent as CommentHeart } from "../../assets/images/commentHeart
 import { ReactComponent as Comment } from "../../assets/images/comment.svg";
 import { ReactComponent as Education } from "../../assets/images/더보기 화면.svg";
 import StockMessage from "./StockMessage";
+import Message from "./Message";
 
 export default function Company() {
   const apiClient = axios.create({
@@ -59,11 +60,11 @@ export default function Company() {
         },
       })
       .then((res) => {
-        console.log("회사 정보 불러오기 성공", res.data);
+        console.log("Company Data: ", res.data);
         setStockName(res.data.stockName);
       })
       .catch((err) => {
-        console.log("회사 정보 불러오기 실패:", err);
+        console.log("Company Data Fail: ", err);
       });
 
     apiClient
@@ -71,22 +72,22 @@ export default function Company() {
         stockCode: stockId,
       })
       .then((res) => {
-        console.log("일별 주식 조회", res.data);
+        console.log("StockData: ", res.data);
         dispatch(storeStock(res.data));
       })
       .catch((err) => {
-        console.log("일별 주식 조회 실패", err);
+        console.log("StockData fail: ", err);
       });
 
     apiClient
       .get("/api/v1/stock/holiday/now")
       .then((response) => {
-        console.log("장 시간 데이터:", response.data.opened);
+        console.log("isopened :", response.data.opened);
         setIsOpen(response.data.opened);
         setHoliday(response.data.reason);
       })
       .catch((error) => {
-        console.error("장 시간 조회 에러:", error);
+        console.error("isopened error: ", error);
       });
 
       apiClient.get(`/api/v1/favorite/get/status?stockCode=${stockId}`, {
@@ -95,7 +96,7 @@ export default function Company() {
         },
       })
       .then((res) => {
-          console.log("관심 주식 렌더링 성공",res.data);
+          console.log("interestStock Success",res.data);
           setIsHeartFilled(res.data);
       })
       .catch((err) => {
@@ -116,31 +117,31 @@ export default function Company() {
     apiClient
       .get(newsapiUrl)
       .then((response) => {
-        console.log("뉴스 응답 데이터:", response.data);
+        console.log("News Data: ", response.data);
         setNews(response.data.slice(0, 3));
       })
       .catch((error) => {
-        console.error("뉴스 에러 발생:", error);
+        console.error("News Error: ", error);
       });
 
     apiClient
       .get(`/api/v1/community/get?stockId=${stockId}`, {})
       .then((response) => {
-        console.log("커뮤니티 응답 데이터:", response);
+        console.log("Community Data: ", response);
         setCommunity(response.data.slice(0, 3));
       })
       .catch((error) => {
-        console.error("커뮤니티 에러 발생:", error);
+        console.error("Community Error: ", error);
       });
 
       apiClient
       .get(`/api/v1/stock/get/companyResult?stockId=${stockId}`)
       .then((response) => {
-        console.log("재무제표 응답 데이터:", response);
+        console.log("Table Data: ", response);
         setData(response.data);
       })
       .catch((error) => {
-        console.error("재무제표 에러 발생:", error);
+        console.error("Table Error: ", error);
       });
 
 
@@ -202,7 +203,7 @@ export default function Company() {
           }
         )
         .then((res) => {
-          console.log("관심 주식 추가", res.data);
+          console.log("InterestStock Add", res.data);
         })
         .catch((err) => {
           console.log(err);
@@ -219,7 +220,7 @@ export default function Company() {
           }
         )
         .then((res) => {
-          console.log("관심 주식 삭제", res.data);
+          console.log("InterestStock Delete", res.data);
         })
         .catch((err) => {
           console.log(err);
@@ -258,6 +259,9 @@ export default function Company() {
   const stopPropagation = (e) => {
     e.stopPropagation();
   };
+
+  const [isDealDone, setIsDealDone] = useState(false);
+  const [isDealSuccess, setIsDealSuccess] = useState();
 
   const newsItem = news.map((item) => (
     <div className="companynewsList">
@@ -347,11 +351,13 @@ export default function Company() {
               </div>
             </div>)}
             {isPopupVisible ? (
-               <div className="overlay" onClick={handleOutsideClick}>
+              <div className="overlay" onClick={handleOutsideClick}>
                 <div className="stockMessage" onClick={stopPropagation}>
-                    <StockMessage className="stockMessage" stockId={stockId} state={buttonState} stockPrice={stockPrice} onClick={stopPropagation}/>
+                    {isDealDone
+                      ? <Message setIsPopupVisible={setIsPopupVisible} setIsDealDone={setIsDealDone} setIsSuccess={isDealSuccess}/>
+                      : <StockMessage className="stockMessage" stockId={stockId} state={buttonState} stockPrice={stockPrice} setIsDealDone={setIsDealDone} setIsDealSuccess={setIsDealSuccess} onClick={stopPropagation}/>}
                 </div>
-                </div>
+              </div>
             ):null}
           </div>
           <div className="companyNews">

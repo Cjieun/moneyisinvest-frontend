@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./SignIn.scss";
 import Header from "../../systems/Header";
 import Button from "components/Button";
@@ -21,6 +21,7 @@ export default function SignIn({ setIsLoggedIn }) {
   const [rememberId, setRememberId] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleInputId = (e) => {
     setInputId(e.target.value);
@@ -82,7 +83,13 @@ export default function SignIn({ setIsLoggedIn }) {
             } else {
               localStorage.removeItem("rememberedUserId");
             }
-            navigate("/", { replace: true });
+            if (location.state?.from === "/signUp") {
+              navigate("/", { replace: true });
+            } else if (location.state?.from) {
+              navigate(location.state.from, { replace: true });
+            } else {
+              navigate("/", { replace: true });
+            }
           }
         })
         .catch((res) => {

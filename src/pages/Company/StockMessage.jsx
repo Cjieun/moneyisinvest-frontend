@@ -5,7 +5,7 @@ import Button from "components/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function StockMessage({stockId, state, onClick, stockPrice}) {
+export default function StockMessage({stockId, state, onClick, setIsDealDone, setIsDealSuccess, stockPrice}) {
     const MessageContainer = css`
     width: 28.1875rem;
     height: 17.25rem;
@@ -64,11 +64,11 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
           },
         })
         .then((res) => {
-          console.log("필요 스톡 불러오기 성공", res.data);
+          console.log("needStock Success", res.data);
           setStockNeed(res.data.msg);
         })
         .catch((err) => {
-          console.log("필요 스톡 불러오기 실패:", err);
+          console.log("needStock Fail", err);
         });
     };
     
@@ -101,11 +101,11 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
           },
         })
         .then((res) => {
-          console.log("보유 스톡 불러오기 성공", res);
+          console.log("mystock Success", res);
           setStock(res.data.msg);
         })
         .catch((err) => {
-          console.log("보유 스톡 불러오기 실패:", err);
+          console.log("mystock Fail", err);
         });
       }, [stockId]);
 
@@ -121,10 +121,13 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
           }
         }).then((res)=> {
           console.log(res.data);
+          setIsDealDone(true);
           if (res.data.success === true) {
             alert("매수가 완료되었습니다!");
+            setIsDealSuccess(true);
           } else {
             alert("매수를 완료하지 못했습니다!");
+            setIsDealSuccess(false);
           }
           window.location.reload(); // 페이지 다시 로드
         }).catch((err) => {
@@ -141,10 +144,13 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
             }
           }).then((res)=> {
             console.log(res.data);
+            setIsDealDone(true);
             if (res.data.success === true) {
               alert("매도가 완료되었습니다!");
+              setIsDealSuccess(true);
             } else {
               alert("매도를 완료하지 못했습니다!");
+              setIsDealSuccess(false);
             }
             window.location.reload(); // 페이지 다시 로드
           })  
@@ -157,15 +163,15 @@ export default function StockMessage({stockId, state, onClick, stockPrice}) {
             <div css={MessageStock}>
               <div onClick={handleMinusButtonClick}>
                 <Button state={"minus"}/>
-                </div>
-                <div css={MessageStockText}>{quantity}주</div>
-                <div onClick={handlePlusButtonClick}>
+              </div>
+              <div css={MessageStockText}>{quantity}주</div>
+              <div onClick={handlePlusButtonClick}>
                 <Button state={"plus"}/>
-                </div>
+              </div>
             </div>
             <div css={MessageInfo}>
                 <div>현재 {stock === "null" ? "0" : stock}주 보유하고 있어요</div>
-                {(state === "buy") && (<div>{stockNeed}스톡이 필요해요</div>)}
+                {(state === "buy") ? (<div>{stockNeed}스톡이 필요해요</div>) : (<div>{stockNeed}스톡으로 환산돼요</div>)}
             </div>
             <div onClick={onClickDeal}>
             <Button state={"stockDeal"}/>

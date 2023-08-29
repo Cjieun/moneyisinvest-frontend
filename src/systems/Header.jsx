@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 import { ReactComponent as Logo } from "../assets/images/logo.svg";
 import { ReactComponent as Search } from "../assets/images/search.svg";
 import { ReactComponent as Coin } from "../assets/images/coin.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 //import profileImage from "../assets/images/angma.jpg";
 
@@ -12,6 +12,8 @@ export default function Header() {
   const apiClient = axios.create({
     baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
   });  
+
+  const location = useLocation();
 
   const [isLogin, setIsLogin] = useState(false);
   const [profileName, setProfileName] = useState("");
@@ -317,7 +319,12 @@ export default function Header() {
             </div>
           )}
         </div>
-        <Link to="/signIn" style={{ textDecoration: "none" }} css={login}>
+        <Link 
+          to="/signIn" 
+          state={{ from: location.pathname }} 
+          style={{ textDecoration: "none" }} 
+          css={login}
+        >          
           <div>로그인</div>
         </Link>
         <Link to="/myWallet" style={{ textDecoration: "none" }}>
