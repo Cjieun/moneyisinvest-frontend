@@ -6,7 +6,7 @@ import Profile from "systems/Profile";
 import Footer from "components/Footer";
 import { RxHeartFilled, RxHeart } from "react-icons/rx";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function StockHold() {
   const apiClient = axios.create({
@@ -103,11 +103,16 @@ export default function StockHold() {
   const holdItem = holdStock.map((item, index) => (
     <div className="holdItems" keys={index}>
       <div className="HoldItems-title">
+        <Link
+            to={`/company/${item.stockCode}`}
+            style={{ textDecoration: "none", color: "#797979" }}
+        >
         <div className="HoldItems-profile">
           <img alt="썸네일" src={item.stockUrl} className="HoldItems-img" />
           <div className="HoldItems-Title">{item.stockName}</div>
           <div className="HoldItems-Code">{item.stockCode}</div>
         </div>
+        </Link>
         <div className={`HoldItems-Rate ${item.rate < 0 ? 'negative' : 'positive'}`}>
           {item.rate > 0 ? "+" : ""}{item.rate}%
         </div>

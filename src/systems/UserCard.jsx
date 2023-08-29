@@ -12,7 +12,7 @@ const UserCard = ({ item, index, isHold }) => {
             <Link
             to={`/company/${item.stockCode}`}
             style={{ textDecoration: "none", color: "#797979" }}
-            ></Link>
+            >
             <Card 
                 isVisible={false}
                 company={item.stockName}
@@ -23,6 +23,7 @@ const UserCard = ({ item, index, isHold }) => {
                 isHold={isHold}
                 img={item.stockUrl}
             />
+            </Link>
         </div>
     );
 };

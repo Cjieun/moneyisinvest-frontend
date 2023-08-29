@@ -6,6 +6,7 @@ import Profile from "systems/Profile";
 import Footer from "components/Footer";
 import { RxHeartFilled, RxHeart } from "react-icons/rx";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function StockInterest() {
     const apiClient = axios.create({
@@ -111,6 +112,10 @@ export default function StockInterest() {
     const interestItem = interestStock.map((item, index) => (
         favoriteStatuses ? (
         <div className="interestItems" keys={index}>
+            <Link
+            to={`/company/${item.stockCode}`}
+            style={{ textDecoration: "none", color: "#797979" }}
+            >
            <div className="holdItem-title">
                 <img alt="company" src={item.stockUrl} className="holdItem-image"></img>
                 <div className="holdItem-events">
@@ -118,6 +123,7 @@ export default function StockInterest() {
                     <div className="holdItem-code">{item.stockCode}</div>
                 </div>
             </div>
+            </Link>
             <div className="holdItem-content">
                 <div className={`holdItem-percent ${item.rate < 0 ? 'negative' : 'positive'}`}>{item.rate > 0 ? "+" : ""}
                     {item.rate}%</div>
