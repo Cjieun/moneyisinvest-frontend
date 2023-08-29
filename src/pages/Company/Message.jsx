@@ -30,12 +30,14 @@ export default function Message({setIsPopupVisible, setIsDealDone, setIsSuccess}
     margin-bottom: 2.19rem;
     `;
     const onClick = () => {
-        setIsPopupVisible(false);
-        setIsDealDone(false);
-        if (setIsSuccess)
+        if (setIsSuccess) {
+            setIsPopupVisible(false);
+            setIsDealDone(false);
             window.location.href = "/transactions";
-        else
-            window.location.reload();
+        }
+        else {
+            setIsDealDone(false);
+        }
     };
                 
     return (
