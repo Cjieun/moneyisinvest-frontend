@@ -29,6 +29,8 @@ export default function Payment() {
         })
     }
 
+    const name = sessionStorage.getItem('name');
+
     return (
         <div className="PayContainer">
             <Header/>
@@ -65,11 +67,11 @@ export default function Payment() {
                         <div className="payContentBox2">
                             <div className="paymentBox">
                                 <div className="paymentText">
-                                    <div>손민기님이</div>
+                                    <div>{name}님이</div>
                                     <div>결제 예정인 상품은</div>
                                 </div>
                                 <div className="paymentSubText">
-                                    <div>프리미엄 서비스 구독</div>
+                                    <div className="paymentSubText1">프리미엄 서비스 구독</div>
                                     <div>구독료 3,300원</div>
                                 </div>
                             </div>
@@ -78,11 +80,11 @@ export default function Payment() {
                                 <div>3,300원</div>
                             </div>
                             <div onClick={onClickPay}>
-                            <Button state="shopping"/>
+                                <Button state="kakaopay"/>
                             </div>
                             <div className="paymentInfo">
                                 <div>구매시 카카오페이 사이트로 자동 연결됩니다 </div>
-                                <div> 또한, 구독 취소를 따로 하지 않을 시 매월
+                                <div>또한, 구독 취소를 따로 하지 않을 시 매월
                                 정기적으로 구독료가 자동 결제됩니다 </div>
                             </div>
                         </div>

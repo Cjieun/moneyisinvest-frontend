@@ -63,6 +63,7 @@
                         text-align: center;
                         align-items: center;
                         .payKakaopay{
+                            border-radius: 0.625rem;
                             display: flex;
                             flex-direction: row;
                             gap: 0.25rem;
@@ -81,15 +82,13 @@
                         color:  #B0B0B0;
                         font-size: 0.625rem;
                         font-weight: 500;
-                        justify-self: center;
-                        text-align: center;
                         margin-top: 0.37rem;
+                        margin-left: 0.44rem;
                     }
 
                 }
                 .payContentBox2 {
                     width: 10.9375rem;
-                    height: 15.375rem;
                     border-radius: 0.625rem;
                     border: 1px solid #85D6D1;
                     background: #FFF;
@@ -115,7 +114,10 @@
                             color:  #797979;
                             font-size: 0.625rem;
                             font-weight: 500;
-                            margin-bottom: 0.62rem;;
+                            margin-bottom: 0.62rem;
+                            .paymentSubText1 {
+                                font-size: 0.75rem;
+                            }
                         }
                     }
                     .paymentResult {
@@ -129,13 +131,13 @@
                         margin-bottom: 0.99rem;
                     }
                     .paymentInfo {
-                        width: 8.75rem;
                         color: #B0B0B0;
-                        font-size: 0.1rem;
+                        font-size: 0.5rem;
                         font-weight: 500;
                         display: flex;
                         flex-direction: column;
                         margin-top: 0.38rem;
+                        word-break: keep-all;
                     }
                 }
             }

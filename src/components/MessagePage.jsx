@@ -2,7 +2,6 @@ import React from "react";
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import Header from "systems/Header";
-import Footer from "./Footer";
 import Button from "./Button";
 import { useNavigate } from 'react-router-dom';
 
@@ -11,12 +10,6 @@ export default function MessagePage() {
     const messageContainer = css`
     margin: 0;
     height: 100vh;
-    overflow-y: hidden;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-    -ms-overflow-style: none;
-    scrollbar-width: none;
   `;
   
   const messageBox = css`
@@ -24,20 +17,20 @@ export default function MessagePage() {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: calc(100% - 3.875rem);
+    margin: auto;
   `;
   
   const messageContent = css`
-    flex-grow: 1;
     padding: 0;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%; // messageBox 높이와 동일하게 설정
+    height: 100% // messageBox 높이와 동일하게 설정
   `;
     const MessageContainer = css`
     width: 28.1875rem;
-    height: 70vh;
     border-radius: 1.25rem;
     background: #FFF;
     display: flex;
@@ -81,7 +74,6 @@ export default function MessagePage() {
                         </div>
                     </div>
                 </div>
-                <Footer />
             </div>
         </div>
     )
