@@ -111,7 +111,7 @@ export default function Card({isVisible, rank, img , company, code, rate, price,
                 <div className="info">
                     <div>
                         <div className="type">{isHold? "수익률" : "등락률"}</div>
-                        <div className="percent">{rate}%</div>
+                        <div className="percent">{!String(rate || '').includes('-') ? "+" : ""}{rate}%</div>
                     </div>
                     <div>
                         <div className="type">주가</div>

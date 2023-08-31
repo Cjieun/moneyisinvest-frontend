@@ -36,7 +36,7 @@ export default function MyWallet() {
                 'X-AUTH-TOKEN': token
             }
         }).then((res) => {
-            console.log("지갑 정보 조회",res.data);
+            console.log("wallet data:",res.data);
             setWalletInfo(res.data);
         }).catch((err)=> {
             console.log(err);
@@ -44,15 +44,15 @@ export default function MyWallet() {
 
         apiClient.get("/api/v1/coin/get/history", {
             headers: {
-                "X-AUTH-TOKEN": token,
+                'X-AUTH-TOKEN': token,
             }
         }).then((res) => {
-            console.log("지갑 거래 내역 조회",res.data);
+            console.log("wallet dealData: ",res.data);
             setWallet(res.data);
         }).catch((err)=> {
-            console.log("지갑 거래 내역 조회 실패",err);
+            console.log("wallet dealData error: ",err);
         })
-    },[])
+    },[token])
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -113,13 +113,15 @@ export default function MyWallet() {
                         <div className="myWalletInfo-table">
                             <div className="myWalletInfo-top">
                                 <div className="myWalletInfo-dealNum">거래번호</div>
-                                <div className="myWalletInfo-deal">
-                                    <div>수신자</div>
-                                    <Right1 />
-                                    <div>발신자</div>
+                                <div className="myWalletInfo-dealContent">
+                                    <div className="myWalletInfo-deal">
+                                        <div>수신자</div>
+                                        <Right1 />
+                                        <div>발신자</div>
+                                    </div>
+                                    <div className="myWalletInfo-price">총거래가</div>
+                                    <div className="myWalletInfo-date">거래 일시</div>
                                 </div>
-                                <div className="myWalletInfo-price">총거래가</div>
-                                <div className="myWalletInfo-date">거래 일시</div>
                                 <div>입출금</div>
                             </div>
                             <div className="myWalletInfo-content">

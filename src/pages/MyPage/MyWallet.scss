@@ -72,13 +72,12 @@
                         display: flex;
                         flex-direction: column;
                         gap: 2.44rem;
-                        padding: 2.06rem 2.25rem 3.94rem 2.31rem;
-                        justify-content: center;
+                        padding-top: 2.06rem;
                         align-items: center;
                         .myWalletInfo-infoTitle {
                             color:  #3EB7AF;
                             text-align: center;
-                            font-size: 0.9rem;
+                            font-size: 1rem;
                             font-weight: 600;
                         }
                         .myWalletInfo-infoContent {
@@ -95,25 +94,32 @@
                         background: #D1EFEE;
                         display: flex;
                         flex-direction: row;
-                        justify-content: space-evenly;
                         align-items: center;
                         color:  #3EB7AF;
                         font-size: 1rem;
                         font-weight: 600;
-                        .myWalletInfo-deal {
+                        gap: 4.38rem;
+                        padding: 0 3.75rem;
+                        .myWalletInfo-dealContent {
                             display: flex;
                             flex-direction: row;
-                            gap: 1.19rem;
                             align-items: center;
-                            justify-content: center;
-                        }
-                        .myWalletInfo-price {
-                            width: 3.875rem;
-                            text-align: center;
-                        }
-                        .myWalletInfo-date {
-                            width: 4.3125rem;
-                            text-align: center;
+                            .myWalletInfo-deal {
+                                display: flex;
+                                flex-direction: row;
+                                gap: 1.19rem;
+                                align-items: center;
+                                justify-content: center;
+                                margin-right: 4.63rem;
+                            }
+                            .myWalletInfo-price {
+                                text-align: center;
+                                margin-right: 5rem;
+                            }
+                            .myWalletInfo-date {
+                                text-align: center;
+                            }
+    
                         }
                     }
                     .myWalletInfo-content {
