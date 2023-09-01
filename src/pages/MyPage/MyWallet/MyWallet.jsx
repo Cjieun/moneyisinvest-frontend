@@ -89,15 +89,15 @@ export default function MyWallet() {
         </div>
     );
 
-    const [showModal, setShowModal] = useState(false);
     const [modalPosition, setModalPosition] = useState({});
+    const [hoveredIndex, setHoveredIndex] = useState(null);
 
-    const walletItem = wallet.map((item) => {
+    const walletItem = wallet.map((item, index) => {
         const formattedDate2 = item.datetime.replace(/-/g,'.');
         return (
         <div className="myWalletItem-top"
-            onMouseEnter={() => setShowModal(true)}
-            onMouseLeave={() => setShowModal(false)}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
             onMouseMove={(e) => {
                 setModalPosition({ top:e.clientY + 'px',left:e.clientX + 'px'});
             }}
@@ -111,7 +111,7 @@ export default function MyWallet() {
             <div className="myWalletItem-price">{item.total}스톡</div>
             <div className="myWalletItem-date">{formattedDate2}</div>
             <div className="myWalletItem-state">{item.type}</div>
-            {showModal && <WalletModal item={item} style={modalPosition}/>}
+            {hoveredIndex === index && <WalletModal item={item} style={modalPosition}/>}
         </div>
     )})
 
