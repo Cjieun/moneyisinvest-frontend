@@ -24,7 +24,7 @@ import Company from "pages/Company/Company";
 import Community from "pages/Community/Community";
 import MessagePage from "components/MessagePage";
 import Payment from "pages/Payment/Payment";
-import MyWallet from "pages/MyPage/MyWallet";
+import MyWallet from "pages/MyPage/MyWallet/MyWallet";
 
 
 function App() {

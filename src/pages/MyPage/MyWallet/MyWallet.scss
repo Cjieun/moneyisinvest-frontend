@@ -136,50 +136,82 @@
                             border-bottom: 1px solid #ABE2DF;
                             display: flex;
                             flex-direction: row;
-                            justify-content: space-evenly;
                             align-items: center;
                             color:  #000;
                             font-size: 0.875rem;
                             font-weight: 500;
                             .myWalletItem-dealNum {
-                                max-width: 3.5rem;
-                                overflow: hidden;         // 추가된 속성 1
-                                text-overflow: ellipsis; // 추가된 속성 2
-                                white-space: nowrap;      // 추가된 속성 3
+                                max-width: 3.25rem;
+                                overflow: hidden;         
+                                text-overflow: ellipsis; 
+                                white-space: nowrap;  
+                                margin: 0 4.13rem 0 3.88rem;    
                             }
                             .myWalletItem-deal {
                                 display: flex;
                                 flex-direction: row;
-                                gap: 1.19rem;
+                                gap: 0.875rem;
                                 align-items: center;
                                 justify-content: center;
                                 .myWalletItem-receiver {
-                                    width: 2.625rem;
-                                    overflow: hidden;         // 추가된 속성 1
-                                    text-overflow: ellipsis; // 추가된 속성 2
-                                    white-space: nowrap;      // 추가된 속성 3
+                                    width: 3.25rem;
+                                    overflow: hidden;         
+                                    text-overflow: ellipsis; 
+                                    white-space: nowrap;      
                                 }
                                 .myWalletItem-caller {
-                                    width: 2.625rem;
-                                    overflow: hidden;         // 추가된 속성 1
-                                    text-overflow: ellipsis; // 추가된 속성 2
-                                    white-space: nowrap;      // 추가된 속성 3
+                                    width: 3.25rem;
+                                    overflow: hidden;         
+                                    text-overflow: ellipsis; 
+                                    white-space: nowrap;      
                                 }
                             }
                             .myWalletItem-price {
                                 text-align: center;
+                                margin: 0 2.095rem 0 2.08rem;
+                                width: 7.975rem;
                             }
                             .myWalletItem-date {
                                 text-align: center;
+                                width: 5rem;
                             }
                             .myWalletItem-state {
-                                width: 2.75rem;
+                                margin: 0 4.31rem 0 4.15rem;
+                                width: 1.5625rem;
                                 text-align: center;
                             }
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+.walletModal {
+    position: fixed;
+    width: 30.6875rem;
+    height: 17rem;
+    border-radius: 1.25rem;
+    background-color: #F0F9F8;
+    display: flex;
+    flex-direction: column;
+    gap: 0.94rem;
+    justify-content: center;
+    padding: 0 1.56rem;
+    .walletModal-items {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        .walletModal-title {
+            color: #3EB7AF;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .walletModal-content {
+            color: #797979;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
     }
 }
