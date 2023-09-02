@@ -21,12 +21,12 @@ export default function MyPage({setIsLoggedIn}) {
 
     const navigate = useNavigate();
 
-    /*const handleNameEdit = () => {
+    const handleNameEdit = () => {
         setNameEditing(true);
         if (nameRef.current) {
             nameRef.current.focus();
         }
-    };*/
+    };
 
     const handleNameSave = () => {
         setNameEditing(false);
@@ -136,7 +136,6 @@ export default function MyPage({setIsLoggedIn}) {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>이름</td>
@@ -154,8 +153,8 @@ export default function MyPage({setIsLoggedIn}) {
                                                 ) : (
                                                     <div className="myName">{name}</div>
                                                 )}
-                                                <div //onClick={
-                                                        //isNameEditing ? handleNameSave : handleNameEdit}
+                                                <div onClick={
+                                                        isNameEditing ? handleNameSave : handleNameEdit}
                                                     >
                                                     <MyButton
                                                     state="mine"
@@ -163,17 +162,14 @@ export default function MyPage({setIsLoggedIn}) {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>아이디</td>
                                         <td>{id}</td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>비밀번호</td>
                                         <td>변경일 2023.8.7.월</td>
-                                        <td></td>
                                     </tr>
                                 </table>
                                 <div className="myPageOut" onClick={onClickLogout}>계정 로그아웃</div>

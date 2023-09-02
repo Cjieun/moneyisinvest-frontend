@@ -68,6 +68,7 @@ export default function SignIn({ setIsLoggedIn }) {
           if (res.data != null) {
             setIsLoggedIn(true);
             sessionStorage.setItem("token", res.data.token);
+            sessionStorage.setItem("refresh-token", res.data.refreshToken);
             sessionStorage.setItem("id", res.data.uid);
             sessionStorage.setItem("name", res.data.name);
             setIsMessage(false);

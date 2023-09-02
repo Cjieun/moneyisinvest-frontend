@@ -27,45 +27,56 @@ export default function Header() {
       // 로그인 상태 변경
       setIsLogin(true);
       setProfileName(sessionStorage.getItem("name"));
-      const token = sessionStorage.getItem("token");
-      apiClient
-        .get("/api/v1/profile/get", {
-          headers: {
-            "X-AUTH-TOKEN": token,
-          },
-        })
-        .then((res) => {
-          console.log("header profile success", res.data);
-          setProfileImage(res.data.url);
-        })
-        .catch((res) => {
-          console.log("header profile fail", res.status);
-          /*if (res.response.status === 401) {
-            setIsLogin(false);
-            sessionStorage.removeItem("token");
-            sessionStorage.clear();
-            alert("자동 로그아웃 되었습니다!");
-            window.location.href = "/signIn";
-          }*/
-        });
-        apiClient
-        .get("/api/v1/coin/get/balance", {
-          headers: {
-            "X-AUTH-TOKEN": token,
-          },
-        })
-        .then((res) => {
-          console.log("header stock success", res.data);
-          setStock(res.data);
-        })
-        .catch((res) => {
-          console.log("header stock fail", res);
-        });
+      
+      const fetchData = async () => {
+        try {
+          const profileResponse = await apiClient.get("/api/v1/profile/get", {
+            headers: { "X-AUTH-TOKEN": token },
+          });
+          console.log("header profile success", profileResponse.data);
+          setProfileImage(profileResponse.data.url);
+
+          const stockResponse = await apiClient.get("/api/v1/coin/get/balance", {
+            headers: { "X-AUTH-TOKEN": token },
+          });
+          console.log("header stock success", stockResponse.data);
+          setStock(stockResponse.data);
+        } catch (error) {
+          if (error && (error.response.status === 500 || error.response.status === 401)) { // If the response status was 401 Unauthorized
+            try{
+              // Refresh the access token using the refresh token
+              const refreshTokenResult = await apiClient.post("/api/v1/refresh-token", 
+                { 
+                  refreshToken: sessionStorage.getItem("refresh-token"),
+                }
+              );
+              
+              if(refreshTokenResult.status === 200){
+                // Save new access and refresh tokens to session storage
+                sessionStorage.setItem('token', refreshTokenResult.data.accessToken); 
+                
+                window.location.reload(); // Reload page to apply new tokens for API calls
+                
+              } else throw Error(refreshTokenResult.statusText);  
+            } catch(err){
+              console.error(err.message); 
+              setIsLogin(false);
+              sessionStorage.clear();
+              alert("자동 로그아웃 되었습니다!");
+              window.location.href = "/signIn";
+            }
+            
+          } else console.error(error || 'refresh-token API request failed.');
+        }
+      };
+      
+      fetchData();
+      
     } else {
       // sessionStorage 에 token 라는 key 값으로 저장된 값이 없다면
       setIsLogin(false);
     }
-  }, [profileImage, profileName]);
+}, [profileImage, profileName]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
