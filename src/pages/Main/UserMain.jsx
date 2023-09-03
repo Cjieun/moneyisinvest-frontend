@@ -203,7 +203,7 @@ export default function UserMain() {
                                 </Link>
                             </div>
                             <div className="userStockCard">
-                                {userStock}
+                                {userStock.length > 0 ? userStock : <div className="StockCardNone">{sessionStorage.getItem('name')}님의 보유 주식이 존재하지 않아요.</div>}
                             </div>
                         </div>
                         <div className="userStockBox">
@@ -214,7 +214,7 @@ export default function UserMain() {
                                 </Link>
                             </div>
                             <div className="userStockCard">
-                                {favoriteStock}
+                                {favoriteStock.length > 0 ? favoriteStock : <div className="StockCardNone">{sessionStorage.getItem('name')}님의 관심 주식이 존재하지 않아요.</div>}
                             </div>
                         </div>
                         <div className="topStockBox">
