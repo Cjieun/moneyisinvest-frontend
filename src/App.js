@@ -26,7 +26,6 @@ import MessagePage from "components/MessagePage";
 import Payment from "pages/Payment/Payment";
 import MyWallet from "pages/MyPage/MyWallet/MyWallet";
 
-
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     sessionStorage.getItem("token") !== null
