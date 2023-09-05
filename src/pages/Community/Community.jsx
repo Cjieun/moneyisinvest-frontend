@@ -9,122 +9,21 @@ import {ReactComponent as Comment} from "../../assets/images/comment.svg";
 import axios from "axios";
 import {  RxHeart, RxChatBubble, RxDotsVertical } from "react-icons/rx";
 
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 
 const Community = ({ stockName }) => {
   const { stockId } = useParams();  //URL로부터 supportId를 가져옵니다.
 
-  const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState('');
+  //const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState(''); //새댓글
   const [editIndex, setEditIndex] = useState(-1);
-  const [replyIndex, setReplyIndex] = useState(-1); // 현재 대댓글을 작성중인 댓글 인덱스
-  const [newReply, setNewReply] = useState('');
   const [showActions, setShowActions] = useState(false); //댓글 수정, 삭제 아이콘
-  const [community, setCommunity] = useState([]);
-  const [profileName, setProfileName] = useState('');
-  const [profileImageUrl, setProfileImageUrl] = useState('');
-  const [targetCommentId, setTargetCommentId] = useState(null);
+  const [community, setCommunity] = useState([]); //댓글 목록
+  const [reply, setReply] = useState('');
 
-  const [replyOpen, setReplyOpen] = useState(false); // 대댓글 창 상태 관리
 
   const name = sessionStorage.getItem('name');
-
-
-
-  const handleLikeToggle = (index) => {
-    const updatedComments = [...comments];
-    const currentComment = updatedComments[index];
-
-    if (currentComment.isLiked) {
-      currentComment.likeCount -= 1;
-    } else {
-      currentComment.likeCount += 1;
-    }
-    currentComment.isLiked = !currentComment.isLiked;
-
-    setComments(updatedComments);
-  };
-
-  const handleInputChange = (event) => {
-    setNewComment(event.target.value);
-  }; //댓글 작성하는 거 실시간으로 보임
-
-  const handleReplyChange = (event) => {
-    setNewReply(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (newComment.trim() === '') {
-      return;
-    }
-
-    if (replyIndex !== -1) {
-        // 대댓글을 작성중이면 해당 댓글의 replies에 추가
-        const updatedComments = [...comments];
-        updatedComments[replyIndex].replies.push(newComment);
-        setComments(updatedComments);
-        setReplyIndex(-1);
-      } else if (editIndex !== -1) {
-        // 수정 모드일 때는 댓글을 덮어씌우기
-        const updatedComments = [...comments];
-        updatedComments[editIndex].text = newComment;
-        setComments(updatedComments);
-        setEditIndex(-1);
-      } else {
-        // 새 댓글을 댓글 목록의 맨 위에 추가하여 최근 댓글이 가장 위에 오도록 함
-        setComments([{ id: Date.now(), 
-          text: newComment, 
-          replies: [],
-          likeCount: 0,
-          isLiked: false}, ...comments]);
-      }
-  
-
-    // 댓글 작성창 비우기
-    setNewComment('');
-  };
-
-  const handleEdit = (index) => {
-    // 선택한 댓글의 내용을 댓글 작성창에 표시하고 수정 모드로 설정
-    setNewComment(comments[index].text);
-    setEditIndex(index);
-  };
-
-  const handleReply = (index) => {
-    // 대댓글 작성 모드로 설정
-    setReplyIndex(index);
-  };
-
-  const handleReplySubmit = (event, index) => {
-    event.preventDefault();
-    if (newReply.trim() === '') {
-      return;
-    }
-
-    const updatedComments = [...comments];
-    updatedComments[index].replies.push(newReply);
-    setComments(updatedComments);
-    setReplyIndex(-1);
-    setNewReply('');
-  };
-
-  /*const handleEditReply = (index, replyIndex) => {
-    const updatedComments = [...comments];
-    updatedComments[index].replies[replyIndex] = newReply; // 수정한 대댓글로 변경
-    setComments(updatedComments);
-    setReplyIndex(-1);
-    setNewReply('');
-  };*/
-
-  const handleDeleteReply = (index, replyIndex) => {
-    const updatedComments = [...comments];
-    updatedComments[index].replies.splice(replyIndex, 1); // 대댓글 삭제
-    setComments(updatedComments);
-  };
-
- 
 
   //const { stockId } = useParams();  URL로부터 supportId를 가져옵니다.
  //해당 주식의 커뮤니티 댓글 가져오기
@@ -150,6 +49,7 @@ const Community = ({ stockName }) => {
       console.error('커뮤니티 에러 발생:', error);
     });
 }, [community]);
+
 
   //커뮤니티 댓글 달기
   const postComment = () => {
@@ -185,54 +85,7 @@ const Community = ({ stockName }) => {
   };
 
 
-  /*커뮤니티 대댓글 달기
-  const postReply = () => {
-    // POST 요청할 API 주소입니다.
-    const url = `/api/v1/community/reply/${}}`;
 
-    // header에 담을 정보를 설정합니다.
-    const headers = {
-      'Content-Type': 'application/json',
-      'X-AUTH-TOKEN' : sessionStorage.getItem("token")
-      // 추가적인 헤더 정보를 넣으실 수 있습니다.
-    };
-
-    // body에 담을 정보를 설정합니다.
-    const data = {
-      comment: newReply,
-      
-      // 추가적인 body 정보를 넣으실 수 있습니다.
-    };
-
-    // Axios를 이용해 POST 요청을 보냅니다.
-    axios.post(url, data, { headers })
-      .then((response) => {
-        console.log('응답 성공:', response.data);
-      })
-      .catch((error) => {
-        console.error('요청 실패:', error);
-        console.error('오류 메시지:', error.message); // 추가적인 오류 메시지 출력
-        console.error('오류 객체:', error.response); // 응답 객체 출력 (응답 코드, 응답 데이터 등)
-      });
-
- }; */
-
-
-/*
- const postReply = () => {
-  apiClient.post("/api/v1/community/reply", {
-    targetCommentId: targetCommentId,
-    comment: newReply,
-  }, {
-    headers: {
-      "X-AUTH-TOKEN": sessionStorage.getItem("token")
-    }
-  }).then((res) => {
-    console.log("대댓글 달기 성공", res.data);
-  }).catch((err) => {
-    console.log(err);
-  })
- }*/
 
  // 대댓글을 등록하는 함수입니다.
 const postReply = async () => {
@@ -251,7 +104,7 @@ const postReply = async () => {
 
   const data = {
     targetCommentId: 0,
-    comment: newReply,
+    comment: reply,
   };
 
   try {
@@ -270,47 +123,7 @@ const postReply = async () => {
 };
 
 
-//해당 주식의 커뮤니티 댓글(대댓글 정보 포함) 가져오기
 
-/*댓글 update
-const updateComment = async (id, newComment) => {
-  const token = sessionStorage.getItem('token');
-
-  // 요청을 보낼 API 주소와 헤더를 설정합니다.
-  const url = `/api/v1/community/update/${id}`;
-  const headers = {
-    'X-AUTH-TOKEN': token,
-  };
-
-  // 수정할 댓글의 ID와 내용을 객체로 만듭니다.
-  const data = {
-    comment: newComment,
-  };
-
-  try {
-    // Axios를 이용해 PUT 요청을 보냅니다.
-    const response = await axios.put(url, data, { headers });
-
-    console.log('댓글 업데이트(수정) 응답 데이터:', response);
-
-    // 댓글 업데이트 성공 시 상태를 업데이트하고 UI를 갱신해야 합니다.
-    // 예를 들어, 댓글 목록을 관리하는 상태 변수가 있다면 다음과 같이 처리할 수 있습니다.
-    
-    const updatedComments = comments.map((comment) =>
-      comment.id === id ? response.data : comment
-    );
-    setComments(updatedComments);
-
-    const handleInputChange = (event) => {
-    setNewComment(event.target.value);
-  };
-    
-  } catch (error) {
-    console.error('댓글 업데이트(수정)에서 오류 발생:', error);
-    console.error('오류 메시지:', error.message);
-    console.error('오류 객체:', error.response);
-  }
-};*/
 const updateComment = async (id, newComment, editIndex) => {
   // 서버에 저장된 댓글 데이터를 업데이트하기 위한 비동기 작업을 수행합니다.
   const token = sessionStorage.getItem('token');
@@ -330,9 +143,9 @@ const updateComment = async (id, newComment, editIndex) => {
 
     // 서버로부터 업데이트 성공 응답을 받은 후에 로컬 상태에서 댓글 목록을 업데이트합니다.
     if (editIndex !== -1) {
-      const updatedComments = [...comments];
+      const updatedComments = [...community];
       updatedComments[editIndex].text = newComment;
-      setComments(updatedComments);
+      setCommunity(updatedComments);
       setEditIndex(-1);
     }
   } catch (error) {
@@ -340,70 +153,76 @@ const updateComment = async (id, newComment, editIndex) => {
     console.error('오류 메시지:', error.message);
     console.error('오류 객체:', error.response);
   }
-};
+}; 
 
+const apiClient = axios.create({
+  baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+});  
 
-
-// 댓글 삭제
-/*const deleteComment = async (id, index) => {
-  const url = `/api/v1/community/remove/${id}`;
-  console.log(`deleteComment 호출됨 - id: ${id}, index: ${index}`);
-
-  const token = sessionStorage.getItem('token');
-  if (!token || token.trim() === ''){
-    console.error('토큰이 누락되었습니다. 로그인 후 다시 시도해 주세요.');
-    return;
-  }
-
-  const headers = {
-    'X-AUTH-TOKEN': token
-  };
-
-  try {
-    await axios.delete(url, { headers });
-
-    // API 요청이 성공적으로 이루어진 후에 상태를 업데이트합니다.
-    const updatedComments = [...comments];
-    updatedComments.splice(index, 1);
-    console.log("상태 업데이트 후 댓글 목록:", updatedComments);
-    setComments(updatedComments);
-  } catch (error) {
-    console.error('요청 실패:', error);
-    console.error('오류 메시지:', error.message); // 추가적인 오류 메시지 출력
-    console.error('오류 객체:', error.response); // 응답 객체 출력 (응답 코드, 응답 데이터 등)
-  }
-};*/
-
-const deleteComment = async (id) => {
-  const url = `/api/v1/community/remove/${id}`;
-
+const deleteComment = async () => {
   const token = sessionStorage.getItem("token");
-  if (!token || token.trim() === "") {
-    console.error("토큰이 누락되었습니다. 로그인 후 다시 시도해주세요.");
-    return;
-  }
-
-  const headers = {
-    "X-AUTH-TOKEN": token, // 사용자 고유 access 토큰
-  };
-
-  try {
-    const response = await axios.delete(url, { headers });
-    console.log("응답 성공:", response.status); // 응답 상태 코드 출력
-    // 성공적으로 삭제된 댓글에 대한 후속 처리를 여기에 작성하세요.
-    // 예: 댓글 목록 새로 고침
-
-  } catch (error) {
-    console.error("요청 실패:", error);
-    console.error("오류 메시지:", error.message);
-    console.error("오류 객체:", error.response);
-  }
+    if (token !== null) {
+      apiClient
+        .delete("/api/v1/community/remove", {
+          headers: {
+            "X-AUTH-TOKEN": token,
+          },
+          params: {
+            id: 1,
+          },
+        })
+        .then((response) => {
+          alert("댓글이 삭제되었습니다!");
+          console.log("delete Succeess", response.data);
+          
+        })
+        .catch((err) => {
+          if (err.response) {
+            // 서버 응답이 온 경우 (에러 응답)
+            console.log(
+              "Error response:",
+              err.response.status,
+              err.response.data
+            );
+          } else if (err.request) {
+            // 요청은 보내졌지만 응답이 없는 경우 (네트워크 오류)
+            console.log("Request error:", err.request);
+          } else {
+            // 오류가 발생한 경우 (일반 오류)
+            console.log("General error:", err.message);
+          }
+        });
+    } 
 };
 
 
 
+  const CommentList = props => {
+    return (
+      <div className="communityList">
+        <Profile className="companycommunityProfileImg" />
+        <p className="companycommunityName">{props.userName}</p>
+        <div className="companycommunityComment">{props.userComment}</div>
+        <p className="userHeart"> ♡</p>
+        <span onClick={() => setShowActions(!showActions)} className="edit-icon"><RxDotsVertical/></span>
+                            {showActions && (
+                              <div className="actions">
+                                <div onClick={updateComment}>
+                                <Button state="edit">수정</Button>
+                                </div>
+                                <div onClick={deleteComment} >
+                                <Button state="delete">삭제</Button>
+                                </div>
+                              </div>
+                            )}
+        <div onClick={postReply} type="submit" className="replybtn">
+          <Button state="reply">대댓글 작성</Button>
+      </div>
+      </div>
+    );
+  };
 
-const communityItem = community.map((item) => (
+/*const communityItem = community.map((item) => (
   <div className="communityList">
     <div className="companycommunityList" key={item.id}>
       <div className="companycommunityProfile">
@@ -420,7 +239,7 @@ const communityItem = community.map((item) => (
           <Comment className="companycommunityIcon" />
           <div>{item.replyCount}</div>
         </div>
-        {/*<span onClick={() => setShowActions(!showActions)} className="edit-icon"><RxDotsVertical/></span>
+        <span onClick={() => setShowActions(!showActions)} className="edit-icon"><RxDotsVertical/></span>
                             {showActions && (
                               <div className="actions">
                                 <div onClick={() => handleEdit(item)}>
@@ -433,12 +252,14 @@ const communityItem = community.map((item) => (
                             )}
         <div onClick={postReply} type="submit" className="replybtn">
           <Button state="reply">대댓글 작성</Button>
-                            </div>*/}
+        </div>
       </div>
     
     </div>
   </div>
-));
+));*/
+
+
 
 
 
@@ -456,116 +277,38 @@ const communityItem = community.map((item) => (
             <div className="commentList">
                 {/* 댓글 목록 */}
 
-                {communityItem}                
-                {/*{ comments && comments.map((comment, index) => (
-                    <div key={index.id} className="writeComment">
-                        <div className="user"><img className="profileImg" src={profileImageUrl} alt="프로필 이미지" />{profileName}
-                        <div className="userName">{comment.name}{comment.profileName}{index.name}</div> </div>
+                {/*{communityItem} */}
 
-                {currentComments.map((comment, index) => (
-                    <div key={index} className="writeComment">
-                      
-                        <div className="user"><img className="profileImg" src={profileImageUrl} alt="프로필 이미지" />{profileName}<div className="userName">{comment.name}{comment.profileName}</div> </div>
-
-                        {editIndex === index ? (
-                        <form className="formComment" onSubmit={handleSubmit}>
-                            <textarea
-                            className="inputComment"
-                            value={newComment}
-                            onChange={handleInputChange}
-                            />
-                            <div onClick={() => updateComment(comment.id, newComment, index)}>
-                              <Button state="comment" type="submit">수정 완료</Button></div>
-                        </form>
-                      
-                        ) : (
-                        <>
-                            <div className="group">
-                            {/*<div className="companyCommunityList">
-                            {comment.text}
-
-                            </div>
-
-                            </div>
-
-                            <div className="commentText">{comment.text}</div>
-                            <span className={`likeCount${comment.isLiked ? " liked" : ""}`}
-                            onClick={() => handleLikeToggle(index)}><RxHeart/><span > {comment.likeCount}</span></span>
-                            <span className="replyCount"><RxChatBubble/></span>
-                            <span onClick={() => setShowActions(!showActions)} className="edit-icon"><RxDotsVertical/></span>
-                            {showActions && (
-                              <div className="actions">
-                                <div onClick={() => handleEdit(index)}>
-                                <Button state="edit">수정</Button>
-                                </div>
-                                <div onClick={() => deleteComment(comment.id, index)} >
-                                <Button state="delete">삭제</Button>
-                                </div>
-                              </div>
-                            )}
-                            <div onClick={() => handleReply(index)}>
-                                <Button state="reply">대댓글 작성</Button>
-                                </div>
-                            </div>
-                            <div className="repliesContainer">
-                           {/* 대댓글 목록 *
-                           {comment.replies.map((reply, replyIndex) => (
-                                <div className="reply" key={replyIndex.id}>
-                                  <div className="replyUser"><ProfileImage /></div>
-                                  <div className="replyUserName">{reply.name}</div>
-
-                                <div className="replyText">{reply.comment}</div>
-
-                                <div className="replyText">{reply}</div>
-
-                                <div onClick={() => handleDeleteReply(index, replyIndex)}>
-                                    <Button state="delete">삭제</Button>
-                                </div>
-                                </div>
-                            ))}
-
-                            {/* 대댓글 작성창 *
-                            {replyIndex === index && (
-                                <form onSubmit={(event) => handleReplySubmit(event, index)} className="inputReplyForm">
-                                <div><img className="profileImg" src={profileImageUrl} alt="프로필 이미지" />{profileName}</div>
-                                <div className="replyUserName">{profileName}</div>
-                                <textarea
-                                    className="inputReply"
-                                    value={newReply}
-                                    onChange={handleReplyChange}
-                                    placeholder="대댓글을 입력하세요"
-                                />
-                                <div onClick={postReply} type="submit" className="replybtn">
-                                <Button state="reply">대댓글 작성</Button></div>
-                            
-                                </form>
-                            )}
-                            
-                            </div>
-
-                        </>
-                        )}
-                    </div>
-
-                    ))} 
-
-                    ))}*/}
+                <div id="comments">
+                {community.map((item) => {
+                return (
+                  <CommentList
+                  userName={item.name}
+                  userComment={item.comment}
+                  key={item.id}
+                  />
+                  );
+                  })}
+                </div>               
+                
             </div>
                   
 
             <div className="newComment">
                 {/* 새로 작성하는 댓글 입력창 */}
                 <form 
-                className="postComment"
-                onSubmit={handleSubmit}>
+                className="postComment">
 
                     <div><Profile className="companycommunityProfileImg" /></div>
                     <div className="postUserName">{name}</div>
-                    <textarea
+                    <input
                     className="inputComment"
-                    value={editIndex === -1 ? newComment : ''} 
-                    onChange={handleInputChange}
+                    value={newComment} 
+                    //onChange={handleInputChange}
                     placeholder="댓글을 입력하세요"
+                    onChange={ e => {
+                      setNewComment(e.target.value);
+                    }}
                     />
                     <button onClick={postComment} type="submit" className="postBtn">작성</button>
                 </form>
