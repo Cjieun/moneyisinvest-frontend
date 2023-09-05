@@ -7,6 +7,7 @@ import Footer from "components/Footer";
 import { RxHeartFilled, RxHeart } from "react-icons/rx";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import Button from "components/Button";
 
 export default function StockHold() {
   const apiClient = axios.create({
@@ -98,7 +99,11 @@ export default function StockHold() {
         });
     }
   };
-  
+
+  const handleClick = () => {
+    navigate("/");
+    setTimeout(() => window.scrollTo(0, document.body.scrollHeight / 2), 100);
+  }
 
   const holdItem = holdStock.map((item, index) => (
     <div className="holdItems" keys={index}>
@@ -175,7 +180,15 @@ export default function StockHold() {
                   <div className="HoldInfo-State">찜</div>
                 </div>
               </div>
-              <div className="holdInfo-scrollable">{holdItem}</div>
+              <div className="holdInfo-scrollable">
+                {holdItem.length > 0 ? holdItem : 
+                <div className="holdNoneItem">
+                  <div>보유하신 주식이 없어요</div>
+                  <div onClick={handleClick} >
+                    <Button state="top" />
+                  </div>
+                </div>}
+              </div>
             </div>
           </div>
         </div>

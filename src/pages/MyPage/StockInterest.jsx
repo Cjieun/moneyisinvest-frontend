@@ -6,7 +6,8 @@ import Profile from "systems/Profile";
 import Footer from "components/Footer";
 import { RxHeartFilled, RxHeart } from "react-icons/rx";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Button from "components/Button";
 
 export default function StockInterest() {
     const apiClient = axios.create({
@@ -14,6 +15,8 @@ export default function StockInterest() {
     });
 
     const token = sessionStorage.getItem("token");
+
+    const navigate = useNavigate();
 
 
     const [interestStock, setInterestStock] = useState([]);
@@ -106,7 +109,10 @@ export default function StockInterest() {
       };
     
 
-
+      const handleClick = () => {
+        navigate("/");
+        setTimeout(() => window.scrollTo(0, document.body.scrollHeight / 2), 100);
+      }
 
     // API 연결 후 수정 (EX 찜 삭제 후 렌더링되게)
     const interestItem = interestStock.map((item, index) => (
@@ -169,7 +175,13 @@ export default function StockInterest() {
                                 </div>
                             </div>
                             <div className="holdInfo-scrollable">
-                                {interestItem}
+                            {interestItem.length > 0 ? interestItem : 
+                                <div className="interestNoneItem">
+                                <div>관심 있는 주식이 없어요</div>
+                                <div onClick={handleClick}>
+                                    <Button state="top" />
+                                </div>
+                            </div>}
                             </div>
                         </div>
                     </div>
