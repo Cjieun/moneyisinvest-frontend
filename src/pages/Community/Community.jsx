@@ -159,7 +159,7 @@ const apiClient = axios.create({
   baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
 });  
 
-const deleteComment = async () => {
+const deleteComment = async (id) => {
   const token = sessionStorage.getItem("token");
     if (token !== null) {
       apiClient
@@ -168,7 +168,7 @@ const deleteComment = async () => {
             "X-AUTH-TOKEN": token,
           },
           params: {
-            id: 1,
+            id: parseInt(id),
           },
         })
         .then((response) => {
@@ -203,6 +203,7 @@ const deleteComment = async () => {
         <Profile className="companycommunityProfileImg" />
         <p className="companycommunityName">{props.userName}</p>
         <div className="companycommunityComment">{props.userComment}</div>
+        <div className="companycommunityDate">{props.createdAt.substring(0, 10)}</div>
         <p className="userHeart"> ♡</p>
         <span onClick={() => setShowActions(!showActions)} className="edit-icon"><RxDotsVertical/></span>
                             {showActions && (
@@ -210,7 +211,7 @@ const deleteComment = async () => {
                                 <div onClick={updateComment}>
                                 <Button state="edit">수정</Button>
                                 </div>
-                                <div onClick={deleteComment} >
+                                <div onClick={() => deleteComment(props.id)} >
                                 <Button state="delete">삭제</Button>
                                 </div>
                               </div>
@@ -279,13 +280,14 @@ const deleteComment = async () => {
 
                 {/*{communityItem} */}
 
-                <div id="comments">
+                <div className="comments">
                 {community.map((item) => {
                 return (
                   <CommentList
                   userName={item.name}
                   userComment={item.comment}
-                  key={item.id}
+                  createdAt={item.createdAt}
+                  id={item.id}
                   />
                   );
                   })}
