@@ -9,8 +9,8 @@ import axios from "axios";
 
 export default function AskPage() {
   const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
 
   const [askList, setAskList] = useState([]);
 
@@ -30,7 +30,6 @@ export default function AskPage() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    const id = sessionStorage.getItem("id");
     if (token !== null) {
       apiClient
         .get("/api/v1/support/getAll", {
@@ -39,7 +38,7 @@ export default function AskPage() {
           },
         })
         .then((res) => {
-          console.log("문의사항 리스트 렌더링 완료: ", res);
+          console.log("Supportpage success: ", res);
           setAskList(res.data);
         })
         .catch((err) => {
@@ -67,42 +66,8 @@ export default function AskPage() {
     }
   }, [navigate]);
 
-  /*const onClickDetail = (supportId) => {
-        const token = sessionStorage.getItem("token");
-        const id = sessionStorage.getItem("id");
-        if (token !== null) {
-          axios.get("/api/v1/support/getOne", {
-            headers: {
-              'X-AUTH-TOKEN': token,
-            },
-            params: {
-              supportId: supportId,
-              uid: id
-            }
-          })
-          .then(response => {
-            console.log(response.data);
-          })
-          .catch(err => {
-            if (err.response) {
-                // 서버 응답이 온 경우 (에러 응답)
-                console.log("Error response:", err.response.status, err.response.data);
-            } else if (err.request) {
-                // 요청은 보내졌지만 응답이 없는 경우 (네트워크 오류)
-                console.log("Request error:", err.request);
-            } else {
-                // 오류가 발생한 경우 (일반 오류)
-                console.log("General error:", err.message);
-            }});
-        } else {
-          alert("로그인 해주세요!");
-          console.log("Token is null. Unable to send request.");
-        }
-    }*/
-
   const onClickDelete = (supportId) => {
     const token = sessionStorage.getItem("token");
-    const id = sessionStorage.getItem("id");
     if (token !== null) {
       apiClient
         .delete("/api/v1/support/remove", {
@@ -115,7 +80,7 @@ export default function AskPage() {
         })
         .then((response) => {
           alert("문의사항이 삭제되었습니다!");
-          console.log("문의사항 삭제 완료", response.data);
+          console.log("delete Success", response.data);
           navigate("/askPage"); // 페이지 다시 로드
         })
         .catch((err) => {

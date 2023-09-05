@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import store from "./pages/Main/redux/store"; // Redux 스토어 불러오기
 import App from "./App"; // 최상위 컴포넌트 불러오기
 import "./index.css";
+import ScrollToTop from "hooks/ScrollToTop";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -13,6 +14,7 @@ ReactDOM.render(
       {/* Provider로 Redux 스토어 감싸주기 */}
       <BrowserRouter>
         <App />
+        <ScrollToTop />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

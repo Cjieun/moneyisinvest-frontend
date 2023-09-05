@@ -84,7 +84,7 @@ export default function Card({isVisible, rank, img , company, code, rate, price,
                 font-weight: 500;
             }
             .percent {
-                color: ${rateStatus ? "#FF1C1C" : "#1C77FF"};
+                color: ${!String(rate || '').includes('-') ? "#FF1C1C" : "#1C77FF"};
                 text-align: center;
                 font-size: 0.875rem;
                 font-weight: 500;
@@ -111,7 +111,7 @@ export default function Card({isVisible, rank, img , company, code, rate, price,
                 <div className="info">
                     <div>
                         <div className="type">{isHold? "수익률" : "등락률"}</div>
-                        <div className="percent">{rate}%</div>
+                        <div className="percent">{(!String(rate || '').includes('-') && rate !== 0) ? "+" : ""}{rate}%</div>
                     </div>
                     <div>
                         <div className="type">주가</div>

@@ -6,6 +6,8 @@ import Profile from "systems/Profile";
 import Footer from "components/Footer";
 import { RxHeartFilled, RxHeart } from "react-icons/rx";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import Button from "components/Button";
 
 export default function StockInterest() {
     const apiClient = axios.create({
@@ -14,8 +16,11 @@ export default function StockInterest() {
 
     const token = sessionStorage.getItem("token");
 
+    const navigate = useNavigate();
+
 
     const [interestStock, setInterestStock] = useState([]);
+    const [favoriteStatuses, setFavoriteStatuses] = useState({});
 
     useEffect (() => {
         if (token !== null) {
@@ -25,9 +30,14 @@ export default function StockInterest() {
                 }
             })
             .then((res) => {
-                console.log("관심 주식 렌더링 성공",res);
+                console.log("InterestStock Success",res);
                 setInterestStock(res.data);
-                
+                const newFavoriteStatuses = {};
+                for (let item of res.data) {
+                newFavoriteStatuses[item.stockCode] = true;  // 관심 주식이므로 모두 true로 설정
+                }
+            
+                setFavoriteStatuses(newFavoriteStatuses);
             })
             .catch((err) => {
                 if (err.response) {
@@ -45,33 +55,73 @@ export default function StockInterest() {
         }
     },[]);
 
-    const [jim, setJim] = useState(true);
-
-    const handleToggleHeart = async (index) => {
-        apiClient
-        .delete(`/api/v1/favorite/remove?stockId=${interestStock[index].stockCode}`,{}, {
-          headers: {
-            "X-AUTH-TOKEN": token,
-          },
-        })
-        .then((res) => {
-          console.log("관심 주식 삭제", res.data);
-          setJim(false);
-          alert("관심 주식이 삭제되었습니다!");
-          window.location.reload(); // 페이지 다시 로드
-        })
-        .catch((err) => {
-          console.log(err);
+    const handleHeartClick = (stockId) => {
+        const token = sessionStorage.getItem("token");
+        const newIsHeartFilled = !favoriteStatuses[stockId];
+    
+        setFavoriteStatuses({
+          ...favoriteStatuses,
+          [stockId]: newIsHeartFilled,
         });
-    }
+      
+        if (newIsHeartFilled) {
+          apiClient
+            .post(
+              "/api/v1/favorite/post",
+              {},
+              {
+                headers: {
+                  "X-AUTH-TOKEN": token,
+                },
+                params: {
+                  stockId: stockId,
+                },
+              }
+            )
+            .then((res) => {
+              console.log("InterestStock Add", res.data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          console.log(stockId);
+          apiClient
+            .delete(`/api/v1/favorite/remove?stockId=${stockId}`,
+             {
+                headers: {
+                  "X-AUTH-TOKEN": token,
+                },
+              }
+            )
+            .then((res) => {
+              console.log("InterestStock Delete", res.data);
+              setInterestStock(interestStock.filter(item => item.stockCode !== stockId));
+            })
+            .catch((err) => {
+              console.log(err);
+              setFavoriteStatuses({
+                ...favoriteStatuses,
+                [stockId]: !newIsHeartFilled,
+              });
+            });
+        }
+      };
+    
 
-
-
+      const handleClick = () => {
+        navigate("/");
+        setTimeout(() => window.scrollTo(0, document.body.scrollHeight / 2), 100);
+      }
 
     // API 연결 후 수정 (EX 찜 삭제 후 렌더링되게)
     const interestItem = interestStock.map((item, index) => (
-        jim ? (
+        favoriteStatuses ? (
         <div className="interestItems" keys={index}>
+            <Link
+            to={`/company/${item.stockCode}`}
+            style={{ textDecoration: "none", color: "#797979" }}
+            >
            <div className="holdItem-title">
                 <img alt="company" src={item.stockUrl} className="holdItem-image"></img>
                 <div className="holdItem-events">
@@ -79,13 +129,18 @@ export default function StockInterest() {
                     <div className="holdItem-code">{item.stockCode}</div>
                 </div>
             </div>
+            </Link>
             <div className="holdItem-content">
-                <div className="holdItem-percent">{item.rate > 0 ? "+" : ""}
+                <div className={`holdItem-percent ${item.rate < 0 ? 'negative' : 'positive'}`}>{item.rate > 0 ? "+" : ""}
                     {item.rate}%</div>
                 <div className="holdItem-price">{item.real_per_price}원</div>
                 <div className="holdItem-price">{item.real_per_coin}스톡</div>
-                <div className="holdItem-heart" onClick={() => handleToggleHeart(index)}>
-                    {jim ? <RxHeartFilled color="#85D6D1" /> : <RxHeart color="#85D6D1" />}
+                <div className="holdItem-heart" onClick={() => handleHeartClick(item.stockCode)}>
+                    {favoriteStatuses[item.stockCode] ? (
+                    <RxHeartFilled color="#85D6D1" size="1rem" />
+                    ) : (
+                    <RxHeart color="#85D6D1" size="1rem"/>
+                    )}
                 </div>
             </div>
         </div>
@@ -120,7 +175,13 @@ export default function StockInterest() {
                                 </div>
                             </div>
                             <div className="holdInfo-scrollable">
-                                {interestItem}
+                            {interestItem.length > 0 ? interestItem : 
+                                <div className="interestNoneItem">
+                                <div>관심 있는 주식이 없어요</div>
+                                <div onClick={handleClick}>
+                                    <Button state="top" />
+                                </div>
+                            </div>}
                             </div>
                         </div>
                     </div>

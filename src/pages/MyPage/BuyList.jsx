@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function BuyList() {
   const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
 
   const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ export default function BuyList() {
           },
         })
         .then((res) => {
-          console.log("상품 거래 내역 렌더링 완료: ", res.data);
+          console.log("Buylist success: ", res.data);
           setBuy(res.data);
         })
         .catch((err) => {

@@ -5,10 +5,10 @@ import axios from "axios";
 import { ReactComponent as Coin } from "../assets/images/coin.svg";
 import { Link, useLocation } from "react-router-dom";
 
-export default function Profile(props) {
+export default function Profile() {
   const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
 
   const [profileImage, setProfileImage] = useState("");
   const profileName = sessionStorage.getItem("name");
@@ -85,11 +85,11 @@ export default function Profile(props) {
         },
       })
       .then((res) => {
-        console.log("프로필 불러오기 성공", res.data);
+        console.log("profile success", res.data);
         setProfileImage(res.data.url);
       })
       .catch((res) => {
-        console.log("프로필 불러오기 실패", res);
+        console.log("profile success", res);
       });
     apiClient
       .get("/api/v1/coin/get/balance", {
@@ -98,11 +98,11 @@ export default function Profile(props) {
         },
       })
       .then((res) => {
-        console.log("지갑 잔액 조회 성공", res.data);
+        console.log("stock success", res.data);
         setStock(res.data);
       })
       .catch((res) => {
-        console.log("지갑 잔액 조회 실패", res);
+        console.log("stock fail", res);
       });
   }, [profileImage]);
 

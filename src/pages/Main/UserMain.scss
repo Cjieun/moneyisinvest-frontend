@@ -128,6 +128,14 @@
                 padding-bottom: 12.56rem;
                 align-items: center;
                 margin: 0 auto;
+                .StockCardNone {
+                    color: #3EB7AF;
+                    font-size: 1.125rem;
+                    font-weight: 600;
+                    text-align: center;
+                    display: flex;
+                    margin: 4.75rem auto;
+                }
                 .userStockBox {
                     display: flex;
                     flex-direction: column;
@@ -137,6 +145,7 @@
                         flex-direction: row;
                         justify-content: space-between;
                         gap: 51.19rem;
+                        align-items: flex-end;
                         .userStockTitle {
                             color: #000;
                             font-size: 1.5rem;

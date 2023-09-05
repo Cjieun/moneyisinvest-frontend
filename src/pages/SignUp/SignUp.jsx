@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
   const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
 
   const [name, setName] = useState("");
   const [id, setId] = useState("");
@@ -115,7 +115,7 @@ export default function SignIn() {
           uid: id,
         })
         .then((res) => {
-          console.log("!!", res.data);
+          console.log("sign-up success!!", res.data);
           if (res.data.success === false) {
             if (res.data.msg === "이미 가입된 회원") {
               setIsName(false);

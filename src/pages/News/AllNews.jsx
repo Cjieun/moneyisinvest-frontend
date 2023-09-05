@@ -3,21 +3,26 @@ import axios from "axios";
 import "./News.scss";
 import Header from "systems/Header";
 import Footer from "components/Footer";
-import { ReactComponent as Search } from "../../assets/images/search.svg";
 
 export default function AllNews() {
+
+  const apiClient = axios.create({
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
+
+
   const [news, setNews] = useState([]);
 
   useEffect(() => {
     const apiUrl = `/api/v1/stock/get/news/all`;
-    axios
+    apiClient
       .get(apiUrl)
       .then((response) => {
-        console.log("뉴스 응답 데이터:", response);
+        console.log("News Data:", response);
         setNews(response.data);
       })
       .catch((error) => {
-        console.error("뉴스 에러 발생:", error);
+        console.error("News Data error:", error);
       });
   }, []);
 

@@ -9,7 +9,6 @@ import { ReactComponent as Gift } from "../../assets/images/gift.svg";
 import TopCard from "pages/Main/redux/TopCard";
 import { useSelector, useDispatch } from "react-redux";
 import { updateRanking } from "./redux/action";
-import axios from "axios";
 import { ReactComponent as Computer } from "../../assets/images/메인 배너(컴퓨터).svg";
 import { ReactComponent as Text } from "../../assets/images/메인 배너(타이틀).svg";
 
@@ -21,20 +20,22 @@ export default function GuestMain() {
     // 주식 랭킹 웹소켓 열기
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const stockRankWebSocketUrl = `${protocol}//${window.location.hostname}:${window.location.port}/stockRank`;
+    console.log('WebSocket URL:', process.env.REACT_APP_WEBSOCKET_URL);
+   // const stockRankWebSocketUrl = `${process.env.REACT_APP_WEBSOCKET_URL}/stockRank`;
         const stockRankSocket = new WebSocket(stockRankWebSocketUrl);
         stockRankSocket.onopen = () => {
-            //console.log("Top 5 Connected");
+            console.log("Top 5 Connected");
         };
         stockRankSocket.onmessage = (event) => {
+            console.log(event.data);
             const receivedData = JSON.parse(event.data);
             dispatch(updateRanking(receivedData));
-            console.log(receivedData);
         };
         stockRankSocket.onclose = () => {
-            //console.log("Top5 DisConnnected");
+            console.log("Top5 DisConnnected");
         };
         stockRankSocket.onerror = (event) => {
-            //console.log(event);
+            console.log(event);
         };
         
         return () => {

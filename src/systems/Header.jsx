@@ -1,17 +1,19 @@
 import React, { useEffect, useState, useRef } from "react";
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import axios from "axios";
 import { ReactComponent as Logo } from "../assets/images/logo.svg";
 import { ReactComponent as Search } from "../assets/images/search.svg";
 import { ReactComponent as Coin } from "../assets/images/coin.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 //import profileImage from "../assets/images/angma.jpg";
 
-export default function Header({ coinNum }) {
+export default function Header() {
   const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
+
+  const location = useLocation();
 
   const [isLogin, setIsLogin] = useState(false);
   const [profileName, setProfileName] = useState("");
@@ -25,45 +27,109 @@ export default function Header({ coinNum }) {
       // 로그인 상태 변경
       setIsLogin(true);
       setProfileName(sessionStorage.getItem("name"));
-      const token = sessionStorage.getItem("token");
-      apiClient
-        .get("/api/v1/profile/get", {
-          headers: {
-            "X-AUTH-TOKEN": token,
-          },
-        })
-        .then((res) => {
-          console.log("헤더 프로필 불러오기 성공", res.data);
-          setProfileImage(res.data.url);
-        })
-        .catch((res) => {
-          console.log("헤더 프로필 불러오기 실패", res.status);
-          /*if (res.response.status === 401) {
-            setIsLogin(false);
-            sessionStorage.removeItem("token");
-            sessionStorage.clear();
-            alert("자동 로그아웃 되었습니다!");
-            window.location.href = "/signIn";
-          }*/
-        });
-      apiClient
-        .get("/api/v1/coin/get/balance", {
-          headers: {
-            "X-AUTH-TOKEN": token,
-          },
-        })
-        .then((res) => {
-          console.log("지갑 잔액 조회 성공", res.data);
-          setStock(res.data);
-        })
-        .catch((res) => {
-          console.log("지갑 잔액 조회 실패", res);
-        });
+      
+      const fetchData = async () => {
+        try {
+          const profileResponse = await apiClient.get("/api/v1/profile/get", {
+            headers: { "X-AUTH-TOKEN": token },
+          });
+          console.log("header profile success", profileResponse.data);
+          setProfileImage(profileResponse.data.url);
+
+          const stockResponse = await apiClient.get("/api/v1/coin/get/balance", {
+            headers: { "X-AUTH-TOKEN": token },
+          });
+          console.log("header stock success", stockResponse.data);
+          setStock(stockResponse.data);
+        } catch (error) {
+          if (error && (error.response.status === 500 || error.response.status === 401)) { // If the response status was 401 Unauthorized
+            try{
+              // Refresh the access token using the refresh token
+              const refreshTokenResult = await apiClient.post("/api/v1/refresh-token", 
+                { 
+                  refreshToken: sessionStorage.getItem("refresh-token"),
+                }
+              );
+              
+              if(refreshTokenResult.status === 200){
+                // Save new access and refresh tokens to session storage
+                sessionStorage.setItem('token', refreshTokenResult.data.accessToken); 
+                
+                window.location.reload(); // Reload page to apply new tokens for API calls
+                
+              } else throw Error(refreshTokenResult.statusText);  
+            } catch(err){
+              console.error(err.message); 
+              setIsLogin(false);
+              sessionStorage.clear();
+              alert("자동 로그아웃 되었습니다!");
+              window.location.href = "/signIn";
+            }
+            
+          } else console.error(error || 'refresh-token API request failed.');
+        }
+      };
+      
+      fetchData();
+      
     } else {
       // sessionStorage 에 token 라는 key 값으로 저장된 값이 없다면
       setIsLogin(false);
     }
-  }, [profileImage, profileName]);
+}, [profileImage, profileName]);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const searchResultRef = useRef();
+
+  useEffect(() => {
+    //검색어가 없으면 결과를 비움
+    if (!searchTerm) {
+      setSearchResults([]);
+      return;
+    }
+    const fetchData = async () => {
+      try {
+        // API 호출을 통해 검색 결과를 가져옵니다.
+        const response = await apiClient.get("/api/v1/stock/search", {
+          params: { keyword: searchTerm }, // keyword 파라미터로 수정했습니다.
+        });
+        console.log(response.data);
+        setSearchResults(response.data); // 결과를 state에 저장합니다.
+      } catch (error) {
+        console.error("검색 중 오류가 발생했습니다.", error);
+      }
+    };
+
+    // debounce 처리를 통해 API 호출을 제한합니다.
+    const timeoutId = setTimeout(() => {
+      fetchData();
+    }, 500);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [searchTerm]);
+
+  const handleClickOutside = (event) => {
+    if (
+      searchResultRef.current &&
+      !searchResultRef.current.contains(event.target)
+    ) {
+      setSearchResults([]);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mosedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   const headerContainer = css`
     position: sticky;
@@ -119,7 +185,7 @@ export default function Header({ coinNum }) {
     background: #f1f1f1;
     margin-top: auto;
     margin-bottom: auto;
-    margin-right: ${isLogin ? "1.12rem" : "2rem"};
+    margin-right: ${isLogin ? "1.69rem" : "2rem"};
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -144,33 +210,34 @@ export default function Header({ coinNum }) {
     flex-shrink: 0;
     margin: auto 0.94rem auto 0;
   `;
-const searchResultsContainer = css`
-display: flex;
-flex-direction: column;
-align-items: center;
-position: absolute;
-top: 100%;
-width: 76%;
-min-height: auto;
-max-height: 15rem;
-overflow: scroll;
-background-color: #fff;
-border-radius: 0 0 0.625rem 0.625rem;
-z-index: -1;
-margin: auto 1.25rem;
-overflow-y: scroll;
-overflow-x: hidden;
-align-items: center;
-justify-content: center;
-padding-top: 0; /* 수정을 추가합니다. */
-&::-webkit-scrollbar {
-  width: 0;
-}
-& > div:not(:last-child) {
-  width: 100%;
-  border-bottom: 1px solid #d1efee;
-}
-`;  const searchResultsItem = css`
+  const searchResultsContainer = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 100%;
+  width: 76%;
+  min-height: auto;
+  max-height: 15rem;
+  overflow: scroll;
+  background-color: #fff;
+  border-radius: 0 0 0.625rem 0.625rem;
+  z-index: -1;
+  margin: auto 1.25rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+  & > div:not(:last-child) {
+    width: 100%;
+    border-bottom: 1px solid #d1efee;
+  }
+  `;  
+  const searchResultsItem = css`
     height: 2.5rem;
     width: 100%;
     padding: 0.81rem 0 0.81rem 1.06rem;
@@ -191,14 +258,13 @@ padding-top: 0; /* 수정을 추가합니다. */
     color: #3eb7af;
     font-size: 0.8125rem;
     font-weight: 600;
-    margin: auto 0.21rem auto 0;
+    margin: auto 0.4rem auto 0;
   `;
   const coinLogo = css`
     display: ${isLogin ? "block" : "none"};
     width: 1.838rem;
     height: 1.89344rem;
-    flex-shrink: 0s;
-    margin: auto 0.95rem auto 0;
+    margin: auto 0.89rem auto 0;
   `;
   const profile = css`
     display: flex;
@@ -218,63 +284,6 @@ padding-top: 0; /* 수정을 추가합니다. */
     margin: auto 0;
     border-radius: 50%;
   `;
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const searchResultRef = useRef();
-
-  useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    //검색어가 없으면 결과를 비움
-    if (!searchTerm) {
-      setSearchResults([]);
-      return;
-    }
-    const fetchData = async () => {
-      try {
-        // API 호출을 통해 검색 결과를 가져옵니다.
-        const response = await apiClient.get("/api/v1/stock/search", {
-          params: { keyword: searchTerm }, // keyword 파라미터로 수정했습니다.
-          headers: {
-            "X-Auth-Token": token,
-          },
-        });
-        console.log(response.data);
-        setSearchResults(response.data); // 결과를 state에 저장합니다.
-      } catch (error) {
-        console.error("검색 중 오류가 발생했습니다.", error);
-      }
-    };
-
-    // debounce 처리를 통해 API 호출을 제한합니다.
-    const timeoutId = setTimeout(() => {
-      fetchData();
-    }, 500);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [searchTerm]);
-
-  const handleClickOutside = (event) => {
-    if (
-      searchResultRef.current &&
-      !searchResultRef.current.contains(event.target)
-    ) {
-      setSearchResults([]);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mosedown", handleClickOutside);
-    };
-  }, []);
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
 
   return (
     <div css={headerContainer}>
@@ -321,7 +330,12 @@ padding-top: 0; /* 수정을 추가합니다. */
             </div>
           )}
         </div>
-        <Link to="/signIn" style={{ textDecoration: "none" }} css={login}>
+        <Link 
+          to="/signIn" 
+          state={{ from: location.pathname }} 
+          style={{ textDecoration: "none" }} 
+          css={login}
+        >          
           <div>로그인</div>
         </Link>
         <Link to="/myWallet" style={{ textDecoration: "none" }}>

@@ -24,16 +24,9 @@ import Company from "pages/Company/Company";
 import Community from "pages/Community/Community";
 import MessagePage from "components/MessagePage";
 import Payment from "pages/Payment/Payment";
-import MyWallet from "pages/MyPage/MyWallet";
-
+import MyWallet from "pages/MyPage/MyWallet/MyWallet";
 
 function App() {
-  const [companyName, setCompanyName] = React.useState("");
-
-  const handleSetCompanyName = (name) => {
-    setCompanyName(name);
-  };
-
   const [isLoggedIn, setIsLoggedIn] = useState(
     sessionStorage.getItem("token") !== null
   );
@@ -56,7 +49,7 @@ function App() {
       <Route path="/transactions" element={<StockTransaction />} />
       <Route
         path="/news/:stockId"
-        element={<News companyName={companyName} />}
+        element={<News />}
       />
       <Route path="/Store" element={<Store />} />
       <Route path="/allNews" element={<AllNews />} />
@@ -70,7 +63,7 @@ function App() {
       <Route path="/TbDetail3" element={<TbDetail3 />} />
       <Route
         path="/company/:stockId"
-        element={<Company handleSetCompanyName={handleSetCompanyName} />}
+        element={<Company />}
       />
       <Route path="/Community/:stockId" element={<Community />} />
       <Route path="/messagePage" element={<MessagePage />} />

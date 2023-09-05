@@ -9,9 +9,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function MyPage({setIsLoggedIn}) {
     const apiClient = axios.create({
-        baseURL: process.env.REACT_APP_API_URL,
-    });
-
+        baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+    });  
+    
     const [isNameEditing, setNameEditing] = useState(false);
     const [name, setName] = useState("");
     const [profile, setProfile] = useState("");
@@ -52,7 +52,7 @@ export default function MyPage({setIsLoggedIn}) {
                 }
             })
             .then((res) => {
-                console.log(res.data);
+                console.log("Mypage success",res.data);
                 setName(res.data.name);
                 setProfile(res.data.profileUrl);
                 setId(res.data.uid);
@@ -69,6 +69,8 @@ export default function MyPage({setIsLoggedIn}) {
                     console.log("General error:", err.message);
                 }});
         } else {
+            alert("로그인 해주세요!");
+            navigate("/signIn", { replace: true });
             console.log("Token is null. Unable to send request.");
         }
     },[]);
@@ -86,21 +88,20 @@ export default function MyPage({setIsLoggedIn}) {
                     'X-AUTH-TOKEN' : token,
                 }
             }).then(res => {
-                console.log("프로필 업로드 성공!!", res.data);
+                console.log("profile upload success!!", res.data);
                 apiClient.get("/api/v1/profile/get", {
                     headers: {
-                        'X-Auth-Token': token,
+                        'X-AUTH-TOKEN': token,
                     }
                 })
                 .then((res) => {
-                    console.log("프로필 불러오기 성공", res.data);
+                    console.log(res.data);
                     setProfile(res.data.url);
                 }).catch((res) => {
-                    console.log("프로필 불러오지 못함", res);
-                    console.log("프로필 불러오지 못함", res);
+                    console.log(res);
                 })                    
             }).catch((err) => {
-                console.log("프로필 업로드 오류", err);
+                console.log("profile upload fail", err);
             });
         }  
     };
@@ -135,7 +136,6 @@ export default function MyPage({setIsLoggedIn}) {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>이름</td>
@@ -153,8 +153,8 @@ export default function MyPage({setIsLoggedIn}) {
                                                 ) : (
                                                     <div className="myName">{name}</div>
                                                 )}
-                                                <div //onClick={
-                                                        //isNameEditing ? handleNameSave : handleNameEdit}
+                                                <div onClick={
+                                                        isNameEditing ? handleNameSave : handleNameEdit}
                                                     >
                                                     <MyButton
                                                     state="mine"
@@ -162,17 +162,14 @@ export default function MyPage({setIsLoggedIn}) {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>아이디</td>
                                         <td>{id}</td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>비밀번호</td>
                                         <td>변경일 2023.8.7.월</td>
-                                        <td></td>
                                     </tr>
                                 </table>
                                 <div className="myPageOut" onClick={onClickLogout}>계정 로그아웃</div>

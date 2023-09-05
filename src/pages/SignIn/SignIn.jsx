@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./SignIn.scss";
 import Header from "../../systems/Header";
 import Button from "components/Button";
@@ -9,8 +9,8 @@ import Message from "components/Message";
 
 export default function SignIn({ setIsLoggedIn }) {
   const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
 
   const [inputId, setInputId] = useState("");
   const [inputPw, setInputPw] = useState("");
@@ -21,6 +21,7 @@ export default function SignIn({ setIsLoggedIn }) {
   const [rememberId, setRememberId] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleInputId = (e) => {
     setInputId(e.target.value);
@@ -67,6 +68,7 @@ export default function SignIn({ setIsLoggedIn }) {
           if (res.data != null) {
             setIsLoggedIn(true);
             sessionStorage.setItem("token", res.data.token);
+            sessionStorage.setItem("refresh-token", res.data.refreshToken);
             sessionStorage.setItem("id", res.data.uid);
             sessionStorage.setItem("name", res.data.name);
             setIsMessage(false);
@@ -82,7 +84,13 @@ export default function SignIn({ setIsLoggedIn }) {
             } else {
               localStorage.removeItem("rememberedUserId");
             }
-            navigate("/", { replace: true });
+            if (location.state?.from === "/signUp") {
+              navigate("/", { replace: true });
+            } else if (location.state?.from) {
+              navigate(location.state.from, { replace: true });
+            } else {
+              navigate("/", { replace: true });
+            }
           }
         })
         .catch((res) => {

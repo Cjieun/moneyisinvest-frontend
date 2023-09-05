@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from "react";
 import "./MyWallet.scss";
-import Header from "../../systems/Header";
+import Header from "../../../systems/Header";
 import Footer from "components/Footer";
-import Profile from "../../systems/Profile";
-import {ReactComponent as Wallet} from "../../assets/images/wallet-bifold.svg";
-import {ReactComponent as Right1} from "../../assets/images/화살표 민트.svg"
-import {ReactComponent as Right2} from "../../assets/images/화살표 검정.svg";
+import Profile from "../../../systems/Profile";
+import {ReactComponent as Wallet} from "../../../assets/images/wallet-bifold.svg";
+import {ReactComponent as Right1} from "../../../assets/images/화살표 민트.svg"
+import {ReactComponent as Right2} from "../../../assets/images/화살표 검정.svg";
 import axios from "axios";
 
 export default function MyWallet() {
@@ -36,7 +36,7 @@ export default function MyWallet() {
                 'X-AUTH-TOKEN': token
             }
         }).then((res) => {
-            console.log("지갑 정보 조회",res.data);
+            console.log("wallet data:",res.data);
             setWalletInfo(res.data);
         }).catch((err)=> {
             console.log(err);
@@ -44,15 +44,15 @@ export default function MyWallet() {
 
         apiClient.get("/api/v1/coin/get/history", {
             headers: {
-                'X-AUTH-TOKEN': token
+                'X-AUTH-TOKEN': token,
             }
         }).then((res) => {
-            console.log("지갑 거래 내역 조회",res.data);
+            console.log("wallet dealData: ",res.data);
             setWallet(res.data);
         }).catch((err)=> {
-            console.log(err);
+            console.log("wallet dealData error: ",err);
         })
-    },[])
+    },[token])
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -64,20 +64,56 @@ export default function MyWallet() {
 
     const formattedDate = formatDate(walletInfo.createdAt);
 
+    const WalletModal = ({item, style}) => (
+        <div className="walletModal" style={style}>
+            <div className="walletModal-items">
+                <div className="walletModal-title">거래 번호</div>
+                <div className="walletModal-content">{item.hashCode}</div>
+            </div>
+            <div className="walletModal-items">
+                <div className="walletModal-title">보낸 주소</div>
+                <div className="walletModal-content">{item.recipient}</div>
+            </div>
+            <div className="walletModal-items">
+                <div className="walletModal-title">받는 주소</div>
+                <div className="walletModal-content">{item.sender}</div>
+            </div>
+            <div className="walletModal-items">
+                <div className="walletModal-title">수수료</div>
+                <div className="walletModal-content">{item.fee}</div>
+            </div>
+            <div className="walletModal-items">
+                <div className="walletModal-title">순거래가</div>
+                <div className="walletModal-content">{item.amount}</div>
+            </div>
+        </div>
+    );
 
-    const walletItem = wallet.map((item) => (
-        <div className="myWalletItem-top">
+    const [modalPosition, setModalPosition] = useState({});
+    const [hoveredIndex, setHoveredIndex] = useState(null);
+
+    const walletItem = wallet.map((item, index) => {
+        const formattedDate2 = item.datetime.replace(/-/g,'.');
+        return (
+        <div className="myWalletItem-top"
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onMouseMove={(e) => {
+                setModalPosition({ top:e.clientY + 'px',left:e.clientX + 'px'});
+            }}
+        >
             <div className="myWalletItem-dealNum">{item.hashCode}</div>
             <div className="myWalletItem-deal">
                 <div className="myWalletItem-receiver">{item.recipient}</div>
                 <Right2 />
                 <div className="myWalletItem-caller">{item.sender}</div>
             </div>
-            <div className="myWalletItem-price">{item.total}</div>
-            <div className="myWalletItem-date">{item.datetime}</div>
+            <div className="myWalletItem-price">{item.total}스톡</div>
+            <div className="myWalletItem-date">{formattedDate2}</div>
             <div className="myWalletItem-state">{item.type}</div>
+            {hoveredIndex === index && <WalletModal item={item} style={modalPosition}/>}
         </div>
-    ))
+    )})
 
     return (
         <div className="myWalletContainer">
@@ -113,13 +149,15 @@ export default function MyWallet() {
                         <div className="myWalletInfo-table">
                             <div className="myWalletInfo-top">
                                 <div className="myWalletInfo-dealNum">거래번호</div>
-                                <div className="myWalletInfo-deal">
-                                    <div>수신자</div>
-                                    <Right1 />
-                                    <div>발신자</div>
+                                <div className="myWalletInfo-dealContent">
+                                    <div className="myWalletInfo-deal">
+                                        <div>수신자</div>
+                                        <Right1 />
+                                        <div>발신자</div>
+                                    </div>
+                                    <div className="myWalletInfo-price">총거래가</div>
+                                    <div className="myWalletInfo-date">거래 일시</div>
                                 </div>
-                                <div className="myWalletInfo-price">총거래가</div>
-                                <div className="myWalletInfo-date">거래 일시</div>
                                 <div>입출금</div>
                             </div>
                             <div className="myWalletInfo-content">

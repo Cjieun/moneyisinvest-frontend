@@ -17,7 +17,7 @@ const processData = (data, realTimeData) => {
 
   const realTimeDataByDate = realTimeData && realTimeData.length > 0 ? realTimeData.reduce((dataMap, item) => {
     if (item.hasOwnProperty('current_time')) {
-      const dateStr = new Date(item.current_time).toDateString();
+      const dateStr = item.current_time.split('T')[0]; // 시간 부분 제거
       dataMap[dateStr] = item;
     } else {
       //console.error('realTimeData 항목에 current_time 프로퍼티가 없습니다.', item);
@@ -37,7 +37,7 @@ const processData = (data, realTimeData) => {
           Number(item.start_Price),
           Number(item.high_Price),
           Number(item.low_Price),
-          Number(realTimeDataForDate.stock_price),
+          Number(realTimeDataForDate.stock_price.replace(/,/g, '')), // 쉼표 제거 후 숫자로 변환
         ],
       };
     } else {
@@ -56,16 +56,16 @@ const processData = (data, realTimeData) => {
   const latestDate = result[result.length - 1].x;
   const latestRealTimeData = realTimeData[realTimeData.length - 1];
   if (latestRealTimeData && latestRealTimeData.hasOwnProperty('current_time')) {
-    const latestRealTimeDate = new Date(latestRealTimeData.current_time).toDateString();
+    const latestRealTimeDate = new Date(latestRealTimeData.current_time);
 
-    if (latestDate.toDateString() !== latestRealTimeDate.toDateString()) {
+    if (latestDate && latestRealTimeDate && latestDate.toDateString() !== new Date(latestRealTimeDate).toDateString()) {
       result.push({
         x: new Date(latestRealTimeData.current_time),
         y: [
           Number(latestRealTimeData.stock_open_price),
           Number(latestRealTimeData.stock_high_price),
           Number(latestRealTimeData.stock_low_price),
-          Number(latestRealTimeData.stock_price),
+          Number(latestRealTimeData.stock_price.replace(/,/g,'')),
         ],
       });
     }
