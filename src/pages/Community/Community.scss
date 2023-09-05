@@ -31,7 +31,8 @@
                         /* 커뮤니티 목록 전체 */
                         .communityList {
                             display: flex;
-                            flex-direction: column;
+                            //flex-direction: column;
+                            justify-content: space-between;
                             padding: 1.25rem;
                             border-bottom: 0.0625rem solid #ABE2DF;
                             margin-bottom: 1rem;
@@ -66,6 +67,9 @@
                             color: #000;
                             font-size: 0.875rem;
                             font-weight: 500;
+                            margin-right: 3rem;
+                            margin-left: 3rem;
+                            
                           }
                           
                           .companycommunityReply {
@@ -83,6 +87,19 @@
                             width: 1.25rem;
                             height: 1.25rem;
                             margin-right: 0.3125rem;
+                          }
+
+                          .companycommunityDate {
+                            color: #000;
+                            font-size: 0.875rem;
+                            font-weight: 400;
+                            display: flex;
+                            justify-content: flex-end;
+                          }
+
+                          .edit-icon {
+                            display: flex;
+                            justify-content: flex-end;
                           }
                           
   
