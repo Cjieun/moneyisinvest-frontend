@@ -223,45 +223,6 @@ const deleteComment = async (id) => {
     );
   };
 
-/*const communityItem = community.map((item) => (
-  <div className="communityList">
-    <div className="companycommunityList" key={item.id}>
-      <div className="companycommunityProfile">
-        <Profile className="companycommunityProfileImg" />
-        <div className="companycommunityName">{item.name}</div>
-    </div>
-    <div className="companycommunityComment">{item.comment}</div>
-    <div className="companycommunityReply">
-      <div className="companycommunityIcons">
-          <CommentHeart className="companycommunityIcon" />
-          <div>0</div>
-      </div>
-        <div className="companycommunityIcons">
-          <Comment className="companycommunityIcon" />
-          <div>{item.replyCount}</div>
-        </div>
-        <span onClick={() => setShowActions(!showActions)} className="edit-icon"><RxDotsVertical/></span>
-                            {showActions && (
-                              <div className="actions">
-                                <div onClick={() => handleEdit(item)}>
-                                <Button state="edit">수정</Button>
-                                </div>
-                                <div onClick={() => deleteComment(item.id, item)} >
-                                <Button state="delete">삭제</Button>
-                                </div>
-                              </div>
-                            )}
-        <div onClick={postReply} type="submit" className="replybtn">
-          <Button state="reply">대댓글 작성</Button>
-        </div>
-      </div>
-    
-    </div>
-  </div>
-));*/
-
-
-
 
 
   return (
