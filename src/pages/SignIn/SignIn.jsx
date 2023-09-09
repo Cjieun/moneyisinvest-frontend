@@ -6,6 +6,8 @@ import Header from "../../systems/Header";
 import Button from "components/Button";
 import Footer from "components/Footer";
 import Message from "components/Message";
+import {ReactComponent as Kakao} from "../../assets/images/kakaoLogin.svg";
+import KaKaoLogin from "react-kakao-login";
 
 export default function SignIn({ setIsLoggedIn }) {
   const apiClient = axios.create({
@@ -126,6 +128,42 @@ export default function SignIn({ setIsLoggedIn }) {
     }
   }, []);
 
+  /*const SocialKakao = () => {
+    const kakaoClientId = '6f618ba4c1c9af893796352e14d62a8b';
+    const kakaoOnSuccess = async (data) => {
+      console.log(data);
+      const idToken = data.response.access_token;
+    }
+    const kakaoOnFailure = (error) => {
+      console.log(error);
+    };
+    return(
+      <>
+        <KaKaoLogin
+            token={kakaoClientId}
+            onSuccess={kakaoOnSuccess}
+            onFail={kakaoOnFailure}
+            style={{display: "none"}}
+            className="kakao_login"
+        />
+      </>
+    )
+  }*/
+
+  const SocialKakao = () => {
+    const Rest_api_key = '57532f884b694bdc89f6d9e4284fa67d';
+    const redirect_uri = 'http://localhost:3000/'
+    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
+    const handleLogin = () => {
+      window.location.href = kakaoURL
+    }
+    return (
+      <>
+        <div onClick={handleLogin}>카카오 로그인</div>
+      </>
+    )
+  }
+
   return (
     <div className="loginContainer">
       <Header />
@@ -134,7 +172,7 @@ export default function SignIn({ setIsLoggedIn }) {
           <div className="loginTitle">사용자 로그인</div>
           <div>
             <label className="idInput">
-              아이디
+              이메일 주소
               <input
                 type="text"
                 value={inputId}
@@ -171,6 +209,10 @@ export default function SignIn({ setIsLoggedIn }) {
           <div>
             <div onClick={onClickLogin}>
               <Button type="submit" state="login" />
+            </div>
+            <div className="kakaoLogin" /*onClick={() => document.querySelector('.kakao_login').click()}*/>
+              <Kakao className="kakaoTalk"/>
+              <SocialKakao />
             </div>
             <Link to="/signUp" style={{ textDecoration: "none" }}>
               <div className="loginEmail">이메일로 회원가입</div>
