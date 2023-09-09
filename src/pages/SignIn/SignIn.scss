@@ -81,6 +81,25 @@
                     }
                 }
             }
+            .kakaoLogin {
+                display: flex;
+                flex-direction: row;
+                width: 23.625rem;
+                height: 3.25rem;
+                justify-self: center;
+                align-items: center;
+                gap: 7.19rem;
+                border-radius: 0.625rem;
+                background: #FEE500;
+                margin-top: 0.56rem;
+                color: #000;
+                font-size: 0.875rem;
+                font-weight: 600;
+                cursor: pointer;
+                .kakaoTalk {
+                    margin-left: 1.06rem;
+                }
+            }
             .loginEmail {
                 text-align: center;
                 margin-top: 0.75rem;
