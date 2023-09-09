@@ -164,12 +164,12 @@ export default function MyPage({setIsLoggedIn}) {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>아이디</td>
+                                        <td>이메일</td>
                                         <td>{id}</td>
                                     </tr>
                                     <tr>
-                                        <td>비밀번호</td>
-                                        <td>변경일 2023.8.7.월</td>
+                                        <td>최근 로그인</td>
+                                        <td>2023.8.7.월</td>
                                     </tr>
                                 </table>
                                 <div className="myPageOut" onClick={onClickLogout}>계정 로그아웃</div>
