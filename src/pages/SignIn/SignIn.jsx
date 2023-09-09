@@ -66,7 +66,7 @@ export default function SignIn({ setIsLoggedIn }) {
           uid: inputId,
         })
         .then((res) => {
-          console.log("!!", res.data);
+          console.log("!!", res);
           if (res.data != null) {
             setIsLoggedIn(true);
             sessionStorage.setItem("token", res.data.token);
