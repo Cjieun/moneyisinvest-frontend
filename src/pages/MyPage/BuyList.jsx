@@ -85,7 +85,7 @@ export default function BuyList() {
             <Profile />
           </div>
           <div className="buyProfile">
-            <div className="buyTitle">거래 내역</div>
+            <div className="buyTitle">상품 거래 내역</div>
             <div className="buyInfo">
               <div className="buyInfo-top">
                 <div className="buyInfo-title">
