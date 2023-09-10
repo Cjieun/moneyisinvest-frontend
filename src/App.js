@@ -28,9 +28,16 @@ import MyWallet from "pages/MyPage/MyWallet/MyWallet";
 import axios from "axios";
 
 function App() {
-  const apiClient = axios.create({
-    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
-  });  
+  let apiClient;
+  if (window.location.protocol === 'http:') {
+    apiClient = axios.create({
+      baseURL: 'http://localhost:3000', // 개발 환경일 경우
+    });
+  } else if (window.location.protocol === 'https:') {
+    apiClient = axios.create({
+      baseURL: 'https://moneyisinvest.kr', // 실제 서비스 환경일 경우
+    });
+  }
 
   const [isLoggedIn, setIsLoggedIn] = useState(
     sessionStorage.getItem("token") !== null
@@ -45,7 +52,7 @@ function App() {
       // 현재의 브라우징 히스토리 엔트리를 새로운 URL로 대체
       window.history.replaceState({}, '', `${window.location.pathname}${urlParams}`);
       // 'code' 쿼리 파라미터가 있는 경우 서버에 API 요청
-      axios.post(`/api/v1/social/kakao?code=${code}`)
+      apiClient.post(`/api/v1/social/kakao?code=${code}`)
       .then(res => {
         console.log("kakaoLogin Success",res);
         setIsLoggedIn(true);
