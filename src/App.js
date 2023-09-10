@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles/global.scss";
 import { Route, Routes } from "react-router-dom";
 import SignIn from "./pages/SignIn/SignIn";
@@ -25,11 +25,43 @@ import Community from "pages/Community/Community";
 import MessagePage from "components/MessagePage";
 import Payment from "pages/Payment/Payment";
 import MyWallet from "pages/MyPage/MyWallet/MyWallet";
+import axios from "axios";
 
 function App() {
+  const apiClient = axios.create({
+    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+  });  
+
   const [isLoggedIn, setIsLoggedIn] = useState(
     sessionStorage.getItem("token") !== null
   );
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    if (code) {
+      urlParams.delete('code');
+      // 현재의 브라우징 히스토리 엔트리를 새로운 URL로 대체
+      window.history.replaceState({}, '', `${window.location.pathname}${urlParams}`);
+      // 'code' 쿼리 파라미터가 있는 경우 서버에 API 요청
+      apiClient.post(`/api/v1/social/kakao?code=${code}`)
+      .then(res => {
+        console.log("kakaoLogin Success",res);
+        setIsLoggedIn(true);
+        sessionStorage.setItem("token", res.data.token);
+        sessionStorage.setItem("refresh-token", res.data.refreshToken);
+        sessionStorage.setItem("id", res.data.uid);
+        sessionStorage.setItem("name", res.data.name);
+      })
+      .catch(err => {
+        console.log(err);
+        setIsLoggedIn(false);
+        alert("로그인에 실패했습니다. 다시 시도해주세요");
+        window.location.href = '/signIn';
+      })
+    }
+  }, [])
 
   return (
     <Routes>
