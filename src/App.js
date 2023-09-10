@@ -45,7 +45,7 @@ function App() {
       // 현재의 브라우징 히스토리 엔트리를 새로운 URL로 대체
       window.history.replaceState({}, '', `${window.location.pathname}${urlParams}`);
       // 'code' 쿼리 파라미터가 있는 경우 서버에 API 요청
-      apiClient.post(`/api/v1/social/kakao?code=${code}`)
+      axios.post(`/api/v1/social/kakao?code=${code}`)
       .then(res => {
         console.log("kakaoLogin Success",res);
         setIsLoggedIn(true);
