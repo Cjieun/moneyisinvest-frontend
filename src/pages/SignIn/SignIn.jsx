@@ -152,15 +152,24 @@ export default function SignIn({ setIsLoggedIn }) {
 
   const SocialKakao = () => {
     const Rest_api_key = '57532f884b694bdc89f6d9e4284fa67d';
-    const redirect_uri = 'http://localhost:3000/'
+    const protocol = window.location.protocol; // 현재 페이지의 프로토콜 확인
+    let redirect_uri;
+    
+    if (protocol === 'http:') {
+        redirect_uri = 'http://localhost:3000/'; // 개발 환경일 경우
+    } else if (protocol === 'https:') {
+        redirect_uri = 'https://moneyisinvest.kr/'; // 실제 서비스 환경일 경우
+    }
+
     const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
     const handleLogin = () => {
       window.location.href = kakaoURL
     }
     return (
-      <>
+      <div className="kakaoLogin" onClick={handleLogin} /*onClick={() => document.querySelector('.kakao_login').click()}*/>
+        <Kakao className="kakaoTalk"/>
         <div onClick={handleLogin}>카카오 로그인</div>
-      </>
+    </div>
     )
   }
 
@@ -210,10 +219,7 @@ export default function SignIn({ setIsLoggedIn }) {
             <div onClick={onClickLogin}>
               <Button type="submit" state="login" />
             </div>
-            <div className="kakaoLogin" /*onClick={() => document.querySelector('.kakao_login').click()}*/>
-              <Kakao className="kakaoTalk"/>
-              <SocialKakao />
-            </div>
+            <SocialKakao />
             <Link to="/signUp" style={{ textDecoration: "none" }}>
               <div className="loginEmail">이메일로 회원가입</div>
             </Link>
