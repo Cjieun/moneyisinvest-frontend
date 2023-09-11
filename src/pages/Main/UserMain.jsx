@@ -16,6 +16,8 @@ import { ReactComponent as Text } from "../../assets/images/메인 배너(타이
 
 export default function UserMain() {
 
+    const [refreshKey, setRefreshKey] = useState(0); // 새로 고침 키 초기화
+
     const apiClient = axios.create({
         baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
     });  
@@ -148,7 +150,7 @@ export default function UserMain() {
         return () => {
         stockRankSocket.close();
       };
-    }, [dispatch]);      
+    }, [dispatch, refreshKey]);      
 
     // 받아온 값 자르기 예시
     const numberOfItemsToShow = 3;
@@ -170,6 +172,10 @@ export default function UserMain() {
         );
     }
 
+    const handleRefresh = () => {  // 새로 고침 핸들러
+        setRefreshKey(prevKey => prevKey + 1);  // refreshKey 값을 변경하여 useEffect 재실행
+    };
+
     return (
         <div className="MainContainer">
             <Header/>
@@ -181,7 +187,10 @@ export default function UserMain() {
                     </div>
                     <div className="mainStock">
                         <div className="mainStockContent">
-                            <div className="mainStockTitle" {...useScrollFadeIn('up', 1, 0)}>주요 지수</div>
+                            <div className="mainStockText" {...useScrollFadeIn('up', 1, 0)}>
+                                <div className="mainStockTitle">주요 지수</div>
+                                <div className="mainStockSubtitle" onClick={handleRefresh}>새로 고침</div>
+                            </div>
                             <div className="mainStockChart">
                                 {kospiData.length > 0 && <StockChartCard data={kospiData[kospiData.length-1]} name="코스피"/>}
                                 {kosdaqData.length > 0 && <StockChartCard data={kosdaqData[kosdaqData.length-1]} name="코스닥"/>}
