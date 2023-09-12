@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 import axios from "axios";
 import { ReactComponent as Coin } from "../assets/images/coin.svg";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useMatch } from "react-router-dom";
 
 export default function Profile() {
   const apiClient = axios.create({
@@ -75,6 +75,8 @@ export default function Profile() {
   `;
 
   const location = useLocation();
+
+  const match = useMatch("/askpage/:supportId");
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -222,7 +224,7 @@ export default function Profile() {
                   css`
                     color: #3eb7af;
                   `) ||
-                (location.pathname === "/askpage/:supportId" &&
+                (match &&
                   css`
                     color: #3eb7af;
                   `),
