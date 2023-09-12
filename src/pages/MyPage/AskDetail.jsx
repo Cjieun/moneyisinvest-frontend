@@ -17,6 +17,7 @@ export default function AskDetail() {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [status, setStatus] = useState("");
   const [createdAt, setCreatedAt] = useState("");
 
   // fetchData 함수 정의
@@ -35,6 +36,7 @@ export default function AskDetail() {
       console.log("supportDetail Success", response);
       setTitle(data.title);
       setContent(data.contents);
+      setStatus(data.status);
       setCreatedAt(data.createdAt);
     } catch (error) {
       console.log("supportDetail Fail", error);
@@ -47,7 +49,8 @@ export default function AskDetail() {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}.${days[date.getDay()]}`;
   };
 
   const onClickDelete = () => {
@@ -102,10 +105,13 @@ export default function AskDetail() {
             <div className="askWriteTitle">문의사항</div>
             <div className="askWriteInfo">
               <div className="askDetailInfo-title">
-                <div>{title}</div>
-                <div className="askDetailInfo-date">
-                  {formatDate(createdAt)}
-                </div>
+                <div>Q. {title}</div>
+                <table className="askDetailInfo-date">
+                  <tr>
+                    <td>{status}</td>
+                    <td>{formatDate(createdAt)}</td>
+                  </tr>
+                </table>
               </div>
               <div className="askDetailInfo-content">
                 <div>{content}</div>
