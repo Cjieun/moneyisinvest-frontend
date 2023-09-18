@@ -43,6 +43,8 @@ function App() {
     sessionStorage.getItem("token") !== null
   );
 
+  const [isSignedUp, setIsSignedUp] = useState();
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
@@ -77,7 +79,7 @@ function App() {
         path="/signIn"
         element={<SignIn setIsLoggedIn={setIsLoggedIn} />}
       />
-      <Route path="/signUp" element={<SignUp />} />
+      <Route path="/signUp" element={<SignUp setIsSignedUp={setIsSignedUp}/>} />
       <Route
         path="/mypage"
         element={<MyPage setIsLoggedIn={setIsLoggedIn} />}
@@ -107,7 +109,7 @@ function App() {
       <Route path="/Community/:stockId" element={<Community />} />
       <Route path="/messagePage" element={<MessagePage />} />
       <Route path="/pay" element={<Payment />} />
-      <Route path="/MessagePage" element={<MessagePage />} />
+      <Route path="/MessagePage" element={<MessagePage isSignedUp={isSignedUp} setIsSignedUp={setIsSignedUp}/>} />
       <Route path="/myWallet" element={<MyWallet />} />
       <Route path="/pay" element={<Payment />} />
     </Routes>
