@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 /* 매도: stocksell, 매수: stockbuy, 장바구니 구매하기: shopping, *담기: basket, *구매: buy,
 로그인: login, 글쓰기: write, *댓글: comment, 댓글수정: edit, 댓글삭제: delete, 대댓글작성: reply, *마이페이지: mine, *거래내역: interest, *문의사항: ask
 인증하기: signConfirm, 문의사항글쓰기: askWrite 문의사항업로드: askUpload +: plus -: minus 거래하기: stockDeal 거래완료: dealdone, 거래취소: dealnone
-완료: paydone, 결제취소: paynone, 카카오페이: kakaopay , top5: top*/
+완료: paydone, 결제취소: paynone, 카카오페이: kakaopay , top5: top, 회원가입완료: signedUp*/
 
 
 
@@ -31,7 +31,8 @@ const buttonwidth = {
     paydone: "8.875rem",
     paynone: "10.31463rem",
     kakaopay: "8.875rem",
-    top: "8.875rem"
+    top: "8.875rem",
+    signedUp: "10.31463rem"
 };
 const buttonheight = {
     default: "2.125rem",
@@ -54,7 +55,8 @@ const buttonheight = {
     paydone: "1.93594rem",
     paynone: "2.25rem",
     kakaopay: "2rem",
-    top: "1.93594rem"
+    top: "1.93594rem",
+    signedUp: "2.25rem",
 }
 const buttonradius = {
     default: "0.4375rem",
@@ -154,7 +156,8 @@ const buttontext = {
     paydone: "홈으로 돌아가기",
     paynone: "결제 페이지로 돌아가기",
     kakaopay: "구매하기",
-    top: "TOP5 주식 보러가기"
+    top: "TOP5 주식 보러가기",
+    signedUp: "메인 페이지로 돌아가기"
 }
 export default function Button(props) {
     const button = css`
