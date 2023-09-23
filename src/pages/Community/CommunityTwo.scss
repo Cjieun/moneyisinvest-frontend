@@ -1,13 +1,13 @@
 .CommunityMainFrame {
   width: 100%;
-  height: 64rem;
+  height: 100%;
   display: block;
   text-align: center;
 }
 
 .CommunityInner {
   width: 52.8125rem;
-  height: 60.125rem;
+  height: 100%;
   display: inline-block;
   text-align: left;
 }
@@ -37,8 +37,15 @@
 
 .CommunityCommentBox {
   width: 100%;
-  height: 6.5625rem;
-  position: relative;
+  height: auto;
+  display: flex;
+}
+
+.UserImformationBox {
+  width: 8rem;
+  height: 3rem;
+  margin-left: 1.8125rem;
+  margin-top: 1.8125rem;
   display: flex;
   align-items: center;
 }
@@ -47,40 +54,90 @@
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  position: absolute;
-  left: 1.8125rem;
-  background: #85d6d1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // background: url("../../assets/images/BasicsProfile.svg"),
+  //   lightgray 50% / cover no-repeat;
+  background: url("../../assets/images/BasicsProfileTwo.png"),
+    lightgray 50% / cover no-repeat;
 }
 
 .UserName {
-  position: absolute;
-  left: 6.0625rem;
   color: #000;
   font-family: Pretendard;
   font-size: 1rem;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
-  width: 6rem;
+  margin-left: 1.25rem;
 }
 
 .UserComment {
-  position: absolute;
-  left: 11.8125rem;
+  margin-left: 3rem;
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
   color: #000;
   font-family: Pretendard;
   font-size: 0.875rem;
   font-style: normal;
   font-weight: 500;
+  line-height: 2;
+  width: 25.625rem;
+}
+
+.ButtonsBigBox {
+  width: 12rem;
+  height: auto;
+  margin-left: 3rem;
+  display: flex;
+  align-items: end;
+}
+
+.ButtonsBox {
+  position: relative;
+  width: 12rem;
+  height: 1.3125rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.DeletButton {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 4rem;
+  width: 6.375rem;
+  height: 1.875rem;
+  border-radius: 0.3125rem;
+  background: var(--main-4, #f0f9f8);
+
+  cursor: pointer;
+}
+
+.DeletButtontext {
+  color: var(--Sub-Text, #797979);
+  font-family: Pretendard;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 500;
   line-height: normal;
-  width: 27.625rem;
+}
+
+.HeartAndCommentBox {
+  position: absolute;
+  left: 0;
+  width: 10.75rem;
+  height: 1.3125rem;
+  display: flex;
+  align-items: center;
 }
 
 .HeartButton {
-  position: absolute;
   width: 1.5rem;
   height: 1.5rem;
-  left: 39.6875rem;
   display: flex;
   border: none;
   background-color: transparent;
@@ -92,7 +149,6 @@
 }
 
 .HeartSvg {
-  position: absolute;
   width: 1.25rem;
   height: 1.25rem;
   stroke-width: 0.125rem;
@@ -100,21 +156,18 @@
 }
 
 .HeartCount {
-  position: absolute;
-  left: 41.4375rem;
+  margin-left: 0.5rem;
   width: 2.4375rem;
   color: var(--sub-text-2, #b0b0b0);
   font-family: Pretendard;
   font-size: 0.875rem;
   font-style: normal;
   font-weight: 600;
-  line-height: normal;
 }
 .MoreCommentButton {
-  position: absolute;
-  left: 44.875rem;
-  width: 1.5rem;
-  height: 1.5rem;
+  margin-left: 1rem;
+  width: 1.25rem;
+  height: 1.25rem;
   border: none;
   background-color: transparent;
 
@@ -128,8 +181,7 @@
 }
 
 .CommentCount {
-  position: absolute;
-  left: 46.625rem;
+  margin-left: 0.5rem;
   color: var(--sub-text-2, #b0b0b0);
   font-family: Pretendard;
   font-size: 0.875rem;
@@ -140,7 +192,7 @@
 
 .OptionButton {
   position: absolute;
-  left: 50.375rem;
+  right: 0;
   background: none;
   border: none;
   width: 1.25rem;
@@ -159,6 +211,14 @@
   width: 100%;
   height: 10.1875rem;
   position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.UserImformationBoxThree {
+  width: 8rem;
+  height: 3rem;
+  margin-left: 1.8125rem;
   display: flex;
   align-items: center;
 }
@@ -206,7 +266,7 @@
 
 .MoreCommentFrame {
   width: 100%;
-  height: 5rem;
+  height: auto;
   display: flex;
   align-items: center;
 }
@@ -214,10 +274,30 @@
 .MoreCommentInnerBox {
   position: relative;
   margin-left: 6.375rem;
-  width: 30.4375rem;
+  width: 40.4375rem;
+  height: auto;
+  display: flex;
+  align-items: center;
+}
+
+.UserImformationBoxTwo {
+  width: 8rem;
   height: 3rem;
   display: flex;
   align-items: center;
+}
+
+.UserCommentTwo {
+  margin-left: 3rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #000;
+  font-family: Pretendard;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 2;
+  width: 25.625rem;
 }
 
 .MoreCommentInputFrame {
@@ -230,7 +310,6 @@
 .MoreCommentInputInnerBox {
   position: relative;
   margin-left: 6.375rem;
-  // width: 30.4375rem;
   width: 100%;
   height: 3rem;
   display: flex;
@@ -260,6 +339,10 @@
   background: transparent;
 
   cursor: pointer;
+}
+
+.MoreCommentButtonTwo:hover {
+  background-color: #3eb7af;
 }
 
 .MoreCommentButtonTwo p {
