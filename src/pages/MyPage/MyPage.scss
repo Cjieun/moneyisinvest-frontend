@@ -29,13 +29,11 @@
                 gap: 1.88rem;
                 .myPageInfo {
                     width: 49rem;
-                    height: 39.5625rem;
                     border-radius: 0.625rem;
                     background: #F0F9F8;
                     .myPageInfo-content {
-                        margin: 3.5rem 0 0 4.87rem;
+                        margin: 3.5rem 0 3.5rem 4.87rem;
                         width: 25.4375rem;
-                        height: 32.625rem;
                         display: flex;
                         flex-direction: column;
                         justify-content: space-between;
@@ -117,6 +115,7 @@
                         }                          
                     }
                     .myPageOut {
+                        margin-top: 8.12rem;
                         color: #B0B0B0;
                         font-size: 0.75rem;
                         font-weight: 600;
