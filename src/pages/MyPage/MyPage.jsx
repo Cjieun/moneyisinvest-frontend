@@ -16,6 +16,8 @@ export default function MyPage({setIsLoggedIn}) {
     const [name, setName] = useState("");
     const [profile, setProfile] = useState("");
     const [id, setId] = useState("");
+    const [phoneNum, setPhoneNum] = useState("");
+    const [recent, setRecent] = useState("");
 
     const nameRef = useRef("");
 
@@ -56,6 +58,8 @@ export default function MyPage({setIsLoggedIn}) {
                 setName(res.data.name);
                 setProfile(res.data.profileUrl);
                 setId(res.data.uid);
+                setPhoneNum(res.data.phoneNum);
+                setRecent(res.data.recentLoggedIn);
             })
             .catch((err) => {
                 if (err.response) {
@@ -168,8 +172,12 @@ export default function MyPage({setIsLoggedIn}) {
                                         <td>{id}</td>
                                     </tr>
                                     <tr>
+                                        <td>전화번호</td>
+                                        <td>{phoneNum}</td>
+                                    </tr>
+                                    <tr>
                                         <td>최근 로그인</td>
-                                        <td>2023.8.7.월</td>
+                                        <td>{recent}</td>
                                     </tr>
                                 </table>
                                 <div className="myPageOut" onClick={onClickLogout}>계정 로그아웃</div>
