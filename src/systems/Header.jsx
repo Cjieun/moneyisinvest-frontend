@@ -6,7 +6,6 @@ import { ReactComponent as Search } from "../assets/images/search.svg";
 import { ReactComponent as Coin } from "../assets/images/coin.svg";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
-//import profileImage from "../assets/images/angma.jpg";
 
 export default function Header() {
   const apiClient = axios.create({
@@ -289,7 +288,7 @@ export default function Header() {
     <div css={headerContainer}>
       <div css={header}>
         <Link to="/" style={{ textDecoration: "none" }}>
-          <Logo css={logo} />
+          <Logo css={logo} onClick={() => window.scrollTo(0, 0)}/>
         </Link>
         <div css={nav}>
           <Link to="/allNews" style={{ textDecoration: "none" }}>
