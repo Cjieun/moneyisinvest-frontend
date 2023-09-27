@@ -27,6 +27,7 @@ import Payment from "pages/Payment/Payment";
 import MyWallet from "pages/MyPage/MyWallet/MyWallet";
 import axios from "axios";
 import { CommunityTwo } from "pages/Community/CommunityTwo";
+import StoreBagPage from "pages/Store/StoreBag";
 
 function App() {
   let apiClient;
@@ -111,6 +112,7 @@ function App() {
       <Route path="/myWallet" element={<MyWallet />} />
       <Route path="/pay" element={<Payment />} />
       <Route path="/CommunityTwo" element={<CommunityTwo />} />
+      <Route path="/storeBag" element={<StoreBagPage />} />
     </Routes>
   );
 }

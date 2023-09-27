@@ -1,19 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./CommunityTwo.scss";
 import Header from "systems/Header";
 import Footer from "components/Footer";
-
-const CommunityMainFrame = ({ children }) => {
-  return <div className="CommunityMainFrame">{children}</div>;
-};
-
-const CommunityInner = ({ children }) => {
-  return <div className="CommunityInner">{children}</div>;
-};
-
-const CommunityCompanyName = (props) => {
-  return <p className="CommunityCompanyName">{props.CompanyName}</p>;
-};
+import { useNavigate } from "react-router-dom";
 
 const MoreCommentBox = (props) => {
   return (
@@ -78,6 +68,53 @@ const CommunityCommentBox = (props) => {
     setCommentsTwo([...commentsTwo, { userName, userComment }]);
   };
 
+  // ---------------------------------------------------------------
+  const apiClient = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+  });
+
+  // const navigate = useNavigate();
+  const [userName, setUserName] = useState("김찬주");
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    console.log("Token:", token);
+    if (token !== null) {
+      apiClient
+        .get("/api/v1/profile/user/detail", {
+          headers: {
+            "X-Auth-Token": token,
+          },
+        })
+        .then((res) => {
+          console.log("Mypage success", res.data);
+          setUserName(res.data.name);
+        })
+        .catch((err) => {
+          if (err.response) {
+            console.log(
+              "Error response:",
+              err.response.status,
+              err.response.data
+            );
+          } else if (err.request) {
+            console.log("Request error:", err.request);
+          } else {
+            console.log("General error:", err.message);
+          }
+        });
+    }
+    // else {
+    //   alert("로그인 해주세요!");
+    //   navigate("/signIn", { replace: true });
+    //   console.log("Token is null. Unable to send request.");
+    // }
+  });
+
+  // const Delete = () => {};
+
+  // ---------------------------------------------------------------------
+
   return (
     <div>
       <div className="CommunityCommentBox">
@@ -130,7 +167,7 @@ const CommunityCommentBox = (props) => {
             )}
             {showDeletButton && (
               <div className="DeletButton">
-                <p className="DeletButtontext">삭세하기</p>
+                <p className="DeletButtontext">삭제하기</p>
               </div>
             )}
             <button className="OptionButton" onClick={handleToggle}>
@@ -150,23 +187,18 @@ const CommunityCommentBox = (props) => {
         </div>
       </div>
       <div className="EndLine"></div>
-      {/* 일단 컴포넌트를 하나더 만들어 보자 큰 것과 작은디브를 어우를 수 있는 큰 컴포넌트를 만들자 */}
       {showCommentDiv && (
         <div>
-          <MoreCommentBox
-            UserName="최지은"
-            UserComment="있으려구요"
-          ></MoreCommentBox>
           {commentsTwo.map((commentTwo, indexTwo) => (
             <MoreCommentBox
               key={indexTwo}
-              UserName={commentTwo.userName}
+              UserName={userName}
               UserComment={commentTwo.userComment}
             ></MoreCommentBox>
           ))}
 
           <MoreCommentInput
-            UserName="김찬주"
+            UserName={userName}
             onCommentSubmit={addCommentTwo}
           ></MoreCommentInput>
         </div>
@@ -249,6 +281,8 @@ const CommunityInput = (props) => {
 };
 
 export const CommunityTwo = () => {
+  const [CommunityCompanyName, setCommunityCompanyName] = useState("");
+
   const [comments, setComments] = useState([]);
 
   const addComment = (userName, userComment) => {
@@ -256,28 +290,13 @@ export const CommunityTwo = () => {
   };
 
   return (
-    <CommunityMainFrame>
+    <div className="CommunityMainFrame">
       <Header></Header>
-      <CommunityInner>
-        <CommunityCompanyName CompanyName="삼성전자"></CommunityCompanyName>
+      <div className="CommunityInner">
+        <p className="CommunityCompanyName">{CommunityCompanyName}</p>
         <p className="TextCommunity">커뮤니티</p>
         <CommunityCommentBox
-          UserName="손민기"
-          UserComment="이 주식 도대체 언제 오르나요? 10만원 된다고 들어서 샀는데..."
-          CommentCount="0"
-        ></CommunityCommentBox>
-        <CommunityCommentBox
-          UserName="전윤환"
-          UserComment="주식 초보인데 어떻게 하면 좋을까요? "
-          CommentCount="0"
-        ></CommunityCommentBox>
-        <CommunityCommentBox
-          UserName="최지은"
-          UserComment="10만전자는 무슨... 반값이 됐네"
-          CommentCount="0"
-        ></CommunityCommentBox>
-        <CommunityCommentBox
-          UserName="양은지"
+          UserName="홍길동"
           UserComment="아직 살 때 아니니까 기다려야 할듯"
           CommentCount="0"
         ></CommunityCommentBox>
@@ -289,12 +308,9 @@ export const CommunityTwo = () => {
             CommentCount="0"
           ></CommunityCommentBox>
         ))}
-        <CommunityInput
-          UserName="김찬주"
-          onCommentSubmit={addComment}
-        ></CommunityInput>
+        <CommunityInput onCommentSubmit={addComment}></CommunityInput>
         <Footer></Footer>
-      </CommunityInner>
-    </CommunityMainFrame>
+      </div>
+    </div>
   );
 };
