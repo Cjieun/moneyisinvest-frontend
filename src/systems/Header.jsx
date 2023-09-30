@@ -184,7 +184,7 @@ export default function Header() {
     background: #f1f1f1;
     margin-top: auto;
     margin-bottom: auto;
-    margin-right: ${isLogin ? "1.69rem" : "2rem"};
+    margin-right: ${isLogin ? "0.99rem" : "2rem"};
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -257,13 +257,13 @@ export default function Header() {
     color: #3eb7af;
     font-size: 0.8125rem;
     font-weight: 600;
-    margin: auto 0.4rem auto 0;
+    margin: auto 0.19rem auto 0;
   `;
   const coinLogo = css`
     display: ${isLogin ? "block" : "none"};
     width: 1.838rem;
     height: 1.89344rem;
-    margin: auto 0.89rem auto 0;
+    margin: auto 0.69rem auto 0;
   `;
   const profile = css`
     display: flex;
