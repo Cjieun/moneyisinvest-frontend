@@ -9,8 +9,11 @@ import { useNavigate, useParams } from "react-router-dom";
 
 export default function AskDetail() {
   const apiClient = axios.create({
-    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
-  });  
+    baseURL:
+      process.env.NODE_ENV === "production"
+        ? process.env.REACT_APP_API_URL
+        : undefined,
+  });
 
   const navigate = useNavigate();
   const { supportId } = useParams(); // URL로부터 supportId를 가져옵니다.
@@ -26,11 +29,14 @@ export default function AskDetail() {
     try {
       const token = sessionStorage.getItem("token");
 
-      const response = await apiClient.get(`/api/v1/support/get/user-support?support_id=${supportId}`, {
-        headers: {
-          "X-AUTH-TOKEN": token,
-        },
-      });
+      const response = await apiClient.get(
+        `/api/v1/support/get/user-support?support_id=${supportId}`,
+        {
+          headers: {
+            "X-AUTH-TOKEN": token,
+          },
+        }
+      );
 
       const data = response.data;
       console.log("supportDetail Success", response);
@@ -49,8 +55,10 @@ export default function AskDetail() {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const days = ['일', '월', '화', '수', '목', '금', '토'];
-    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}.${days[date.getDay()]}`;
+    const days = ["일", "월", "화", "수", "목", "금", "토"];
+    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}.${
+      days[date.getDay()]
+    }`;
   };
 
   const onClickDelete = () => {
@@ -68,7 +76,7 @@ export default function AskDetail() {
         .then((response) => {
           alert("문의사항이 삭제되었습니다!");
           console.log("delete Succeess", response.data);
-          navigate("/askpage", {replace: true});
+          navigate("/askpage", { replace: true });
         })
         .catch((err) => {
           if (err.response) {
@@ -91,6 +99,10 @@ export default function AskDetail() {
       navigate("/signIn", { replace: true });
       console.log("Token is null. Unable to send request.");
     }
+  };
+
+  const onClickBack = () => {
+    navigate("/askpage");
   };
 
   return (
@@ -116,9 +128,33 @@ export default function AskDetail() {
               <div className="askDetailInfo-content">
                 <div>{content}</div>
               </div>
-              <div className="askWriteInfo-button" onClick={onClickDelete}>
-                <Button state="askDetail" />
-              </div>
+              {status === "답변 완료" && (
+                <>
+                  <div className="askDetailAnswer-title">
+                    <table className="askDetailAnswer-date">
+                      <tr>
+                        <td>{formatDate(createdAt)}</td>
+                      </tr>
+                    </table>
+                    <div>A. {title}</div>
+                  </div>
+                  <div className="askDetailAnswer-content">
+                    <div>{content}</div>
+                  </div>
+                </>
+              )}
+              {status === "답변 대기중" ? (
+                <div className="askDetailInfo-button">
+                  아직 관리자의 답변을 기다리고 있어요.
+                  <div onClick={onClickDelete}>
+                    <Button state="askDetail" />
+                  </div>
+                </div>
+              ) : (
+                <div className="askDetailAnswer-button" onClick={onClickBack}>
+                  <Button state="all" />
+                </div>
+              )}
             </div>
           </div>
         </div>
