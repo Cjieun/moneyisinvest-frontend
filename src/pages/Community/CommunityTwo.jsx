@@ -1,24 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./CommunityTwo.scss";
 import Header from "systems/Header";
 import Footer from "components/Footer";
-import { useNavigate } from "react-router-dom";
 
-const MoreCommentBox = (props) => {
-  return (
-    <div className="MoreCommentFrame">
-      <div className="MoreCommentInnerBox">
-        <div className="UserImformationBoxTwo">
-          <div className="UserProfile"></div>
-          <div className="UserName">{props.UserName}</div>
-        </div>
-        <div className="UserCommentTwo">{props.UserComment}</div>
-      </div>
-    </div>
-  );
-};
-
+// 메인커뮤니티 컴포넌트
 const CommunityCommentBox = (props) => {
   const [HeartColor, setHeartColor] = React.useState("none");
   const [HeartStroke, setHeartStroke] = React.useState("#B0B0B0");
@@ -27,7 +13,6 @@ const CommunityCommentBox = (props) => {
   const [MoreCommentStroke, setMoreCommentStroke] = React.useState("#B0B0B0");
   const [IsCommentColor, setIsCommentColor] = React.useState(false);
   const [LikeCount, setLikeCount] = React.useState(0);
-  const [showCommentDiv, setShowCommenDiv] = React.useState(false);
 
   const HeartClick = () => {
     if (isLiked) {
@@ -51,8 +36,11 @@ const CommunityCommentBox = (props) => {
       setMoreCommentStroke("#85D6D1");
     }
     setIsCommentColor(!IsCommentColor);
-    setShowCommenDiv(!showCommentDiv);
+    setShowInputDiv(!showInputDiv);
+    props.toggleMoreComments(props.id);
   };
+
+  const [showInputDiv, setShowInputDiv] = React.useState(false);
 
   const [showDiv, setShowDiv] = React.useState(true);
   const [showDeletButton, setShowDeletButton] = React.useState(false);
@@ -62,33 +50,24 @@ const CommunityCommentBox = (props) => {
     setShowDeletButton(!showDeletButton);
   };
 
-  const [commentsTwo, setCommentsTwo] = useState([]);
-
-  const addCommentTwo = (userName, userComment) => {
-    setCommentsTwo([...commentsTwo, { userName, userComment }]);
-  };
-
-  // ---------------------------------------------------------------
-  const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-  });
-
-  // const navigate = useNavigate();
-  const [userName, setUserName] = useState("김찬주");
-
-  useEffect(() => {
+  const onClickDelete = (id) => {
     const token = sessionStorage.getItem("token");
-    console.log("Token:", token);
+    const apiClient = axios.create({
+      baseURL: process.env.REACT_APP_API_URL,
+    });
     if (token !== null) {
       apiClient
-        .get("/api/v1/profile/user/detail", {
+        .delete("/api/v1/community/", {
           headers: {
-            "X-Auth-Token": token,
+            "X-AUTH-TOKEN": token,
+          },
+          params: {
+            id: parseInt(id),
           },
         })
-        .then((res) => {
-          console.log("Mypage success", res.data);
-          setUserName(res.data.name);
+        .then((response) => {
+          console.log("delete Success", response.data);
+          window.location.reload();
         })
         .catch((err) => {
           if (err.response) {
@@ -109,11 +88,7 @@ const CommunityCommentBox = (props) => {
     //   navigate("/signIn", { replace: true });
     //   console.log("Token is null. Unable to send request.");
     // }
-  });
-
-  // const Delete = () => {};
-
-  // ---------------------------------------------------------------------
+  };
 
   return (
     <div>
@@ -166,96 +141,87 @@ const CommunityCommentBox = (props) => {
               </div>
             )}
             {showDeletButton && (
-              <div className="DeletButton">
-                <p className="DeletButtontext">삭제하기</p>
-              </div>
-            )}
-            <button className="OptionButton" onClick={handleToggle}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
+              <button
+                className="DeletButton"
+                onClick={() => onClickDelete(props.id)}
               >
-                <circle cx="10.5" cy="3.5" r="1.5" fill="#B0B0B0" />
-                <circle cx="10.5" cy="9.5" r="1.5" fill="#B0B0B0" />
-                <circle cx="10.5" cy="15.5" r="1.5" fill="#B0B0B0" />
-              </svg>
-            </button>
+                <p className="DeletButtontext">삭제하기</p>
+              </button>
+            )}
+            {/* -------------------------------------- */}
+            {props.showCircleButton && (
+              <button className="OptionButton" onClick={handleToggle}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <circle cx="10.5" cy="3.5" r="1.5" fill="#B0B0B0" />
+                  <circle cx="10.5" cy="9.5" r="1.5" fill="#B0B0B0" />
+                  <circle cx="10.5" cy="15.5" r="1.5" fill="#B0B0B0" />
+                </svg>
+              </button>
+            )}
+            {/* -------------------------------------- */}
           </div>
         </div>
       </div>
       <div className="EndLine"></div>
-      {showCommentDiv && (
-        <div>
-          {commentsTwo.map((commentTwo, indexTwo) => (
-            <MoreCommentBox
-              key={indexTwo}
-              UserName={userName}
-              UserComment={commentTwo.userComment}
-            ></MoreCommentBox>
-          ))}
-
-          <MoreCommentInput
-            UserName={userName}
-            onCommentSubmit={addCommentTwo}
-          ></MoreCommentInput>
-        </div>
+      {showInputDiv && (
+        <MoreCommentInput commentId={props.id}></MoreCommentInput>
       )}
     </div>
   );
 };
-
-const MoreCommentInput = (props) => {
-  const [CommentValueTwo, setCommentValueTwo] = useState("");
-
-  const handleInputChangeTwo = (event) => {
-    const newValueTwo = event.target.value;
-    setCommentValueTwo(newValueTwo);
-  };
-
-  const CommentRegisterButtonTwo = () => {
-    if (CommentValueTwo.trim() !== "") {
-      props.onCommentSubmit(props.UserName, CommentValueTwo);
-      setCommentValueTwo("");
-    }
-  };
-
-  return (
-    <div className="MoreCommentInputFrame">
-      <div className="MoreCommentInputInnerBox">
-        <div className="UserProfile"></div>
-        <div className="UserName">{props.UserName}</div>
-        <textarea
-          placeholder="텍스트를 입력하세요"
-          className="MoreCommentTextArea"
-          onChange={handleInputChangeTwo}
-          value={CommentValueTwo}
-        ></textarea>
-        <button
-          className="MoreCommentButtonTwo"
-          onClick={CommentRegisterButtonTwo}
-        >
-          <p>완료</p>
-        </button>
-      </div>
-    </div>
-  );
-};
-
+// 작성 컴포넌트
 const CommunityInput = (props) => {
-  const [CommentValue, setCommentValue] = useState("");
+  const apiClient = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+  });
+  const [comment, setComment] = useState("");
 
-  const handleInputChange = (event) => {
-    const newValue = event.target.value;
-    setCommentValue(newValue);
+  const handleInputContent = (e) => {
+    setComment(e.target.value);
   };
 
-  const CommentRegisterButton = () => {
-    if (CommentValue.trim() !== "") {
-      props.onCommentSubmit(props.UserName, CommentValue);
-      setCommentValue("");
+  const userNames = sessionStorage.getItem("name");
+
+  const onClickSubmit = () => {
+    const token = sessionStorage.getItem("token");
+
+    if (token !== null) {
+      apiClient
+        .post(
+          "/api/v1/community/",
+          {
+            comment: comment,
+            stockId: "005930",
+          },
+          {
+            headers: {
+              "X-AUTH-TOKEN": token,
+            },
+          }
+        )
+        .then((res) => {
+          console.log("Support upload Success", res.data);
+          window.location.reload();
+        })
+        .catch((err) => {
+          if (err.response) {
+            console.log(
+              "Error response:",
+              err.response.status,
+              err.response.data
+            );
+          } else if (err.request) {
+            console.log("Request error:", err.request);
+          } else {
+            console.log("General error:", err.message);
+          }
+        });
     }
   };
 
@@ -263,52 +229,184 @@ const CommunityInput = (props) => {
     <div className="CommunityInputFrame">
       <div className="UserImformationBoxThree">
         <div className="UserProfile"></div>
-        <div className="UserName">{props.UserName}</div>
+        <div className="UserName">{userNames}</div>
       </div>
       <textarea
         placeholder="텍스트를 입력하세요"
         className="CommunityTextArea"
-        onChange={handleInputChange}
-        value={CommentValue}
-      >
-        {CommentValue}
-      </textarea>
-      <button className="TextRegister" onClick={CommentRegisterButton}>
+        onChange={handleInputContent}
+        value={comment}
+      ></textarea>
+      <button className="TextRegister" onClick={onClickSubmit}>
         <p>완료</p>
       </button>
     </div>
   );
 };
+// 대댓글 컴포넌트
+const MoreCommentBox = (props) => {
+  return (
+    <>
+      <div>
+        <div className="MoreCommentFrame">
+          <div className="MoreCommentInnerBox">
+            <div className="UserImformationBoxTwo">
+              <div className="UserProfile"></div>
+              <div className="UserName">{props.UserName}</div>
+            </div>
+            <div className="UserCommentTwo">{props.UserComment}</div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+// 대댓글 작성 컴포넌트
+const MoreCommentInput = (props) => {
+  // --------------------------------------------------------
 
-export const CommunityTwo = () => {
-  const [CommunityCompanyName, setCommunityCompanyName] = useState("");
+  const apiClient = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+  });
+  const [MoreComment, setMoreComment] = useState("");
+  const MoreCommentPost = (e) => {
+    setMoreComment(e.target.value);
+  };
+  const userNames = sessionStorage.getItem("name");
+  const onClickSubmit = () => {
+    const token = sessionStorage.getItem("token");
+    if (token !== null) {
+      apiClient
+        .post(
+          "/api/v1/community/reply",
+          {
+            comment: MoreComment,
+            targetCommentId: props.commentId,
+          },
+          {
+            headers: {
+              "X-AUTH-TOKEN": token,
+            },
+          }
+        )
+        .then((res) => {
+          console.log("대댓글 작성 성공", res.data);
+          window.location.reload();
+        })
+        .catch((err) => {
+          if (err.response) {
+            console.log(
+              "Error response:",
+              err.response.status,
+              err.response.data
+            );
+          } else if (err.request) {
+            console.log("Request error:", err.request);
+          } else {
+            console.log("General error:", err.message);
+          }
+        });
+    }
+  };
 
+  // -------------------------------
+
+  return (
+    <div className="MoreCommentInputFrame">
+      <div className="MoreCommentInputInnerBox">
+        <div className="UserProfile"></div>
+        <div className="UserName">{userNames}</div>
+        <textarea
+          placeholder="텍스트를 입력하세요"
+          className="MoreCommentTextArea"
+          onChange={MoreCommentPost}
+          value={MoreComment}
+        ></textarea>
+        <button className="MoreCommentButtonTwo" onClick={onClickSubmit}>
+          <p>완료</p>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export const CommunityTwo = (item) => {
   const [comments, setComments] = useState([]);
 
   const addComment = (userName, userComment) => {
     setComments([...comments, { userName, userComment }]);
   };
 
+  const apiClient = axios.create({
+    baseURL: process.env.REACT_APP_API_URL,
+  });
+
+  const [communityReply, setCommunityReply] = useState([]);
+  const token = sessionStorage.getItem("token");
+
+  useEffect(() => {
+    apiClient
+      .get(`/api/v1/community/detail`, {
+        params: {
+          stockId: "005930",
+        },
+        headers: {
+          "X-AUTH-TOKEN": token,
+        },
+      })
+      .then((response) => {
+        console.log("response.data:", response.data);
+        console.log("디테일 가져오기 성공");
+        setCommunityReply(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  const [moreCommentsVisibility, setMoreCommentsVisibility] = useState({});
+
+  const toggleMoreComments = (id) => {
+    setMoreCommentsVisibility({
+      ...moreCommentsVisibility,
+      [id]: !moreCommentsVisibility[id],
+    });
+  };
+
   return (
     <div className="CommunityMainFrame">
       <Header></Header>
       <div className="CommunityInner">
-        <p className="CommunityCompanyName">{CommunityCompanyName}</p>
+        <p className="CommunityCompanyName">회사명</p>
         <p className="TextCommunity">커뮤니티</p>
-        <CommunityCommentBox
-          UserName="홍길동"
-          UserComment="아직 살 때 아니니까 기다려야 할듯"
-          CommentCount="0"
-        ></CommunityCommentBox>
-        {comments.map((comment, index) => (
-          <CommunityCommentBox
-            key={index}
-            UserName={comment.userName}
-            UserComment={comment.userComment}
-            CommentCount="0"
-          ></CommunityCommentBox>
+        {communityReply.map((item) => (
+          <React.Fragment key={item.id}>
+            <CommunityCommentBox
+              id={item.id}
+              UserName={item.name}
+              UserComment={item.comment}
+              CommentCount={item.replyCount}
+              toggleMoreComments={toggleMoreComments}
+              showCircleButton={item.wroteUser}
+            />
+
+            {moreCommentsVisibility[item.id] &&
+              item.communityReply &&
+              item.communityReply.map((reply) => (
+                <>
+                  <MoreCommentBox
+                    key={reply.id}
+                    UserName={reply.name}
+                    UserComment={reply.comment}
+                  />
+                </>
+              ))}
+          </React.Fragment>
         ))}
-        <CommunityInput onCommentSubmit={addComment}></CommunityInput>
+        <CommunityInput
+          onCommentSubmit={addComment}
+          UserName={item.name}
+        ></CommunityInput>
         <Footer></Footer>
       </div>
     </div>
