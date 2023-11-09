@@ -1,0 +1,355 @@
+.CommunityMainFrame {
+  width: 100%;
+  height: 100%;
+  display: block;
+  text-align: center;
+}
+
+.CommunityInner {
+  width: 52.8125rem;
+  height: 100%;
+  display: inline-block;
+  text-align: left;
+}
+
+.CommunityCompanyName {
+  margin-top: 3.6875rem;
+  margin-left: 1.875rem;
+  color: var(--main-3, #3eb7af);
+  font-family: Pretendard;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.TextCommunity {
+  margin-top: 0.125rem;
+  margin-left: 1.875rem;
+  margin-bottom: 1.875rem;
+  color: #000;
+  font-family: Pretendard;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.CommunityCommentBox {
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+
+.UserImformationBox {
+  width: 8rem;
+  height: 3rem;
+  margin-left: 1.8125rem;
+  margin-top: 1.8125rem;
+  display: flex;
+  align-items: center;
+}
+
+.UserProfile {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // background: url("../../assets/images/BasicsProfile.svg"),
+  //   lightgray 50% / cover no-repeat;
+  background: url("../../assets/images/BasicsProfileTwo.png"),
+    lightgray 50% / cover no-repeat;
+}
+
+.UserName {
+  color: #000;
+  font-family: Pretendard;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-left: 1.25rem;
+}
+
+.UserComment {
+  margin-left: 3rem;
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+  color: #000;
+  font-family: Pretendard;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 2;
+  width: 25.625rem;
+}
+
+.ButtonsBigBox {
+  width: 12rem;
+  height: auto;
+  margin-left: 3rem;
+  display: flex;
+  align-items: end;
+}
+
+.ButtonsBox {
+  position: relative;
+  width: 12rem;
+  height: 1.3125rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.DeletButton {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 4rem;
+  width: 6.375rem;
+  height: 1.875rem;
+  border-radius: 0.3125rem;
+  border: none;
+  background: var(--main-4, #f0f9f8);
+
+  cursor: pointer;
+}
+
+.DeletButtontext {
+  color: var(--Sub-Text, #797979);
+  font-family: Pretendard;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.HeartAndCommentBox {
+  position: absolute;
+  left: 0;
+  width: 10.75rem;
+  height: 1.3125rem;
+  display: flex;
+  align-items: center;
+}
+
+.HeartButton {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  border: none;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.HeartSvg {
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke-width: 0.125rem;
+  stroke: var(--sub-text-2, #b0b0b0);
+}
+
+.HeartCount {
+  margin-left: 0.5rem;
+  width: 2.4375rem;
+  color: var(--sub-text-2, #b0b0b0);
+  font-family: Pretendard;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+}
+.MoreCommentButton {
+  margin-left: 1rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: none;
+  background-color: transparent;
+
+  cursor: pointer;
+}
+
+.CommentSvg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: var(--sub-text-2, #b0b0b0);
+}
+
+.CommentCount {
+  margin-left: 0.5rem;
+  color: var(--sub-text-2, #b0b0b0);
+  font-family: Pretendard;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.OptionButton {
+  position: absolute;
+  right: 0;
+  background: none;
+  border: none;
+  width: 1.25rem;
+  height: 1.25rem;
+
+  cursor: pointer;
+}
+
+.EndLine {
+  width: 100%;
+  height: 0.1rem;
+  background: #85d6d1;
+}
+
+.CommunityInputFrame {
+  width: 100%;
+  height: 10.1875rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.UserImformationBoxThree {
+  width: 8rem;
+  height: 3rem;
+  margin-left: 1.8125rem;
+  display: flex;
+  align-items: center;
+}
+
+.CommunityTextArea {
+  position: absolute;
+  left: 11.8125rem;
+  width: 37.25rem;
+  height: 5.75rem;
+  resize: none;
+  border-radius: 0.625rem;
+  border: none;
+  outline: none;
+  background: var(--main-4, #f0f9f8);
+  font-family: Pretendard;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  padding: 0.875rem;
+}
+
+.TextRegister {
+  position: absolute;
+  left: 50.0625rem;
+  width: 2rem;
+  height: 5.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.4375rem;
+  background: #85d6d1;
+  border: none;
+
+  cursor: pointer;
+}
+
+.TextRegister p {
+  color: #000;
+  font-family: Pretendard;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.MoreCommentFrame {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+}
+
+.MoreCommentInnerBox {
+  position: relative;
+  margin-left: 6.375rem;
+  width: 40.4375rem;
+  height: auto;
+  display: flex;
+  align-items: center;
+}
+
+.UserImformationBoxTwo {
+  width: 8rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+}
+
+.UserCommentTwo {
+  margin-left: 3rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #000;
+  font-family: Pretendard;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 2;
+  width: 25.625rem;
+}
+
+.MoreCommentInputFrame {
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+}
+
+.MoreCommentInputInnerBox {
+  position: relative;
+  margin-left: 6.375rem;
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+}
+
+.MoreCommentTextArea {
+  position: absolute;
+  left: 11.7rem;
+  width: 31.125rem;
+  height: 3.375rem;
+  padding-left: 0.25rem;
+  padding-top: 1.125rem;
+  resize: none;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.MoreCommentButtonTwo {
+  position: absolute;
+  left: 43rem;
+  width: 2.9375rem;
+  height: 1.1875rem;
+  border-radius: 3px;
+  border: 1px solid var(--main-3, #3eb7af);
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.MoreCommentButtonTwo:hover {
+  background-color: #3eb7af;
+}
+
+.MoreCommentButtonTwo p {
+  color: #000;
+  font-family: Pretendard;
+  font-size: 0.625rem;
+  font-style: normal;
+  font-weight: 500;
+}

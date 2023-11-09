@@ -5,11 +5,12 @@ import Header from "systems/Header";
 import Footer from "components/Footer";
 
 export default function AllNews() {
-
   const apiClient = axios.create({
-    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
-  });  
-
+    baseURL:
+      process.env.NODE_ENV === "production"
+        ? process.env.REACT_APP_API_URL
+        : undefined,
+  });
 
   const [news, setNews] = useState([]);
 
