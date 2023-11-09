@@ -43,9 +43,9 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.SSH_PASSWORD }}
+        key: ${{ secrets.SSH_KEY }}
         script: |
-          docker stop frontend
-          docker rm frontend
-          docker pull ${{ secrets.DOCKER_REPO }}/moneyisinvest-frontend:latest
-          docker run -d -p 80:80 -p 443:443 --net moneyisinvest -v /etc/letsencrypt:/etc/letsencrypt --name frontend ${{ secrets.DOCKER_REPO }}/moneyisinvest-frontend:latest
+          sudo docker stop frontend
+          sudo docker rm frontend
+          sudo docker pull ${{ secrets.DOCKER_REPO }}/moneyisinvest-frontend:latest
+          sudo docker run -d -p 80:80 -p 443:443 --net moneyisinvest -v /etc/letsencrypt:/etc/letsencrypt --name frontend ${{ secrets.DOCKER_REPO }}/moneyisinvest-frontend:latest

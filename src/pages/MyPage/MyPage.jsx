@@ -7,13 +7,17 @@ import Profile from "../../systems/Profile";
 import MyButton from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
-export default function MyPage({ setIsLoggedIn }) {
-  const apiClient = axios.create({
-    baseURL:
-      process.env.NODE_ENV === "production"
-        ? process.env.REACT_APP_API_URL
-        : undefined,
-  });
+export default function MyPage({setIsLoggedIn}) {
+    const apiClient = axios.create({
+        baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
+    });  
+    
+    const [isNameEditing, setNameEditing] = useState(false);
+    const [name, setName] = useState("");
+    const [profile, setProfile] = useState("");
+    const [id, setId] = useState("");
+    const [phoneNum, setPhoneNum] = useState("");
+    const [recent, setRecent] = useState("");
 
   const [isNameEditing, setNameEditing] = useState(false);
   const [name, setName] = useState("");
@@ -119,68 +123,73 @@ export default function MyPage({ setIsLoggedIn }) {
         });
     }
   };
-
-  const onClickLogout = () => {
-    sessionStorage.clear();
-    setIsLoggedIn(false);
-    navigate("/", { replace: true });
-  };
-
-  return (
-    <div className="myPageContainer">
-      <Header profileImg={profile} />
-      <div className="myPageBox">
-        <div className="myPageContent">
-          <div className="profile">
-            <Profile img={profile} />
-          </div>
-          <div className="myPageProfile">
-            <div className="myPageTitle">마이페이지</div>
-            <div className="myPageInfo">
-              <div className="myPageInfo-content">
-                <table class="custom-table">
-                  <tr>
-                    <td>프로필 이미지</td>
-                    <td>
-                      <div className="profileChange">
-                        <img
-                          alt="profile"
-                          src={profile}
-                          className="myProfile"
-                        />
-                        <div class="filebox">
-                          <input
-                            type="file"
-                            id="imgUpload"
-                            onChange={onClickFileUpload}
-                          ></input>
-                          <label for="imgUpload">변경</label>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>이름</td>
-                    <td>
-                      <div className="profileNameChange">
-                        {isNameEditing ? (
-                          <input
-                            className="myNameInput"
-                            type="text"
-                            value={name}
-                            onChange={handleNameChange}
-                            ref={nameRef}
-                            onKeyPress={(e) => onClickEnter(e)}
-                          />
-                        ) : (
-                          <div className="myName">{name}</div>
-                        )}
-                        <div
-                          onClick={
-                            isNameEditing ? handleNameSave : handleNameEdit
-                          }
-                        >
-                          <MyButton state="mine" />
+  
+    return (
+        <div className="myPageContainer">
+            <Header profileImg={profile}/>
+            <div className="myPageBox">
+                <div className="myPageContent">
+                    <div className="profile">
+                        <Profile img={profile}/>
+                    </div>
+                    <div className="myPageProfile">
+                        <div className="myPageTitle">마이페이지</div>
+                        <div className="myPageInfo">
+                            <div className="myPageInfo-content">
+                                <table class="custom-table">
+                                    <tr>
+                                        <td>프로필 이미지</td>
+                                        <td>
+                                            <div className="profileChange">
+                                                <img alt="profile" src={profile} className="myProfile"/>
+                                                <div class="filebox">
+                                                    <input type="file" id="imgUpload" onChange={onClickFileUpload}></input>
+                                                    <label for="imgUpload">변경</label>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>이름</td>
+                                        <td>
+                                            <div className="profileNameChange">
+                                                {isNameEditing ? (
+                                                    <input
+                                                        className="myNameInput"
+                                                        type="text"
+                                                        value={name}
+                                                        onChange={handleNameChange}
+                                                        ref={nameRef}
+                                                        onKeyPress={(e) => onClickEnter(e)}
+                                                    />
+                                                ) : (
+                                                    <div className="myName">{name}</div>
+                                                )}
+                                                <div onClick={
+                                                        isNameEditing ? handleNameSave : handleNameEdit}
+                                                    >
+                                                    <MyButton
+                                                    state="mine"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>이메일</td>
+                                        <td>{id}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>전화번호</td>
+                                        <td>{phoneNum}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>최근 로그인</td>
+                                        <td>{recent}</td>
+                                    </tr>
+                                </table>
+                                <div className="myPageOut" onClick={onClickLogout}>계정 로그아웃</div>
+                            </div>
                         </div>
                       </div>
                     </td>

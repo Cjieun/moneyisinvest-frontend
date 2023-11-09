@@ -7,7 +7,7 @@ import Footer from "components/Footer";
 import Message from "components/Message";
 import { useNavigate } from "react-router-dom";
 
-export default function SignIn() {
+export default function SignIn({setIsSignedUp}) {
   const apiClient = axios.create({
     baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
   });  
@@ -116,6 +116,8 @@ export default function SignIn() {
         })
         .then((res) => {
           console.log("sign-up success!!", res.data);
+          setIsSignedUp(true);
+          navigate("/MessagePage");
           if (res.data.success === false) {
             if (res.data.msg === "이미 가입된 회원") {
               setIsName(false);

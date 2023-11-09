@@ -8,6 +8,8 @@ import { ReactComponent as Search } from "../../assets/images/search.svg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const name = sessionStorage.getItem('name');
+
 const Store = () => {
   //상점에 등록된 모든 상품 조회
   const [productsList, setProductsList] = useState([
@@ -152,15 +154,21 @@ const Store = () => {
     ? productsList.filter((product) => product.category === selectedCategory)
     : productsList;
 
+    const calculateTotal = () => {
+      const totalPrice = cart.reduce((total, product) => {
+        const priceWithoutCommas = product.price.replace(/,/g, '');
+        return total + parseInt(priceWithoutCommas, 10);
+      }, 0);
+      return totalPrice.toLocaleString(); // 결과를 다시 쉼표가 포함된 문자열로 변환
+    };
+
   return (
     <div className="storeContainer">
       <Header />
       <div className="storeBox">
         <div className="storeContent">
           <div className="userCart">
-            <div className="usercart-text">
-              님이 담은 상품이에요 ({cart.length})
-            </div>
+            <div className="usercart-text">{name}님이 담은 상품이에요 ({cart.length})</div>
             {cart.length > 0 && (
               <div className="cart-section">
                 <ul className="cart-list">
