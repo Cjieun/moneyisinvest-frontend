@@ -19,11 +19,6 @@ export default function MyPage({setIsLoggedIn}) {
     const [phoneNum, setPhoneNum] = useState("");
     const [recent, setRecent] = useState("");
 
-  const [isNameEditing, setNameEditing] = useState(false);
-  const [name, setName] = useState("");
-  const [profile, setProfile] = useState("");
-  const [id, setId] = useState("");
-
   const nameRef = useRef("");
 
   const navigate = useNavigate();
