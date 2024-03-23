@@ -42,8 +42,9 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
+        port: 1115
         username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
+        password: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           sudo docker stop frontend
           sudo docker rm frontend

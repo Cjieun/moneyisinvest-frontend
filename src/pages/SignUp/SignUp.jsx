@@ -16,6 +16,7 @@ export default function SignIn({setIsSignedUp}) {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [rePw, setRePw] = useState("");
+  const [phone, setPhone] = useState("");
   const [nameMessage, setNameMessage] = useState("");
   const [isName, setIsName] = useState(false);
   const [idMessage, setIdMessage] = useState("");
@@ -24,6 +25,8 @@ export default function SignIn({setIsSignedUp}) {
   const [isPw, setIsPw] = useState(false);
   const [rePwMessage, setRePwMessage] = useState("");
   const [isrePw, setIsRePw] = useState(false);
+  const [phoneMessage, setPhoneMessage] = useState("");
+  const [isPhone, setIsPhone] = useState(false);
 
   const navigate = useNavigate();
 
@@ -40,10 +43,15 @@ export default function SignIn({setIsSignedUp}) {
     setRePw(e.target.value);
   };
 
+  const handleInputPhone = (e) => {
+    setPhone(e.target.value);
+  };
+
   const nameRef = useRef("");
   const idRef = useRef("");
   const pwRef = useRef("");
   const rePwRef = useRef("");
+  const phoneRef = useRef("");
 
   const onClickSignUp = () => {
     const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -113,6 +121,7 @@ export default function SignIn({setIsSignedUp}) {
           name: name,
           password: pw,
           uid: id,
+          phoneNum: phone
         })
         .then((res) => {
           console.log("sign-up success!!", res.data);
@@ -132,6 +141,7 @@ export default function SignIn({setIsSignedUp}) {
               setName("");
               setPw("");
               setRePw("");
+              setPhone("");
               alert("이미 가입된 회원입니다!");
               return;
             } else {
@@ -201,6 +211,19 @@ export default function SignIn({setIsSignedUp}) {
             </label>
           </div>
           <Message text={rePwMessage} state={isrePw} />
+          <div>
+            <label className="signupInput">
+              휴대폰 번호
+              <input
+                placeholder="010-XXXX-XXXX"
+                type="text"
+                value={phone}
+                onChange={handleInputPhone}
+                ref={phoneRef}
+              />
+            </label>
+          </div>
+          <Message text={phoneMessage} state={isPhone} />
           <div className="signButton" onClick={onClickSignUp}>
             <Button type="submit" state="signup" />
           </div>
