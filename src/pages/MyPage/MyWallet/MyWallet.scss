@@ -180,6 +180,13 @@
                                 width: 1.5625rem;
                                 text-align: center;
                             }
+                            .myWalletItem-state.red {
+                                color: #FF1C1C;
+                            }
+                            
+                            .myWalletItem-state.blue {
+                                color: #1C77FF;
+                            }
                         }
                     }
                 }

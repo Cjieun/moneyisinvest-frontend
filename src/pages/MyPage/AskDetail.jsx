@@ -9,14 +9,18 @@ import { useNavigate, useParams } from "react-router-dom";
 
 export default function AskDetail() {
   const apiClient = axios.create({
-    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
-  });  
+    baseURL:
+      process.env.NODE_ENV === "production"
+        ? process.env.REACT_APP_API_URL
+        : undefined,
+  });
 
   const navigate = useNavigate();
   const { supportId } = useParams(); // URL로부터 supportId를 가져옵니다.
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [status, setStatus] = useState("");
   const [createdAt, setCreatedAt] = useState("");
 
   // fetchData 함수 정의
@@ -25,16 +29,20 @@ export default function AskDetail() {
     try {
       const token = sessionStorage.getItem("token");
 
-      const response = await apiClient.get(`/api/v1/support/get/user-support?support_id=${supportId}`, {
-        headers: {
-          "X-AUTH-TOKEN": token,
-        },
-      });
+      const response = await apiClient.get(
+        `/api/v1/support/get/user-support?support_id=${supportId}`,
+        {
+          headers: {
+            "X-AUTH-TOKEN": token,
+          },
+        }
+      );
 
       const data = response.data;
       console.log("supportDetail Success", response);
       setTitle(data.title);
       setContent(data.contents);
+      setStatus(data.status);
       setCreatedAt(data.createdAt);
     } catch (error) {
       console.log("supportDetail Fail", error);
@@ -47,7 +55,10 @@ export default function AskDetail() {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
+    const days = ["일", "월", "화", "수", "목", "금", "토"];
+    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}.${
+      days[date.getDay()]
+    }`;
   };
 
   const onClickDelete = () => {
@@ -65,7 +76,7 @@ export default function AskDetail() {
         .then((response) => {
           alert("문의사항이 삭제되었습니다!");
           console.log("delete Succeess", response.data);
-          navigate("/askpage", {replace: true});
+          navigate("/askpage", { replace: true });
         })
         .catch((err) => {
           if (err.response) {
@@ -90,6 +101,10 @@ export default function AskDetail() {
     }
   };
 
+  const onClickBack = () => {
+    navigate("/askpage");
+  };
+
   return (
     <div className="askWriteContainer">
       <Header />
@@ -102,17 +117,44 @@ export default function AskDetail() {
             <div className="askWriteTitle">문의사항</div>
             <div className="askWriteInfo">
               <div className="askDetailInfo-title">
-                <div>{title}</div>
-                <div className="askDetailInfo-date">
-                  {formatDate(createdAt)}
-                </div>
+                <div>Q. {title}</div>
+                <table className="askDetailInfo-date">
+                  <tr>
+                    <td>{status}</td>
+                    <td>{formatDate(createdAt)}</td>
+                  </tr>
+                </table>
               </div>
               <div className="askDetailInfo-content">
                 <div>{content}</div>
               </div>
-              <div className="askWriteInfo-button" onClick={onClickDelete}>
-                <Button state="askDetail" />
-              </div>
+              {status === "답변 완료" && (
+                <>
+                  <div className="askDetailAnswer-title">
+                    <table className="askDetailAnswer-date">
+                      <tr>
+                        <td>{formatDate(createdAt)}</td>
+                      </tr>
+                    </table>
+                    <div>A. {title}</div>
+                  </div>
+                  <div className="askDetailAnswer-content">
+                    <div>{content}</div>
+                  </div>
+                </>
+              )}
+              {status === "답변 대기중" ? (
+                <div className="askDetailInfo-button">
+                  아직 관리자의 답변을 기다리고 있어요.
+                  <div onClick={onClickDelete}>
+                    <Button state="askDetail" />
+                  </div>
+                </div>
+              ) : (
+                <div className="askDetailAnswer-button" onClick={onClickBack}>
+                  <Button state="all" />
+                </div>
+              )}
             </div>
           </div>
         </div>

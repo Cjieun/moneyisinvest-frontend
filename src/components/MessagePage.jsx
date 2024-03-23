@@ -5,7 +5,7 @@ import Header from "systems/Header";
 import Button from "./Button";
 import { useNavigate } from 'react-router-dom';
 
-export default function MessagePage() {
+export default function MessagePage({isSignedUp, setIsSignedUp}) {
 
     const messageContainer = css`
     margin: 0;
@@ -58,6 +58,9 @@ export default function MessagePage() {
 
   const handleClick = () => {
     navigate('/'); // 이 함수를 실행하면 루트 경로('/')로 이동하게 됩니다.
+    if(isSignedUp) {
+      setIsSignedUp(false);
+    }
   };
 
 
@@ -67,10 +70,10 @@ export default function MessagePage() {
             <div css={messageBox}>
                 <div css={messageContent}>
                     <div css={MessageContainer}>
-                        <div css={MessageText}>결제가 완료되었어요</div>
-                        <div css={MessageInfo}>프리미엄 서비스로 인해 더 발전한 투자를 하러 갈까요?</div>
+                        <div css={MessageText}>{isSignedUp ? "회원가입이 완료되었어요" : "결제가 완료되었어요"}</div>
+                        <div css={MessageInfo}>{isSignedUp ? "투자가 머니에서 즐거운 모의 투자를 즐겨보세요" : "프리미엄 서비스로 인해 더 발전한 투자를 하러 갈까요?"}</div>
                         <div onClick={handleClick}>
-                        <Button state={"paydone"}/>
+                        <Button state={isSignedUp ? "signedUp" : "paydone"}/>
                         </div>
                     </div>
                 </div>

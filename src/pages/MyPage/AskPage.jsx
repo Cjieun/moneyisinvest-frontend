@@ -9,8 +9,11 @@ import axios from "axios";
 
 export default function AskPage() {
   const apiClient = axios.create({
-    baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : undefined,
-  });  
+    baseURL:
+      process.env.NODE_ENV === "production"
+        ? process.env.REACT_APP_API_URL
+        : undefined,
+  });
 
   const [askList, setAskList] = useState([]);
 
@@ -59,11 +62,12 @@ export default function AskPage() {
             console.log("General error:", err.message);
           }
         });
-    } else {
-      alert("로그인 해주세요!");
-      navigate("/signIn", { replace: true });
-      console.log("Token is null. Unable to send request.");
     }
+    // else {
+    //   alert("로그인 해주세요!");
+    //   navigate("/signIn", { replace: true });
+    //   console.log("Token is null. Unable to send request.");
+    // }
   }, [navigate]);
 
   const onClickDelete = (supportId) => {
@@ -99,11 +103,12 @@ export default function AskPage() {
             console.log("General error:", err.message);
           }
         });
-    } else {
-      alert("로그인 해주세요!");
-      navigate("/signIn", { replace: true });
-      console.log("Token is null. Unable to send request.");
     }
+    // else {
+    //   alert("로그인 해주세요!");
+    //   navigate("/signIn", { replace: true });
+    //   console.log("Token is null. Unable to send request.");
+    // }
   };
 
   const AskListItem = askList.map((item) => (

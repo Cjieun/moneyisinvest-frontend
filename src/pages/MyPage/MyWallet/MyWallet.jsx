@@ -110,7 +110,7 @@ export default function MyWallet() {
             </div>
             <div className="myWalletItem-price">{item.total}스톡</div>
             <div className="myWalletItem-date">{formattedDate2}</div>
-            <div className="myWalletItem-state">{item.type}</div>
+            <div className={`myWalletItem-state ${item.type === '입금' ? 'red' : item.type === '출금' ? 'blue' : ''}`}>{item.type}</div>
             {hoveredIndex === index && <WalletModal item={item} style={modalPosition}/>}
         </div>
     )})
@@ -151,9 +151,9 @@ export default function MyWallet() {
                                 <div className="myWalletInfo-dealNum">거래번호</div>
                                 <div className="myWalletInfo-dealContent">
                                     <div className="myWalletInfo-deal">
-                                        <div>수신자</div>
-                                        <Right1 />
                                         <div>발신자</div>
+                                        <Right1 />
+                                        <div>수신자</div>
                                     </div>
                                     <div className="myWalletInfo-price">총거래가</div>
                                     <div className="myWalletInfo-date">거래 일시</div>
