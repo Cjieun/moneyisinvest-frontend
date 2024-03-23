@@ -1,0 +1,216 @@
+.myWalletContainer {
+    margin: 0;
+    .myWalletBox {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .myWalletContent {
+            flex-grow: 1;
+            padding: auto;
+            margin: auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            margin-top: 3.25rem;
+            .profile {
+                margin: 3.6225rem 1.88rem 0 0;
+                padding: 0;
+            }
+            .myWalletProfile {
+                display: flex;
+                flex-direction: column;
+                gap: 1.88rem;
+                .myWalletTitle {
+                    color: #000;
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                }    
+                .myWalletInfo {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 0.94rem;
+                    .myWalletInfo-address {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 1.37rem;
+                        width: 18.9375rem;
+                        height: 10.6875rem;
+                        border-radius: 0.9375rem;
+                        border: 2px solid #85D6D1;
+                        padding: 2.06rem 1.69rem 2.38rem 1.75rem;
+                        .myWalletInfo-addressBox {
+                            display: flex;
+                            flex-direction: row;
+                            gap: 0.31rem;
+                            align-items: center;
+                            color:#3EB7AF;
+                            text-align: center;
+                            font-size: 1rem;
+                            font-weight: 600;
+                            .myWalletInfo-addressImg {
+                                width: 1.5rem;
+                                height: 1.5rem;
+                            }
+                        }
+                        .myWalletInfo-addressInfo {
+                            color: #000;
+                            font-size: 0.875rem;
+                            font-weight: 500;
+                            width: 15.5rem;
+                            height: 3.5rem;
+                            word-break: break-word; 
+                        }
+                    }
+                    .myWalletInfo-info {
+                        width: 9.125rem;
+                        height: 10.6875rem;
+                        border-radius: 0.9375rem;
+                        background: #F0F9F8;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 2.44rem;
+                        padding-top: 2.06rem;
+                        align-items: center;
+                        .myWalletInfo-infoTitle {
+                            color:  #3EB7AF;
+                            text-align: center;
+                            font-size: 1rem;
+                            font-weight: 600;
+                        }
+                        .myWalletInfo-infoContent {
+                            color: #000;
+                            font-size: 0.875rem;
+                            font-weight: 500;
+                        }
+                    }
+                }
+                .myWalletInfo-table {
+                    .myWalletInfo-top {
+                        height: 3.5625rem;
+                        border-radius: 0.625rem 0.625rem 0rem 0rem;
+                        background: #D1EFEE;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        color:  #3EB7AF;
+                        font-size: 1rem;
+                        font-weight: 600;
+                        gap: 4.38rem;
+                        padding: 0 3.75rem;
+                        .myWalletInfo-dealContent {
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            .myWalletInfo-deal {
+                                display: flex;
+                                flex-direction: row;
+                                gap: 1.19rem;
+                                align-items: center;
+                                justify-content: center;
+                                margin-right: 4.63rem;
+                            }
+                            .myWalletInfo-price {
+                                text-align: center;
+                                margin-right: 5rem;
+                            }
+                            .myWalletInfo-date {
+                                text-align: center;
+                            }
+    
+                        }
+                    }
+                    .myWalletInfo-content {
+                        max-height: 27.75rem;
+                        overflow-y: scroll;
+                        scrollbar-width: none; /* Firefox에 대한 스크롤바 숨김 */
+                        -ms-overflow-style: none; /* IE 및 Edge에 대한 스크롤바 숨김 */
+                        &::-webkit-scrollbar {
+                            width: 0px;
+                            height: 0px;
+                        }
+                        .myWalletItem-top {
+                            height: 4.625rem;
+                            border-bottom: 1px solid #ABE2DF;
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            color:  #000;
+                            font-size: 0.875rem;
+                            font-weight: 500;
+                            .myWalletItem-dealNum {
+                                max-width: 3.25rem;
+                                overflow: hidden;         
+                                text-overflow: ellipsis; 
+                                white-space: nowrap;  
+                                margin: 0 4.13rem 0 3.88rem;    
+                            }
+                            .myWalletItem-deal {
+                                display: flex;
+                                flex-direction: row;
+                                gap: 0.875rem;
+                                align-items: center;
+                                justify-content: center;
+                                .myWalletItem-receiver {
+                                    width: 3.25rem;
+                                    overflow: hidden;         
+                                    text-overflow: ellipsis; 
+                                    white-space: nowrap;      
+                                }
+                                .myWalletItem-caller {
+                                    width: 3.25rem;
+                                    overflow: hidden;         
+                                    text-overflow: ellipsis; 
+                                    white-space: nowrap;      
+                                }
+                            }
+                            .myWalletItem-price {
+                                text-align: center;
+                                margin: 0 2.095rem 0 2.08rem;
+                                width: 7.975rem;
+                            }
+                            .myWalletItem-date {
+                                text-align: center;
+                                width: 5rem;
+                            }
+                            .myWalletItem-state {
+                                margin: 0 4.31rem 0 4.15rem;
+                                width: 1.5625rem;
+                                text-align: center;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.walletModal {
+    position: fixed;
+    height: 17rem;
+    border-radius: 1.25rem;
+    background-color: #F0F9F8;
+    display: flex;
+    flex-direction: column;
+    gap: 0.94rem;
+    justify-content: center;
+    padding: 0 1.56rem;
+    .walletModal-items {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        .walletModal-title {
+            color: #3EB7AF;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .walletModal-content {
+            color: #797979;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+    }
+}
